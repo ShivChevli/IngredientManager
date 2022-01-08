@@ -473,10 +473,15 @@ main .section2{
     color: var(--text-alter);
 }
 .section4{
-    padding: 2vh 50px;
-    text-align: center; 
-    /* text-align: right; */
+    padding: 20px;
+     text-align: center;
     /* margin-right: 300px; */
+}
+.section4 .button-style-1{
+    margin: 10px !important;
+}
+.section4 #editBtn{
+    padding: 12px 25px;
 }
 .sectionFooter{
     margin: 50px 0;
