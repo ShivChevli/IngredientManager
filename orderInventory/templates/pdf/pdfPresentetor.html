@@ -1,0 +1,30 @@
+{% extends 'template.html' %}
+{% load static %}
+{% block heading %}
+    PDfs For Order : {{ orderName }}
+{% endblock %}
+{% block Main %}
+    <style>
+        .print-div {
+            padding: 30px 50px;
+            color: var(--text-alter);
+        }
+    </style>
+    <section class="single-container">
+        <div class="print-div">
+            <p>
+                Main PDF :-
+                <a href="{% url 'inventory:orderPrintData' orderId "main" %}" target="_blank" class="button-remove button-style-1">Print</a>
+            </p>
+        </div>
+        {% for storeLi in storeList %}
+            <div class="print-div">
+                <p>
+                    {{ storeLi.name }} PDF :-
+                    <a href="{% url 'inventory:orderPrintData' orderId storeLi.id %} " target="_blank" class="button-remove button-style-1">Print</a>
+                </p>
+            </div>
+        {% endfor %}
+
+    </section>
+{% endblock %}

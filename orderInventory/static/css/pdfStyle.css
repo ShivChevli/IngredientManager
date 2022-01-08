@@ -1,0 +1,60 @@
+/* put in quotes and add # at the beginning */
+@font-face {
+    font-family: 'MY';
+    src: url('../ttf/NotoSansGujarati-Bold.ttf');
+}
+
+@page {
+     size: a4 portrait;
+    @frame content_frame{          /* Content Frame */
+        left: 0pt;
+        width: 100pt;
+        top: 0pt;
+        height: 877pt;
+    }
+}
+
+* {
+    font-size: 20px;
+    font-family: 'MY' !important;
+    /* width: 1200px;
+    margin: 0 auto;
+    overflow-x: hidden; */
+}
+
+body{
+    padding: 20px 50px;
+}
+.date {
+    text-align: right;
+    padding: 10px 0;
+    padding-right: 100px;
+}
+
+header {
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+}
+
+main {
+    width: 1200px;
+    margin: 0px auto;
+    color: var(--text-color);
+}
+
+.order-detail{
+    width: 90%;
+    padding: 30px 0;
+    border-bottom: 5px solid black;
+    margin-bottom: 30px;
+}
+.order-detail div{
+    display: inline-block;
+    width: 49%;
+}
+.order-div{
+    display: inline-block;
+    width: 49%;
+    vertical-align: top;
+}

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="US-ASCII">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Layout</title>
+    <link rel="stylesheet" href="{% static 'css/pdfStyle.css' %}" >
+
+</head>
+
+<body>
+    <div class="date">
+        <span>Data :- {{ date }}</span>
+    </div>
+    <header>
+        <span>શ્રી જય જલારામ</span>
+        <span>શ્રીગણેશાયનમઃ </span>
+        <span>શ્રી જયબાપાસીતારામ</span>
+    </header>
+    <main>
+        <div class="order-detail">
+            <div>
+                <h1><span>Store Name :-</span> {{ storeData.name }}</h1>
+                <h1><span>Address :-</span> {{ storeData.address }}</h1>
+            </div>
+            <div>
+                <h1><span>Email Address :-</span> {{ storeData.emailAddress }}</h1>
+                <h1><span>Mobile Number :- </span> {{ storeData.mobileNumber }}</h1>
+            </div>
+        </div>
+        <ul>
+            {% for datum in data %}
+                <li> {{ datum.name }} : {{ datum.value }} Kg </li>
+            {% endfor %}
+        </ul>
+    </main>
+            <button class="button-remove button-style-1" onclick="printPDF()">Print</button>
+
+</body>
+<script>
+    function printPDF(){
+        document.querySelector("button").style.display = 'none';
+        print();
+    }
+    /*
+    document.addEventListener("DOMContentLoaded",()=>{
+        document.querySelector("button").style.display = 'none';
+        print();
+    })
+     */
+</script>
+</html>

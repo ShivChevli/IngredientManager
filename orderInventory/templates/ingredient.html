@@ -1,0 +1,60 @@
+{% extends 'extendedTemplate.html' %}
+{% load static %}
+{% block updateBox %}
+    <form action="{% url 'inventory:update_ingredient' %}" method="POST" id="formId">
+        {% csrf_token %}
+        <div id="updateField">
+
+        </div>
+        <input id="updateElementID" name="updateElementID" type="number" style="display:none;">
+        <div class="form-element-box">
+            <label for="#name" class="from-lable">Ingredient Name</label>
+            <div class="form-control">
+                <input type="text" required class="from-element" name="name" id="name" placeholder="Enter Ingredient Name">
+            </div>
+        </div>
+        <div class="form-element-box">
+            <label for="" class="from-lable">Purchase At</label>
+            <div class="form-control">
+                <select class="from-element" name="storeId" id="orderAt" required>
+                    <option value="---------">-------------</option>
+                    {% for d in Store %}
+                        <option value="{{ d.id }}">{{ d.name }} : {{ d.address }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="button-remove button-style-1 submit-btn" value="Update">
+        <button class="button-remove button-style-1 cancel-btn"> cancel</button>
+    </form>
+{% endblock %}
+
+{% block newItemBox %}
+    <h1>New {{ heading }}</h1>
+
+    <form action="{% url 'inventory:new_ingredient' %}" method="POST" id="formId">
+    {%  csrf_token %}
+        <div class="form-element-box">
+            <label for="#name" class="from-lable">Ingredient Name</label>
+            <div class="form-control">
+                <input type="text" required class="from-element" name="name" id="name" placeholder="Enter Text">
+            </div>
+        </div>
+        <div class="form-element-box">
+            <label for="" class="from-lable">Purchase At</label>
+            <div class="form-control">
+                <select class="from-element" id="orderAt" name="storeId" required>
+                    <option value="0">-------------</option>
+                    {% for d in Store %}
+                        <option value="{{ d.id }}">{{ d.name }} : {{ d.address }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="button-remove button-style-1 submit-btn" value="Create">
+        <button type="reset" class="button-remove button-style-1 cancel-btn" id="close" >
+            close
+        </button>
+    </form>
+
+{% endblock %}

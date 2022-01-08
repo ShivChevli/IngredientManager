@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <menu type="toolbar">
+        <h1 class="heading">
+            Menu
+        </h1>
+        <div class="menue-option-box">
+            <ul>
+                <!-- Home -->
+                <li id="home">
+                    <a href="{% url 'inventory:home' %}">
+                        <div class="list-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
+                                <path
+                                    d="m21.743 12.331-9-10c-.379-.422-1.107-.422-1.486 0l-9 10a.998.998 0 0 0-.17 1.076c.16.361.518.593.913.593h2v7a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-4h4v4a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-7h2a.998.998 0 0 0 .743-1.669z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="list-text">
+                            Home
+                        </div>
+                    </a>
+                </li>
+                <!-- Ingedient -->
+                <li id="ingredient">
+                    <a href="{% url 'inventory:ingredient' %}">
+                        <div class="list-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path
+                                    d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zM4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm13 0c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="list-text">
+                            Ingredient
+                        </div>
+                    </a>
+                </li>
+                <!-- Item -->
+                <li id="items">
+                    <a href="{% url 'inventory:items' %}">
+                        <div class="list-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 10h-2V3H8v7H6V3H4v8c0 1.654 1.346 3 3 3h1v7h2v-7h1c1.654 0 3-1.346 3-3V3h-2v7zm7-7h-1c-1.159 0-2 1.262-2 3v8h2v7h2V4a1 1 0 0 0-1-1z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="list-text">
+                            Items
+                        </div>
+                    </a>
+                </li>
+                <!-- Store -->
+                <li id="store">
+                    <a href="{% url 'inventory:store' %}">
+                        <div class="list-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M21.999 8a.997.997 0 0 0-.143-.515L19.147 2.97A2.01 2.01 0 0 0 17.433 2H6.565c-.698 0-1.355.372-1.714.971L2.142 7.485A.997.997 0 0 0 1.999 8c0 1.005.386 1.914 1 2.618V20a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-5h4v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-9.382c.614-.704 1-1.613 1-2.618zm-2.016.251A2.002 2.002 0 0 1 17.999 10c-1.103 0-2-.897-2-2 0-.068-.025-.128-.039-.192l.02-.004L15.219 4h2.214l2.55 4.251zm-9.977-.186L10.818 4h2.361l.813 4.065C13.957 9.138 13.079 10 11.999 10s-1.958-.862-1.993-1.935zM6.565 4h2.214l-.76 3.804.02.004c-.015.064-.04.124-.04.192 0 1.103-.897 2-2 2a2.002 2.002 0 0 1-1.984-1.749L6.565 4zm3.434 12h-4v-3h4v3z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="list-text">
+                            Store
+                        </div>
+                    </a>
+                </li>
+                <!-- Order -->
+                <li id="order">
+                    <a href="{% url 'inventory:order' %}">
+                        <div class="list-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path
+                                    d="M7.004 3.5 2 6.689l5.004 3.186 5.002-3.186zm10.005 0-5.003 3.189 5.003 3.186 5.003-3.186zM2 13.062l5.004 3.187 5.002-3.187-5.002-3.187zm15.009-3.187-5.003 3.187 5.003 3.187 5.003-3.187zM7.004 17.311l5.002 3.189 5.003-3.189-5.003-3.186z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="list-text">
+                            Order
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ---------------------------------------- Theme Value ------------------------------------- -->
+        <div class="menue-footer heading">
+            <button class="button-remove" id="theme">
+                <div class="list-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path
+                            d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z">
+                        </path>
+                        <path d="M19 12a7 7 0 0 0-7-7v14a7 7 0 0 0 7-7z"></path>
+                    </svg>
+                </div>
+                <div class="list-text">
+                    Theme
+                </div>
+
+            </button>
+        </div>
+    </menu>
+    <main>
+        <h1>{% block heading %} {% endblock %}<span id="date">12/12/2021</span></h1>
+        {% if toolbar != None %}
+        <div class="toolbox" id="toolbox">
+                <div class="search-bar">
+                    <div class="form-element-box">
+                        <div class="form-control">
+                            <input type="text" class="from-element search-input" placeholder="Search Element">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="button-remove button-style-1">
+                        Search
+                    </button>
+                    <button class="button-remove button-style-1 add newItem" data-type="blank">
+                        New
+                    </button>
+                </div>
+        </div>
+        {% endif %}
+        <span style="color: #f00">{{ message }}</span>
+
+        {% block Main %}
+
+        {% endblock %}
+    </main>
+    {% if putPlus %}
+    <a href="{% url 'inventory:orderNew' %}" class="button-remove newItem" id="new">
+        <!-- <div style="position: relative;"> -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M15 2.013H9V9H2v6h7v6.987h6V15h7V9h-7z"></path>
+        </svg>
+        <span class="help">
+            Create New Order
+        </span>
+        <!-- </div> -->
+    </a>
+    {% endif %}
+</body>
+<!-- <script src="https://unpkg.com/boxicons@2.1.1/dist/boxicons.js"></script> -->
+{% block scripts %}
+
+{% endblock %}
+<script>
+    const date = new Date();
+    document.getElementById("date").innerText = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+
+
+    if(localStorage.getItem("theme") === ""){
+        console.log("Theme Set");
+        localStorage.setItem("theme","light");
+    }
+
+    const r = document.querySelector(":root");
+    setTheme(r);
+    document.getElementById('theme').onclick = function () {
+        if (localStorage.getItem('theme') === "light"){
+            localStorage.setItem('theme','dark');
+        }
+        else {
+            localStorage.setItem("theme","light");
+        }
+        setTheme(r);
+    };
+
+
+
+    function setTheme(r){
+
+    if (localStorage.getItem('theme') === "dark") {
+        r.style.setProperty("--text-color", "#a85EeF");
+        r.style.setProperty("--bg-color-main", "#292929");
+        r.style.setProperty("--bg-color-alter", "#121212");
+        r.style.setProperty("--text-alter", "#d0d0d0");
+        r.style.setProperty("--item", "#444444");
+    }
+    else {
+        r.style.setProperty("--text-color", "#fff");
+        r.style.setProperty("--bg-color-main", "#610CFF");
+        r.style.setProperty("--bg-color-alter", "#ffff");
+        r.style.setProperty("--text-alter", "#000");
+        r.style.setProperty("--item", "#dddddd");
+    }
+    // console.log(r.style.setProperty("--text-color", "#000"));
+}
+
+try{
+
+    document.querySelectorAll(".search-input").forEach(input=>{
+        input.onkeyup = function (){
+            let p,txtValue;
+            let filter = input.value.toUpperCase();
+            let div = document.querySelectorAll(".suggetion-list-item");
+            console.log("Div :- ");
+            console.log(div);
+            // Loop through all list items, and hide those who don't match the search query
+            for (let i = 0; i < div.length; i++) {
+                p = div[i].getElementsByTagName("p")[0];
+                txtValue = p.textContent || p.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    div[i].style.display = "";
+                } else {
+                    div[i].style.display = "none";
+                }
+            }
+        }
+    })
+}
+catch (e){
+        console.log("no Search Bar present")
+}
+
+    let active = "{{ active }}";
+    if (active != ""){
+        console.log(active);
+        document.getElementById(active).classList.add("active");
+    }
+
+</script>
+<!--  Close cancle btn -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+        <path
+            d="M9.172 16.242 12 13.414l2.828 2.828 1.414-1.414L13.414 12l2.828-2.828-1.414-1.414L12 10.586 9.172 7.758 7.758 9.172 10.586 12l-2.828 2.828z">
+        </path>
+        <path
+            d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z">
+        </path>
+    </svg> -->
+<!-- contect Icon -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+        <path
+            d="M6 22h13a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h1zm6-17.001c1.647 0 3 1.351 3 3C15 9.647 13.647 11 12 11S9 9.647 9 7.999c0-1.649 1.353-3 3-3zM6 17.25c0-2.219 2.705-4.5 6-4.5s6 2.281 6 4.5V18H6v-.75z">
+        </path>
+    </svg> -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+        <path
+            d="M12 11.807A9.002 9.002 0 0 1 10.049 2a9.942 9.942 0 0 0-5.12 2.735c-3.905 3.905-3.905 10.237 0 14.142 3.906 3.906 10.237 3.905 14.143 0a9.946 9.946 0 0 0 2.735-5.119A9.003 9.003 0 0 1 12 11.807z">
+        </path>
+    </svg> -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
+        <path
+            d="M6.995 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007-2.246-5.007-5.007-5.007S6.995 9.239 6.995 12zM11 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2H2zm17 0h3v2h-3zM5.637 19.778l-1.414-1.414 2.121-2.121 1.414 1.414zM16.242 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.344 7.759 4.223 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z">
+        </path>
+    </svg> -->
+
+</html>

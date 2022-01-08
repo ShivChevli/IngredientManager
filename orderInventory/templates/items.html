@@ -1,0 +1,143 @@
+{% extends 'template.html' %}
+{% load static %}
+{% block heading %}
+    {{ heading }}
+{% endblock %}
+{% block Main %}
+
+<div id="single-section">
+    <section class="single-container">
+        {% for i in data %}
+        <div class="suggetion-list-item">
+            <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
+            <form method="POST" action="{% url 'inventory:delete_items' %}" style="text-align: center" id="deleteFromItems">
+                {% csrf_token %}
+                <input type="number" name="itemID" value="{{ i.id }}"  style="display: none">
+                <button class="add button-remove deleteItem">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+                    <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z">
+                    </path>
+                </svg>
+                </button>
+          </form>
+        </div>
+
+        {% endfor %}
+
+    </section>
+</div>
+
+    <section class="single-container" id="newItemBox">
+
+        <form action="{% url 'inventory:new_items' %}" style="display: inline" method="POST" id="newItem">
+            <div id="newIngredientHidden">
+
+            </div>
+            {% csrf_token %}
+
+            <!-- New Item Name -->
+            <div class="form-element-box">
+                <label for="#name" class="from-lable">Item Name</label>
+                <div class="form-control">
+                    <input type="text" required class="from-element " name="name" id="name" placeholder="Enter Text">
+                </div>
+            </div>
+            <section>
+                <h1>Item Ingredients </h1>
+                <div id="itemIngredients">
+                        <div class="suggetion-list-item">
+                            <p class="text_style"  data-queryItem="item_one">temp : <span>80</span></p>
+                            <button class="add button-remove">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                </div>
+                <input type="submit" class="button-remove button-style-1 submit-btn" value="Create">
+                <button type="reset" class="button-remove button-style-1 cancel-btn" id="close" role="button" >
+                    close
+                </button>
+            </section>
+
+
+        </form>
+
+            <section class="section2" id="ingredient-list-box">
+                <h1>Available Ingredients</h1>
+                <div class="toolbox2" id="toolbox">
+                    <div class="search-bar">
+                        <div class="form-element-box">
+                            <div class="form-control">
+                                <input type="text" class="from-element search-input"
+                                    placeholder="Search Element">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    {% for i in options %}
+                        <div class="suggetion-list-item">
+                            <p class="text_style addIngredients" data-ingredientId="{{ i.id }}" data-queryItem="ingredient_one">{{ i.name }}
+                            </p>
+                            <button class="add button-remove" role="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M15 2.013H9V9H2v6h7v6.987h6V15h7V9h-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+            <section class="section2" style="display: none;" id="add-ingredient-form">
+                        <h1 id="editFromHeading"> </h1>
+                        <div id="ingredient-list-from">
+                            <div class="form-element-box">
+                                <div class="form-control">
+                                    <input type="number" class="from-element" name="ingredientAmount" id="defaultValue" placeholder="Enter value in KG">
+                                </div>
+                            </div>
+                            <span id="id" style="display: none"></span>
+                        </div>
+                        <button class="button-remove button-style-1 cancel-btn" id="closeEditBtn" role="button"> Cancel</button>
+                        <button class="button-remove button-style-1" id="addBtn" type="button" role="button"> Add</button>
+
+                    </section>
+
+    </section>
+
+{% endblock %}
+{#{% block updateBox %}#}
+{#        <form action="" id="updateForm">#}
+{#            <div class="form-element-box">#}
+{#                <label for="#name" class="from-lable">Item Name</label>#}
+{#                <div class="form-control">#}
+{#                    <input type="text" required class="from-element" name="name" id="ItemName" placeholder="Enter Text">#}
+{#                </div>#}
+{#            </div>#}
+{#            <div>#}
+{#                <h3>Ingredients for Item </h3>#}
+{#                    <div id="updateField">#}
+{##}
+{#                    </div>#}
+{#            </div>#}
+{#            <input type="submit" class="button-remove button-style-1 submit-btn" value="Update">#}
+{#            <button class="button-remove button-style-1 cancel-btn"> cancel</button>#}
+{#        </form>#}
+{##}
+{#{% endblock %}#}
+{#{% block newItemBox %}#}
+{##}
+{#{% endblock %}#}
+
+{% block scripts %}
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+
+    let newItem = "{% url 'inventory:new_items' %}";
+    let updateItem = "{% url 'inventory:update_items' %}";
+    console.log(updateItem);
+    console.log(newItem);
+
+    </script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "extendedTemplate.html" %}
+
+{# update Form #}
+{% block updateBox %}
+
+    <form action="{% url 'inventory:update_store' %}" method="POST" id="formId">
+        {% csrf_token %}
+        <div id="updateField">
+
+        </div>
+        <input id="updateElementID" name="updateElementID" type="number" style="display:none;">
+
+        <div class="form-element-box">
+            <label for="#name" class="from-lable">Store Name</label>
+            <div class="form-control">
+                <input type="text" required class="from-element" name="name" id="name" placeholder="Enter Store Name">
+            </div>
+        </div>
+        <div class="form-element-box">
+            <label for="#address" class="from-lable">Address </label>
+            <div class="form-control">
+                <textarea name="address" id="address" rows="3" class="from-element" placeholder="Enter Address">
+                </textarea>
+            </div>
+        </div>
+        <div class="form-element-box">
+            <label for="#emailAddress" class="from-lable">Email Address</label>
+            <div class="form-control">
+                <input type="email" required class="from-element" name="emailAddress" id="emailAddress" placeholder="Enter Email Address">
+            </div>
+        </div>
+
+        <div class="form-element-box">
+            <label for="#mobileNumber" class="from-lable">Mobile Number</label>
+            <div class="form-control">
+                <input type="text" required class="from-element" name="mobileNumber" id="mobileNumber" placeholder="Enter Mobile Number">
+            </div>
+        </div>
+
+        <input type="submit" class="button-remove button-style-1 submit-btn" value="Update">
+        <button class="button-remove button-style-1 cancel-btn"> cancel</button>
+    </form>
+
+{% endblock %}
+
+
+{# New Item Form #}
+{% block newItemBox %}
+
+    <h1>New {{ heading }}</h1>
+    <form action="{% url 'inventory:new_store' %}" method="POST" id="formId">
+
+        {% csrf_token %}
+
+        <div class="form-element-box">
+            <label for="#name" class="from-lable">Store Name</label>
+            <div class="form-control">
+                <input type="text" required class="from-element" name="name" id="name" placeholder="Enter Store Name">
+            </div>
+        </div>
+
+        <div class="form-element-box">
+            <label for="#address" class="from-lable">Address </label>
+            <div class="form-control">
+                <textarea name="address" id="address" rows="3" class="from-element" placeholder="Enter Address">
+                </textarea>
+            </div>
+        </div>
+
+        <div class="form-element-box">
+            <label for="#emailAddress" class="from-lable">Email Address</label>
+            <div class="form-control">
+                <input type="email" required class="from-element" name="emailAddress" id="emailAddress" placeholder="Enter Email Address">
+            </div>
+        </div>
+
+        <div class="form-element-box">
+            <label for="#mobileNumber" class="from-lable">Mobile Number</label>
+            <div class="form-control">
+                <input type="text" required class="from-element" name="mobileNumber" id="mobileNumber" placeholder="Enter Mobile Number">
+            </div>
+        </div>
+
+        <input type="submit" class="button-remove button-style-1 submit-btn" value="Create">
+        <button class="button-remove button-style-1 cancel-btn"> cancel</button>
+    </form>
+
+{% endblock %}

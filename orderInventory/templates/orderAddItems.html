@@ -1,0 +1,90 @@
+{% extends 'template.html' %}
+{% load static %}
+{% block heading %}
+    Add Items to Order : {{ orderFor }}
+{% endblock %}
+{% block Main %}
+
+    <div id="edit-view">
+        <section class="single-container">
+
+                <div id="page2">
+                    <section>
+                        <h1>Ordered Items</h1>
+                        <div id="orderItems" data-orderID="{{ orderID }}">
+                            {% for dataItem,values in data.fields.items %}
+                                <div class="item-box" data-itemid="{{ dataItem }}" >
+                                    <h2 class="item-name">
+                                        <span class="item-name-text">
+                                            {{ values.name }}
+                                        </span>
+                                        <span class="bin">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+                                                <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z">
+                                                </path>
+                                        </svg>
+                                        </span>
+                                    </h2>
+                                    <ul class="ingredient-list">
+                                        {% for it in values.ingredient %}
+                                            <li data-ingredientId="{{ it.id }}"><label>{{ it.name }}</label> : <span>{{ it.quantity }}</span>  Kg </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                    <button class="button-remove button-style-1 edit-btn " type="button" role="button" id="editeBtn" > Edit </button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                    <section class="section2" id="item-list-box">
+                        <h1>Available Items</h1>
+                        <div class="toolbox2" id="toolbox">
+                            <div class="search-bar">
+                                <div class="form-element-box">
+                                    <div class="form-control">
+                                        <input type="text" class="from-element search-input"
+                                            placeholder="Search Element">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            {% for i in ItemList %}
+                                <div class="suggetion-list-item">
+                                    <p class="text" data-itemid="{{ i.id }}" data-queryItem="item_one">{{ i.name }}
+                                    </p>
+                                    <button class="add button-remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                            <path d="M15 2.013H9V9H2v6h7v6.987h6V15h7V9h-7z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                    <section class="section2" style="display: none;" id="add-item-form">
+                       <!-- <form action="" id="AddItemForm"> -->
+                            <h1 id="editFromHeading">Item Name</h1>
+                            <input type="number" value="{{ orderID }}" style="display: none" name="orderID" >
+                            <input type="number" value="" style="display: none" name="itemID" id="itemID" >
+                            <div id="ingredient-list-from">
+
+                            </div>
+                            <button class="button-remove button-style-1 cancel-btn" id="closeEditBtn"> Cancel</button>
+                            <button  class="button-remove button-style-1" id="add" type="button"> Add</button>
+
+                       <!-- </form> -->
+                    </section>
+
+                </div>
+        </section>
+        <div class="sectionFooter">
+            <a href="{% url 'inventory:order' %}" class="button-remove button-style-1" id="submit-btn">
+                Done
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/orderScript.js' %}"></script>
+{% endblock %}

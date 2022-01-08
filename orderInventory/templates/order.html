@@ -1,0 +1,84 @@
+{% extends 'template.html' %}
+{% load static %}
+{% block heading %}
+    Order For :- <span id="orderFor">Shiv Chevli</span>
+{% endblock %}
+{% block Main %}
+    <style>
+        section{
+            max-height: 80vh !important;
+        }
+        .order-detail{
+            margin: 18px 0 !important;
+        }
+    </style>
+    <div id="detail-view">
+        <section id="orderDetail-section1">
+                <div class="order-detail">
+                    <h3>Name :- </h3>
+                    <p>{{ data.orderName }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Address:- </h3>
+                    <p>{{ data.address }} </p>
+                </div>
+                <div class="order-detail">
+                    <h3>Email :- </h3>
+                    <p>{{ data.email }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Number :- </h3>
+                    <p>{{ data.mobileNumber }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Order Data & time :- </h3>
+                    <p>{{ data.deliverDate }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Number of Person</h3>
+                    <p>{{ data.numberOfPerson }}</p>
+                </div>
+                <div class="section4">
+                    <a href="{% url 'inventory:order' %}" class="button-remove button-style-1 cancel-btn"> Cancel</a>
+                    <a href="{% url 'inventory:orderPrint' data.orderId %}" class="button-remove  button-style-1 button-style-2 ">
+                        Print
+                    </a>
+                    <a href="{% url 'inventory:orderEdit' data.orderId  %}" id="editBtn" class="button-remove button-style-1">
+                        Edit
+                    </a>
+                </div>
+            </section>
+        <section class="section2" id="section1">
+                <h1>Item List</h1>
+                <div class="item-list-box">
+
+                    {% for dataItem,values in data.fields.items %}
+                        <div class="item-box" data-itemid="{{ dataItem }}">
+                        <h2 class="item-name">
+                            <span class="item-name-text">
+                                {{ values.name }}
+                            </span>
+                            <span class="arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </h2>
+                        <ul class="ingredient-list">
+                            {% for it in values.ingredient %}
+                                <li data-ingredientId="{{ it.id }}"><label>{{ it.name }}</label> : <span>{{ it.quantity }}</span>  Kg </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </section>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/orderScript.js' %}"></script>
+{% endblock %}

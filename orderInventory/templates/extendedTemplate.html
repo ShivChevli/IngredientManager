@@ -1,0 +1,96 @@
+{% extends "template.html" %}
+{% load static %}
+{% block heading %}
+{{ heading }}
+{% endblock %}
+{% block Main %}
+
+<div id="single-section">
+    <section class="single-container">
+        {% for i in data %}
+        <div class="suggetion-list-item">
+            <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
+            <button class="add button-remove">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path>
+                    <path
+                        d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        {% endfor %}
+    </section>
+</div>
+<div id="multi-section">
+
+    <section id="section1">
+
+        <div class="toolbox" id="toolbox">
+            <div class="search-bar">
+                <div class="form-element-box">
+                    <div class="form-control">
+                        <input type="text" class="from-element search-input" placeholder="Search Element">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for i in data %}
+        <div class="suggetion-list-item">
+            <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
+            <button class="add button-remove">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path>
+                    <path
+                        d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        {% endfor %}
+    </section>
+    <section class="section2" id="detailBox">
+        <h1> Details </h1>
+        <ul class="detail-list">
+        </ul>
+        <form method="POST" id="deleteFrom" ">
+            {% csrf_token %}
+            <input type="number" id="deleteElementId" style="display: none" name="deleteElementId">
+
+            <button class="button-remove button-style-1 button-style-2 edit" role="button" type="button">Edit</button>
+            <button type="submit" class="button-remove button-style-1 delete-btn"> Delete</button>
+            <button class="button-remove button-style-1 cancel-btn" role="button" type="button" >Cancel</button>
+        </form>
+
+    </section>
+
+    <section class="section2" id="updateBox">
+        <h1>Update {{ heading }}</h1>
+        {% block updateBox %}
+        {% endblock %}
+    </section>
+</div>
+
+<section class="single-container" id="newItemBox">
+    {% block newItemBox %}
+
+    {% endblock %}
+</section>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        active = "{{ active }}";
+        if (active === "store"){
+            document.getElementById("deleteFrom").action = "{% url 'inventory:delete_store' %}";
+        }
+        else if( active === "ingredient" ){
+            document.getElementById("deleteFrom").action = "{% url 'inventory:delete_ingredient' %}";
+        }
+        else {
+            document.getElementById("deleteFrom").action = "{% url 'inventory:home' %}";
+        }
+    </script>
+{% endblock %}
