@@ -5,18 +5,21 @@ from . import views
 app_name = "inventory"
 urlpatterns = [
     path('', views.index,name="home"),
+    path('Category/', views.categoryHome, name="category"),
+    path('CategoryNew/', views.newCategory, name="new_category"),
+    path('CategoryUpdate/', views.updateCategory, name="update_category"),
+    path('CategoryDelete/', views.deleteCategory, name="delete_category"),
+
     path('Ingredient/', views.ingredientHome ,name="ingredient"),
     path('IngredientNew/', views.newIngredient ,name="new_ingredient"),
     path('IngredientUpdate/', views.updateIngredient,name="update_ingredient"),
     path('IngredientDelete/', views.deleteIngredient,name="delete_ingredient"),
+
     path('Items/', views.itemsHome, name="items"),
     path('ItemsNew/', views.newItems, name="new_items"),
-    path('ItemsUpdate/', views.updateItems, name="update_items"),
+    # path('ItemsUpdate/', views.updateItems, name="update_items"),
     path('ItemsDelete/', views.deleteItems, name="delete_items"),
-    path('Store/', views.storeHome, name="store"),
-    path('StoreNew/', views.newStore, name="new_store"),
-    path('StoreUpdate/', views.updateStore, name="update_store"),
-    path('StoreDelete/', views.deleteStore, name="delete_store"),
+
     path('Order/', views.orderHome, name="order"),
     path('OrderDetail/<int:OrderID>/', views.orderDetail, name="orderDetail"),
     path('OrderNew/', views.orderNewTemplate, name="orderNew"),

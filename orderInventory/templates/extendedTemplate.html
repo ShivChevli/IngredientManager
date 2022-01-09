@@ -55,7 +55,7 @@
         <h1> Details </h1>
         <ul class="detail-list">
         </ul>
-        <form method="POST" id="deleteFrom" ">
+        <form method="POST" id="deleteFrom" >
             {% csrf_token %}
             <input type="number" id="deleteElementId" style="display: none" name="deleteElementId">
 
@@ -84,7 +84,7 @@
     <script>
         active = "{{ active }}";
         if (active === "store"){
-            document.getElementById("deleteFrom").action = "{% url 'inventory:delete_store' %}";
+            document.getElementById("deleteFrom").action = "{% url 'inventory:delete_category' %}";
         }
         else if( active === "ingredient" ){
             document.getElementById("deleteFrom").action = "{% url 'inventory:delete_ingredient' %}";

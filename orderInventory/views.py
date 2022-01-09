@@ -29,10 +29,85 @@ def index(request):
         "toolbar": True,
         "putPlus": True,
         "active": "home",
-        "data": order,
+        "data": "",
         "heading": "Recent Files",
     })
 
+#####################################################
+################# Store Functions  #################
+#####################################################
+
+@cache_control(max_age=3600)
+def categoryHome(request):
+    """
+        Display List of Category
+    """
+    category = models.Category.objects.all()
+    return render(request, 'category.html', {
+        "toolbar": True,
+        "putPlus": True,
+        "active": "category_tab",
+        "data": category,
+        "queryItem": "category_one",
+        "heading": "Category",
+    })
+
+
+def newCategory(request):
+    """
+        Add new Category DAta to Database
+        input :- Accept all Necessary data from User through Form
+        output : Redirect to list of Category
+    """
+    print("New Category")
+    if request.method == "POST":
+        new_category = models.Category()
+        new_category.name = request.POST.get("name")
+        print("After Category :- ", new_category)
+        # new_category.save()
+
+    return redirect('inventory:category')
+
+
+def updateCategory(request):
+    """
+        Update Category Data to Database
+        input :  Accept Name and  Id
+        output : Redirect to list of Category
+    """
+    print("update Category")
+    if request.method == "POST":
+        update_category = models.Category.objects.get(id=request.POST.get("updateElementID"))
+        # retrieve Category updated data from user
+        update_category.name = request.POST.get("name")
+
+        print("After Category :- ", update_category)
+        # update_category.save()
+
+    return redirect('inventory:category')
+
+
+def deleteCategory(request):
+    """
+        Delete Category Data to Database
+        input :- Accept only Category Id
+        output : Redirect to list of Category
+    """
+    if request.method == "POST":
+        print("Delete Post For Category Method")
+        print("Data :", request.POST.get("deleteElementId"))  # retrieve StoreId From Submitted Form
+        deleteCategory = models.Category.objects.get(id=request.POST.get("deleteElementId"))
+
+        print("Delete Element :- ", deleteCategory)
+        # print("After :- ",ingre)
+        # deleteCategory.delete()
+
+    return redirect('inventory:category')
+
+
+#####################################################
+############ Ingredient Functions  #################
+#####################################################
 
 @cache_control(max_age=3600)
 def ingredientHome(request):
@@ -40,16 +115,83 @@ def ingredientHome(request):
         Display list of Ingredient
     """
     ingredients = models.IngredientIndividual.objects.all()
-    store = models.Store.objects.all()
+    category = models.Category.objects.all()
     return render(request, 'ingredient.html', {
         "toolbar": True,
         "putPlus": True,
         "active": "ingredient",
         "data": ingredients,
-        "Store": store,
+        "Category": category,
         "queryItem": "ingredient_one",
         "heading": "Ingredients",
     })
+
+
+@csrf_exempt
+def newIngredient(request):
+    """
+        Add new IIngredient Data to Database
+        input :- Accept all Necessary data for new Ingredient from User through Form
+        output : Redirect to list of Ingredient
+    """
+    if request.method == "POST":
+        print(request.POST)
+        print("data", request.POST.get("categoryId"))
+        print("data", request.POST.get("name"))
+        ingre = models.IngredientIndividual(name=request.POST.get("name"),category_id=request.POST.get("categoryId"))
+        print("New Ingredient")
+        ingre.save()
+        if request.POST.get("json") == "1":
+            print("Return JSON")
+            return JsonResponse({
+                "status" : 200,
+                "newIngredientId":ingre.id
+            })
+    return redirect('inventory:ingredient')
+
+
+def updateIngredient(request):
+    """
+        Update IIngredient Data to Database
+        input :- Accept all Necessary data from User through Form along with Ingredient ID
+        output : Redirect to list of Ingredient
+    """
+    if request.method == "POST":
+        print("Update Post Method")
+        print("updateElementID", request.POST.get("updateElementID"))
+        print("data", request.POST.get("name"))
+        ingre = models.IngredientIndividual.objects.get(id=request.POST.get("updateElementID"))
+        print("Before :- ", ingre)
+        ingre.name = request.POST.get("name")
+        ingre.category_id = request.POST.get("categoryId")
+        print("category :- ")
+        print(ingre.category)
+
+        print("After :- ", ingre)
+        ingre.save()
+    return redirect('inventory:ingredient')
+
+
+def deleteIngredient(request):
+    """
+        Delete Ingredient from database
+        input :- Accept Ingredient Id from User
+        output :- Redirect To Ingredient List
+    """
+    if request.method == "POST":
+        print("Delete Post Method")
+        print("Data :", request.POST.get("deleteElementId"))
+        ingre = models.IngredientIndividual.objects.get(id=request.POST.get("deleteElementId"))
+
+        print("Before :- ", ingre)
+        ingre.delete()
+
+    return redirect('inventory:ingredient')
+
+
+#####################################################
+############ Items Functions  #################
+#####################################################
 
 
 @cache_control(max_age=3600)
@@ -59,33 +201,147 @@ def itemsHome(request):
     """
     items = models.ItemIndividual.objects.all()
     ingredients = models.IngredientIndividual.objects.all()
-    store = models.Store.objects.all()
+    category = models.Category.objects.all()
     return render(request, 'items.html', {
         "toolbar": True,
         "putPlus": True,
         "active": "items",
         "data": items,
         "options": ingredients,
-        "Store": store,
+        "Category": category,
         "queryItem": "item_one",
         "heading": "Items",
     })
 
 
-@cache_control(max_age=3600)
-def storeHome(request):
+def newItems(request):
     """
-        Display List of Stores
+        Add New Item to Database
+        input :- Takes Series for form data named as ingredientId{i} and value{i} with addidtional argument of
+        new item name
     """
-    store = models.Store.objects.all()
-    return render(request, 'store.html', {
-        "toolbar": True,
-        "putPlus": True,
-        "active": "store",
-        "data": store,
-        "queryItem": "store_one",
-        "heading": "Store",
-    })
+    if request.method == "POST":
+        print("Submited Data")
+        print(request.POST)
+
+        itemId = request.POST.get("ItemId")
+        print("itemId ", itemId)
+
+        tempList = []
+
+        # Get Item if it's Exist else create New
+        if itemId == "":
+            # New Item Created
+            Item = models.ItemIndividual(name=request.POST.get("name"))
+            Item.save()
+        else:
+            # update Item Fetch
+            print(itemId)
+            Item = models.ItemIndividual.objects.get(id=itemId)
+            tempList = list(models.Items.objects.filter(itemId=Item))
+            print("Before Deleting")
+            print(tempList)
+            print(len(tempList))
+
+
+        for key, value in request.POST.items():
+            # if "ingredientId" in key:
+            #     print("New Item Entry :- ")
+            #     newItemEntry = models.Items(itemId=Item, ingredientId_id=value)
+            #     print(newItemEntry)
+
+            if "ingredientId" in key:
+                try:
+                    tempIngredient = models.Items.objects.get(itemId=Item,ingredientId_id=value)
+                    if tempIngredient in tempList:
+                        # print("Ingredient Found")
+                        tempList.remove(tempIngredient)
+
+                except:
+                    print("New Item Entry :- ")
+                    tempIngredient = models.Items(itemId=Item,ingredientId_id=value)
+                    # print("update Item Entry :- ")
+                    print(tempIngredient)
+                    tempIngredient.save()
+
+        print("After Deleting")
+        print(tempList)
+        print(len(tempList))
+
+        # Ingredient Deleted From Items
+        for i in tempList:
+            print("Delete items")
+            print(i)
+            i.delete()
+
+    else:
+        print(request.GET)
+    return redirect('inventory:items')
+
+# No Longer Need of this funtionn it was added with New ingredient from
+def updateItems(request):
+    """
+        Update Item Data
+        input :- accept same data as new items Just addition about item_id which need to update
+    """
+    if request.method == "POST":
+        itemId = request.POST.get("ItemId")
+        updateItem = models.ItemIndividual.objects.get(id=itemId)
+
+        tempList = list(models.Items.objects.filter(itemId=updateItem))
+        print("Before Deleting")
+        print(tempList)
+        print(len(tempList))
+
+
+        for key, value in request.POST.items():
+            if "ingredientId" in key:
+                try:
+                    tempIngredient = models.Items.objects.get(itemId=updateItem,ingredientId_id=value)
+                    if tempIngredient in tempList:
+                        # print("Ingredient Found")
+                        tempList.remove(tempIngredient)
+                except:
+                    # print("Ingredient Does Not Exist")
+                    tempIngredient = models.Items(itemId=updateItem,ingredientId_id=value)
+                    # print("update Item Entry :- ")
+                    # print(tempIngredient)
+                    # tempIngredient.save()
+
+        print("After Deleting")
+        print(tempList)
+        print(len(tempList))
+
+        # Ingredient Deleted From Items
+        for i in tempList:
+            print(i)
+
+    return redirect('inventory:items')
+
+
+def deleteItems(request):
+    """
+        Function To delete Items in Single click
+        input : Thought fromItem id
+    """
+    if request.method == "POST":
+        itemIndividual = models.ItemIndividual.objects.get(id=request.POST.get('itemID'))
+        items = models.Items.objects.filter(itemId=itemIndividual)
+        print("items Name :- ")
+        print(itemIndividual)
+        print("Item's Ingredients ")
+        for i in items:
+            print(items)
+            i.delete()
+        itemIndividual.delete()
+
+    return redirect('inventory:items')
+
+
+
+#####################################################
+############ Order Functions  #################
+#####################################################
 
 
 @cache_control(max_age=3600)
@@ -341,206 +597,6 @@ def orderPrintData(request, orderId, dataType):
     })
 
 
-#####################################################
-############ Ingredient Functions  #################
-#####################################################
-
-def newIngredient(request):
-    """
-        Add new IIngredient Data to Database
-        input :- Accept all Necessary data for new Ingredient from User through Form
-        output : Redirect to list of Ingredient
-    """
-    if request.method == "POST":
-        print("data", request.POST.get("storeId"))
-        print("data", request.POST.get("name"))
-        ingre = models.IngredientIndividual(name=request.POST.get("name"), orderAt_id=request.POST.get("storeId"))
-        print(ingre)
-        ingre.save()
-    return redirect('inventory:ingredient')
-
-
-def updateIngredient(request):
-    """
-        Update IIngredient Data to Database
-        input :- Accept all Necessary data from User through Form along with Ingredient ID
-        output : Redirect to list of Ingredient
-    """
-    if request.method == "POST":
-        print("Update Post Method")
-        print("updateElementID", request.POST.get("updateElementID"))
-        print("data", request.POST.get("name"))
-        ingre = models.IngredientIndividual.objects.get(id=request.POST.get("updateElementID"))
-        print("Before :- ", ingre)
-        ingre.name = request.POST.get("name")
-        store = models.Store.objects.get(id=request.POST.get("storeId"))
-        print("Store :- ", store)
-        ingre.orderAt = store
-
-        print("After :- ", ingre)
-        ingre.save()
-    return redirect('inventory:ingredient')
-
-
-def deleteIngredient(request):
-    """
-        Delete Ingredient from database
-        input :- Accept Ingredient Id from User
-        output :- Redirect To Ingredient List
-    """
-    if request.method == "POST":
-        print("Delete Post Method")
-        print("Data :", request.POST.get("deleteElementId"))
-        ingre = models.IngredientIndividual.objects.get(id=request.POST.get("deleteElementId"))
-
-        print("Before :- ", ingre)
-        ingre.delete()
-
-    return redirect('inventory:ingredient')
-
-
-#####################################################
-################# Store Functions  #################
-#####################################################
-
-def newStore(request):
-    """
-        Add new Store DAta to Database
-        input :- Accept all Necessary data from User through Form
-        output : Redirect to list of Store
-    """
-    print("New Store")
-    if request.method == "POST":
-        new_store = models.Store()
-        new_store.name = request.POST.get("name")
-        new_store.address = request.POST.get("address")
-        new_store.emailAddress = request.POST.get("emailAddress")
-        new_store.mobileNumber = request.POST.get("mobileNumber")
-        print("After Store :- ", new_store)
-        new_store.save()
-
-    return redirect('inventory:store')
-
-
-def updateStore(request):
-    """
-        Update Store Data to Database
-        input : Accept all Necessary data from User through Form along with Store Id
-        output : Redirect to list of Store
-    """
-    print("update Store")
-    if request.method == "POST":
-        update_store = models.Store.objects.get(id=request.POST.get("updateElementID"))
-        # retrieve store updated data from user
-        update_store.name = request.POST.get("name")
-        update_store.address = request.POST.get("address")
-        update_store.emailAddress = request.POST.get("emailAddress")
-        update_store.mobileNumber = request.POST.get("mobileNumber")
-        print("After Store :- ", update_store)
-        update_store.save()
-
-    return redirect('inventory:store')
-
-
-def deleteStore(request):
-    """
-        Delete Store Data to Database
-        input :- Accept only Store Id
-        output : Redirect to list of Store
-    """
-    if request.method == "POST":
-        print("Delete Post For Store Method")
-        print("Data :", request.POST.get("deleteElementId"))  # retrieve StoreId From Submitted Form
-        deleteStore = models.Store.objects.get(id=request.POST.get("deleteElementId"))
-
-        print("Delete Element :- ", deleteStore)
-        # print("After :- ",ingre)
-        deleteStore.delete()
-
-    return redirect('inventory:store')
-
-
-#####################################################
-############ Items Functions  #################
-#####################################################
-
-def newItems(request):
-    """
-        Add New Item to Database
-        input :- Takes Series for form data named as ingredientId{i} and value{i} with addidtional argument of
-        new item name
-    """
-    if request.method == "POST":
-        temp = 0
-        tempIngredient = None
-        newItem = models.ItemIndividual(name=request.POST.get("name"))
-        newItem.save()
-
-        for key, value in request.POST.items():
-            if "ingredientId" in key:
-                temp = 1
-                tempIngredient = models.IngredientIndividual.objects.get(id=value)
-
-            elif temp == 1:
-                newItemEntry = models.Items(itemId=newItem, ingredientId=tempIngredient, defaultValue=value)
-                print("New Item Entry :- ")
-                print(newItemEntry)
-                newItemEntry.save()
-                temp = 0
-    else:
-        print(request.GET)
-    return redirect('inventory:items')
-
-
-def updateItems(request):
-    """
-        Update Item Data
-        input :- accept same data as new items Just addition about item_id which need to update
-    """
-    if request.method == "POST":
-        itemId = request.POST.get("ItemId");
-        updateItem = models.ItemIndividual.objects.get(id=itemId)
-
-        temp = models.Items.objects.filter(itemId=updateItem)
-        for i in temp:
-            print(i)
-            # i.delete()
-
-        for key, value in request.POST.items():
-            if "ingredientId" in key:
-                temp = 1
-                try:
-                    tempIngredient = models.Items.objects.get(itemId=updateItem,ingredientId_id=value)
-                except:
-                    print("User Does Not Exesist")
-                    tempIngredient = models.Items(itemId=updateItem,ingredientId_id=value)
-
-
-            elif temp == 1:
-                tempIngredient.defaultValue = value
-                print("update Item Entry :- ")
-                print(tempIngredient)
-                tempIngredient.save()
-                temp = 0
-
-    return redirect('inventory:items')
-
-
-def deleteItems(request):
-    """
-        Function To delete Items in Single click
-        input : Thought fromItem id
-    """
-    if request.method == "POST":
-        itemIndividual = models.ItemIndividual.objects.get(id=request.POST.get('itemID'))
-        items = models.Items.objects.filter(itemId=itemIndividual)
-        for i in items:
-            i.delete()
-        itemIndividual.delete()
-    return redirect('inventory:items')
-
-
-
 
 # Fountain to Experiment with PDF Generation
 def pdfGenration1(request):
@@ -605,22 +661,26 @@ def getDetail(request):
             data = dict()
             l.append(data)
             temp = list(models.Items.objects.filter(itemId=data_id))
+            print("Item One Called")
             print(temp)
+
+            data["fields"] = dict()
+            data["fields"]["ItemName"] = models.ItemIndividual.objects.get(id=data_id).name
+            data["fields"]["ingredient"] = list()
+            print("Return Json : ", data)
+
             if len(temp) > 0:
-                data["fields"] = dict()
-                data["fields"]["ItemName"] = models.ItemIndividual.objects.get(id=temp[0].itemId.id).name
-                data["fields"]["ingredient"] = list()
-                print("Return Json : ", data)
                 for i in temp:
                     print(i.ingredientId.id)
                     print(models.IngredientIndividual.objects.get(id=i.ingredientId.id))
                     key = models.IngredientIndividual.objects.get(id=i.ingredientId.id)
-                    data["fields"]["ingredient"].append({"id": i.ingredientId.id, key.name: i.defaultValue})
+                    data["fields"]["ingredient"].append({i.ingredientId.id : key.name})
                 # res = serializers.serialize("json", l)
             res = l
+
             print(res)
-        elif data == "store_one":
-            temp = models.Store.objects.filter(id=data_id)
+        elif data == "category_one":
+            temp = models.Category.objects.filter(id=data_id)
             res = serializers.serialize("json", temp)
             print(res)
         elif data == 'order_one':

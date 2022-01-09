@@ -16,10 +16,10 @@
         <div class="form-element-box">
             <label for="" class="from-lable">Purchase At</label>
             <div class="form-control">
-                <select class="from-element" name="storeId" id="orderAt" required>
+                <select class="from-element" name="categoryId" id="category" required>
                     <option value="---------">-------------</option>
-                    {% for d in Store %}
-                        <option value="{{ d.id }}">{{ d.name }} : {{ d.address }}</option>
+                    {% for d in Category %}
+                        <option value="{{ d.id }}">{{ d.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -43,10 +43,10 @@
         <div class="form-element-box">
             <label for="" class="from-lable">Purchase At</label>
             <div class="form-control">
-                <select class="from-element" id="orderAt" name="storeId" required>
-                    <option value="0">-------------</option>
-                    {% for d in Store %}
-                        <option value="{{ d.id }}">{{ d.name }} : {{ d.address }}</option>
+                <select class="from-element" name="categoryId" required>
+                    <option value="0" >-------------</option>
+                    {% for d in Category %}
+                        <option value="{{ d.id }}">{{ d.name }}</option>
                     {% endfor %}
                 </select>
             </div>

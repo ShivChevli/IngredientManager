@@ -274,6 +274,11 @@ main .section2{
     padding-right: 0;
     padding-left: 0;
 }
+#addNewIngredientBtn{
+    float: right;
+    margin: 0 !important;
+    margin-top: -10px !important;
+}
 /* ------------------------------------------------------------------------------
                         Section 1
 ------------------------------------------------------------------------------ */

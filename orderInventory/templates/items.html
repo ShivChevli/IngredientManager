@@ -30,6 +30,7 @@
     <section class="single-container" id="newItemBox">
 
         <form action="{% url 'inventory:new_items' %}" style="display: inline" method="POST" id="newItem">
+            <input type="text" name="ItemId" id="updateItemId" style="display: none"/>
             <div id="newIngredientHidden">
 
             </div>
@@ -47,7 +48,7 @@
                 <div id="itemIngredients">
 
                 </div>
-                <input type="submit" class="button-remove button-style-1 submit-btn" value="Create">
+                <input type="submit" class="button-remove button-style-1 submit-btn" value="Create" id="newItemSubmitBtn">
                 <button type="reset" class="button-remove button-style-1 cancel-btn" id="close" role="button" >
                     close
                 </button>
@@ -57,7 +58,11 @@
         </form>
 
             <section class="section2" id="ingredient-list-box">
-                <h1>Available Ingredients</h1>
+                <h1>Available Ingredients
+                    <span>
+                        <button class="button-remove button-style-1" id="addNewIngredientBtn">New</button>
+                    </span>
+                </h1>
                 <div class="toolbox2" id="toolbox">
                     <div class="search-bar">
                         <div class="form-element-box">
@@ -82,20 +87,39 @@
                     {% endfor %}
                 </div>
             </section>
-            <section class="section2" style="display: none;" id="add-ingredient-form">
-                        <h1 id="editFromHeading"> </h1>
-                        <div id="ingredient-list-from">
-                            <div class="form-element-box">
-                                <div class="form-control">
-                                    <input type="number" class="from-element" name="ingredientAmount" id="defaultValue" placeholder="Enter value in KG">
-                                </div>
-                            </div>
-                            <span id="id" style="display: none"></span>
-                        </div>
-                        <button class="button-remove button-style-1 cancel-btn" id="closeEditBtn" role="button"> Cancel</button>
-                        <button class="button-remove button-style-1" id="addBtn" type="button" role="button"> Add</button>
 
-                    </section>
+
+            <section class="section2" style="display: none;" id="add-New-ingredient-form">
+
+                <h1 id="editFromHeading">New Ingredient</h1>
+                <form id="newIngredientFrom" method="POST" >
+
+                    <div class="form-element-box">
+                        <label for="#name" class="from-lable">Ingredient Name</label>
+                        <div class="form-control">
+                            <input type="text" required class="from-element" name="name" id="name" placeholder="Enter Text">
+                        </div>
+                    </div>
+
+                    <div class="form-element-box">
+                    <label for="" class="from-lable">Purchase At</label>
+                        <div class="form-control">
+                            <select class="from-element" name="categoryId" required>
+                                <option value="0" >-------------</option>
+                                {% for d in Category %}
+                                    <option value="{{ d.id }}">{{ d.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <button class="button-remove button-style-1 cancel-btn" id="closeEditBtn" role="button"> Cancel</button>
+                    <button class="button-remove button-style-1" id="addBtn" type="submit"> Add</button>
+
+                </form>
+
+            </section>
 
     </section>
 
@@ -125,12 +149,4 @@
 
 {% block scripts %}
     <script src="{% static 'js/script.js' %}"></script>
-    <script>
-
-    let newItem = "{% url 'inventory:new_items' %}";
-    let updateItem = "{% url 'inventory:update_items' %}";
-    console.log(updateItem);
-    console.log(newItem);
-
-    </script>
 {% endblock %}

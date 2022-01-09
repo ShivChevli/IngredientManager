@@ -21,36 +21,29 @@ class ItemIndividual(models.Model):
         return f"{self.id} : {self.name}"
 
 
-class Store(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=64)
-    address = models.CharField(max_length=500, null=True, blank=True)
-    emailAddress = models.EmailField(unique=True)
-    mobileNumber = models.CharField(max_length=15, validators=[checkMobileNumber])
 
     def __str__(self):
-        return f"{self.id} : {self.name} : {self.mobileNumber} : {self.address}"
+        return f"{self.id} : {self.name}"
 
 
 class IngredientIndividual(models.Model):
     name = models.CharField(max_length=64)
-    orderAt = models.ForeignKey(
-        Store,
+    category = models.ForeignKey(
+        Category,
         on_delete=models.SET_NULL,
-        related_name="OrderStore",
+        related_name="category",
         null=True,
     )
-    createdAt = models.DateTimeField(default=datetime.now)
-    modifyAt = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
         return f"{self.id} : {self.name}"
 
     def json(self):
         return {
-            "name" : self.name,
-            "orderAt" : self.orderAt,
-            "createdAt" : self.createdAt.strftime("%b %d %Y %H:%M:%S"),
-            "modifyAt" : self.modifyAt,
+            "name": self.name,
+            "orderAt": self.category,
         }
 
 
@@ -66,13 +59,12 @@ class Items(models.Model):
         on_delete=models.CASCADE,
         related_name="ingredientName",
     )
-    defaultValue = models.FloatField(null=True, blank=True)
     createdAt = models.DateTimeField(default=datetime.now)
     modifyAt = models.DateTimeField(default=None, blank=True, null=True)
     deletedAt = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} : {self.itemId} : {self.ingredientId} : {self.defaultValue}"
+        return f"{self.id} : {self.itemId.name} : {self.ingredientId.name} "
 
     # def json(self):
     #     return {
@@ -87,8 +79,9 @@ class OrderIndividual(models.Model):
     address = models.CharField(max_length=256,blank=True,null=True)
     numberOfPerson = models.IntegerField(blank=True,null=True)
     email = models.EmailField(blank=True,null=True)
+    deliveryDate = models.DateTimeField(blank=True, null=True)
     createdAt = models.DateTimeField(default=datetime.now)
-    deliveredAt = models.DateTimeField(blank=True, null=True)
+    modifyAt = models.DateTimeField(default=None, blank=True, null=True)
     deletedAt = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
@@ -102,13 +95,16 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         verbose_name="To track Order",
     )
-    itemId = models.ForeignKey(
+    orderItem = models.ForeignKey(
         Items,
         related_name="ItemName",
         on_delete=models.CASCADE,
         verbose_name="Items With Ingredient Which need to Order",
+        null=True
     )
-    quantity = models.IntegerField()
+    createdAt = models.DateTimeField(default=datetime.now)
+    modifyAt = models.DateTimeField(default=None, blank=True, null=True)
+    deletedAt = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} : {self.orderId} : {self.itemId.itemId.name} : {self.itemId.ingredientId.name} : {self.quantity}"
+        return f"{self.id} : {self.orderId} : {self.orderItem.itemId.name} : {self.orderItem.ingredientId.name}"
