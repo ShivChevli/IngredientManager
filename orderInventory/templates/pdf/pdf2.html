@@ -12,45 +12,41 @@
 </head>
 
 <body>
-    <div class="date">
-        <p>
-            <span>Date :- {{ orderDetail.date }}</span>
-        </p>
+    <div class="shree-div">
+        |શ્રી|
+        pdf 2
     </div>
-    <header>
+    <header class="fontSize">
         <span>શ્રી જય જલારામ</span>
         <span>શ્રીગણેશાયનમઃ </span>
         <span>શ્રી જયબાપાસીતારામ</span>
     </header>
     <main>
-        <div class="order-detail">
-            <div>
-                <h1><span>Name : </span> {{ orderDetail.name }}</h1>
-                <h1><span>Address : </span> {{ orderDetail.address }}</h1>
-            </div>
-            <div >
-                <h1><span>number Of Person : </span> {{ orderDetail.numberOfPerson }}</h1>
-                <h1><span>Mobile Number : </span> {{ orderDetail.mo_number }}</h1>
-
-            </div>
+        <div class="order-detail fontSize">
+                <h3><span>Name : </span> {{ orderDetail.name }}</h3>
+                <span>Date :- {{ orderDetail.date }}</span>
+                <p>
+                    afjsfhkjahfk jashdfjkahsdkjfhasjkfd ajdhfkja jfhaksjdf ajdshfkja sdjfhkj
+                </p>
         </div>
         {% for order in orderdata %}
             <div class="order-div">
-                <h2>{{ order.ItemName }}</h2>
+                <h1>{{ order.ItemName }}</h1>
                 <ul>
-                    {% for ItemData in order.ItemData %}
-                        <li><label> {{ ItemData.name }} </label> : <span>{{ ItemData.value }} Kg </span></li>
+                    {% for ItemData in order.ingredient %}
+                        <li> {{ ItemData }} :- <span>______________________</span></li>
                     {% endfor %}
                 </ul>
             </div>
         {% endfor %}
+    {{ orderdata}}
     </main>
     <button class="button-remove button-style-1" onclick="printPDF()">Print</button>
 
 </body>
 <script>
     function printPDF(){
-        document.querySelector("button").style.display = 'none';
+        {#document.querySelector("button").style.display = 'none';#}
         print();
     }
     /*

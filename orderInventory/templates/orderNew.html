@@ -5,75 +5,9 @@
 {% endblock %}
 {% block Main %}
 
-    <!--
-    <div id="detail-view" style="display: none">
-        <section id="orderDetail-section1">
-                <div class="order-detail">
-                    <h3>Name :- </h3>
-                    <p>{{ data.orderName }}</p>
-                </div>
-                <div class="order-detail">
-                    <h3>Address:- </h3>
-                    <p>{{ data.address }} </p>
-                </div>
-                <div class="order-detail">
-                    <h3>Email :- </h3>
-                    <p>{{ data.email }}</p>
-                </div>
-                <div class="order-detail">
-                    <h3>Number :- </h3>
-                    <p>{{ data.mobileNumber }}</p>
-                </div>
-                <div class="order-detail">
-                    <h3>Order Data & time :- </h3>
-                    <p>{{ data.deliverDate }}</p>
-                </div>
-                <div class="order-detail">
-                    <h3>Number of Person</h3>
-                    <p>{{ data.numerOfPerson }}</p>
-                </div>
-                <div class="section4">
-                    <button class="button-remove  button-style-1 cancel-btn">
-                        Print
-                    </button>
-                    <button id="editBtn" class="button-remove button-style-1">
-                        Edit
-                    </button>
-                </div>
-            </section>
-        <section class="section2" id="section1">
-                <h1>Item List</h1>
-                <div class="item-list-box">
-
-                    {% for dataItem,values in data.fields.items %}
-                        <div class="item-box">
-                        <h2 class="item-name">
-                            {{ dataItem }}
-                            <span class="arrow">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z">
-                                    </path>
-                                </svg>
-                            </span>
-                        </h2>
-                        <ul class="ingredient-list">
-                            {% for it in values %}
-                                {% for k,v in it.items %}
-                                <li><span>{{ k }}</span> : {{ v }} Kg </li>
-                                {% endfor %}
-                            {% endfor %}
-
-                        </ul>
-                    </div>
-                    {% endfor %}
-
-                </div>
-            </section>
-    </div>
-    -->
     <div id="edit-view">
         <section class="single-container">
-            <form action="{% url 'inventory:orderNewCreate' %}" method="POST">
+            <form action="{% url 'inventory:orderNewCreate'  %}" method="POST">
                 {% csrf_token %}
                 <input type="number" value="{{ orderID }}" name="orderID" style="display:none;">
                 <div id="page1">
@@ -107,10 +41,10 @@
                         </div>
                     </div>
                     <div class="form-element-box">
-                        <label for="#orderDate" class="from-lable">Email :</label>
+                        <label for="#orderDate" class="from-lable">Order Date :</label>
                         <div class="form-control">
                             <input type="datetime-local" required class="from-element" name="dataTime"
-                                   value="{{ data.deliveredAt.isoformat }}" id="orderDate">
+                                   value="{{ data.deliveryDate.isoformat }}" id="orderDate">
                         </div>
                     </div>
                     <div class="form-element-box">
@@ -122,7 +56,7 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{% url 'inventory:order' %}" style="text-decoration: none" class="button-remove  button-style-1 cancel-btn back-btn" id="cancel-btn">
+                    <a href="{% url 'inventory:orderList' %}" style="text-decoration: none" class="button-remove  button-style-1 cancel-btn back-btn" id="cancel-btn">
                         Cancel
                     </a>
                     <input class="button-remove button-style-1 submit-btn" style="max-width: 100%" type="submit" value="{{ heading }} And Add Items">
@@ -205,10 +139,10 @@
 
     <script src="{% static 'js/orderScript.js' %}"></script>
     <script>
-        let dT = "{{ data.deliveredAt.isoformat }}".substr(0,16);
+        let dT = "{{ data.deliveryDate.isoformat }}".substr(0,16);
         console.log(dT);
         if(dT != ""){
-            document.getElementById("orderDate").value = dT;
+            document.getElementById("orderDate").defaultValue = dT;
         }
         else{
             console.log("Else Part");

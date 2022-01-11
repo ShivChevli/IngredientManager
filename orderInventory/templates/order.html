@@ -39,7 +39,7 @@
                     <p>{{ data.numberOfPerson }}</p>
                 </div>
                 <div class="section4">
-                    <a href="{% url 'inventory:order' %}" class="button-remove button-style-1 cancel-btn"> Cancel</a>
+                    <a href="{% url 'inventory:orderList' %}" class="button-remove button-style-1 cancel-btn"> Cancel</a>
                     <a href="{% url 'inventory:orderPrint' data.orderId %}" class="button-remove  button-style-1 button-style-2 ">
                         Print
                     </a>
@@ -52,11 +52,11 @@
                 <h1>Item List</h1>
                 <div class="item-list-box">
 
-                    {% for dataItem,values in data.fields.items %}
-                        <div class="item-box" data-itemid="{{ dataItem }}">
+                    {% for dataItem in data.fields %}
+                        <div class="item-box" data-itemid="{{ dataItem.id }}">
                         <h2 class="item-name">
                             <span class="item-name-text">
-                                {{ values.name }}
+                                {{ dataItem.name }}
                             </span>
                             <span class="arrow">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -66,8 +66,8 @@
                             </span>
                         </h2>
                         <ul class="ingredient-list">
-                            {% for it in values.ingredient %}
-                                <li data-ingredientId="{{ it.id }}"><label>{{ it.name }}</label> : <span>{{ it.quantity }}</span>  Kg </li>
+                            {% for key in dataItem.ingredients %}
+                                <li data-ingredientId="{{ key.id }}">{{ key.name }}</li>
                             {% endfor %}
                         </ul>
                     </div>

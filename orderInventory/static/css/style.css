@@ -198,11 +198,11 @@ main .section2{
     width: 100%;
     padding:  0 50px;
     max-width: 100%;
-    max-height: 600px;
+    max-height: 620px;
 }
 #single-section{
     max-height: 575px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .toolbox{
     padding: 10px 50px;
@@ -227,6 +227,10 @@ main .section2{
 
 #itemIngredients{
     height: 289px;
+    overflow-y: auto;
+}
+#orderItems{
+    height: 450px;
     overflow-y: auto;
 }
 #newItemBox section{
@@ -488,17 +492,7 @@ main .section2{
 .section4 #editBtn{
     padding: 12px 25px;
 }
-.sectionFooter{
-    margin: 50px 0;
-    text-align: right;
-    width: 80%;
-    /*display: flex;*/
-    /*justify-content: space-around;*/
-}
-.sectionFooter .button-style-1{
-    border-radius: 5px;
-    padding: 10px 30px;
-}
+
 #orderDetail-section1{
     max-height: 700px;
 }
@@ -506,7 +500,9 @@ main .section2{
     margin: 0px 30px 0px;
     padding-bottom: 0px !important;
 }
-
+#submit-btn{
+    margin: 10px 50px !important;
+}
 .single-container .form-element-box{
     max-width: 1000px;
     margin: 20px 0px!important;

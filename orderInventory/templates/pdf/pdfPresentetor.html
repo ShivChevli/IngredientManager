@@ -9,22 +9,73 @@
             padding: 30px 50px;
             color: var(--text-alter);
         }
+        section{
+            text-align: center;
+        }
+        .category-div{
+            display: inline-flex;
+            width: 45%;
+            height: 100px;
+            font-size: 25px;
+            margin: 10px 20px;
+            color: var(--text-color);
+            background-color: var(--bg-color-main);
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+        }
+        .category-div a{
+            color: var(--text-color);
+        }
     </style>
     <section class="single-container">
-        <div class="print-div">
-            <p>
-                Main PDF :-
-                <a href="{% url 'inventory:orderPrintData' orderId "main" %}" target="_blank" class="button-remove button-style-1">Print</a>
-            </p>
+{#        <div class="print-div">#}
+{#            <p>#}
+{#                Main PDF :-#}
+{#                <a href="{% url 'inventory:orderPrintData' orderId "main" %}" target="_blank" class="button-remove button-style-1">Print</a>#}
+{#            </p>#}
+{#        </div>#}
+{#        {% for storeLi in storeList %}#}
+{#            <div class="print-div">#}
+{#                <p>#}
+{#                    {{ storeLi.name }} PDF :-#}
+{#                    <a href="{% url 'inventory:orderPrintData' orderId storeLi.id %} " target="_blank" class="button-remove button-style-1">Print</a>#}
+{#                </p>#}
+{#            </div>#}
+{#        {% endfor %}#}
+
+
+        <div class="category-div">
+            <a href="{% url 'inventory:orderPrintData' orderId "main" %}" target="_blank">
+                Master Copy
+            </a>
         </div>
-        {% for storeLi in storeList %}
-            <div class="print-div">
-                <p>
-                    {{ storeLi.name }} PDF :-
-                    <a href="{% url 'inventory:orderPrintData' orderId storeLi.id %} " target="_blank" class="button-remove button-style-1">Print</a>
-                </p>
-            </div>
-        {% endfor %}
+        <div class="category-div">
+            <a href="">
+                Dairy product
+            </a>
+        </div>
+        <div class="category-div">
+            <a href="">
+                Vegetable
+            </a>
+        </div>
+        <div class="category-div">
+            <a href="">
+                Exotic
+            </a>
+        </div>
+        <div class="category-div">
+            <a href="">
+                kariyana
+            </a>
+        </div>
+        <div class="category-div">
+            <a href="">
+                Others
+            </a>
+        </div>
 
     </section>
 {% endblock %}

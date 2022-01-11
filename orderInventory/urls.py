@@ -20,12 +20,13 @@ urlpatterns = [
     # path('ItemsUpdate/', views.updateItems, name="update_items"),
     path('ItemsDelete/', views.deleteItems, name="delete_items"),
 
-    path('Order/', views.orderHome, name="order"),
+    path('OrderList/', views.orderHome, name="orderList"),
     path('OrderDetail/<int:OrderID>/', views.orderDetail, name="orderDetail"),
-    path('OrderNew/', views.orderNewTemplate, name="orderNew"),
-    path('OrderNewCreate/', views.orderNewCreate, name="orderNewCreate"),
+    # path('OrderNew/', views.orderNewTemplate, name="orderNew"),
+    path('Order/', views.orderNewCreate, name="orderNewCreate"),
     path('OrderAddItems/', views.orderAddItems, name="orderAddItems"),
-    path('OrderDeleteItems/', views.orderDeleteItem, name="orderDeleteItems"),
+    # path('OrderDeleteItems/', views.orderDeleteItem, name="orderDeleteItems"),
+
     path('OrderEdit/<int:id>', views.orderEditTemplate, name="orderEdit"),
     path('OrderPrintOptions/<int:orderId>', views.orderPrint, name="orderPrint"),
     path('OrderPrintData/<int:orderId>/<str:dataType>', views.orderPrintData, name="orderPrintData"),

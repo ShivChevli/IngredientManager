@@ -5,8 +5,7 @@
 {% endblock %}
 {% block Main %}
 
-<div id="single-section">
-    <section class="single-container">
+    <section class="single-container" id="single-section">
         {% for i in data %}
         <div class="suggetion-list-item">
             <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
@@ -22,7 +21,6 @@
 
         {% endfor %}
     </section>
-</div>
 <div id="multi-section">
 
     <section id="section1">

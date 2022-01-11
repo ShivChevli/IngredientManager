@@ -10,6 +10,7 @@ from django.template.loader import get_template
 
 import encodings
 from . import models
+from datetime import datetime
 import json
 import io
 
@@ -368,8 +369,9 @@ def orderDetail(request, OrderID):
         input :- Accept OrderId as it's url parameter
         output :- Render Edit order Template along with data
     """
-    temp,mapObj = getOrderDetail(OrderID)
+    temp = getOrderDetail(OrderID)
     itemList = models.ItemIndividual.objects.all()
+    print("Order Details")
     print(temp)
     return render(request, "order.html", {
         # "toolbar": True,
@@ -377,11 +379,12 @@ def orderDetail(request, OrderID):
         "ItemList": itemList,
         "active": "order",
         "data": temp,
-        "mapData": mapObj,
+        # "mapData": mapObj,
         "queryItem": "order_one",
         "heading": "Order",
     })
 
+# No longer Needed This Functions
 def orderNewTemplate(request):
     return render(request, 'orderNew.html',{
         "active": "order",
@@ -397,7 +400,8 @@ def orderEditTemplate(request,id):
         "heading": "Edit",
     })
 
-@csrf_exempt
+
+# Use for create New order or Update Order
 def orderNewCreate(request):
     """
         this Funciton do two thing edit Order And Create New Order
@@ -407,13 +411,14 @@ def orderNewCreate(request):
     itemList = models.ItemIndividual.objects.all()
     temp = dict()
     if request.method == "POST":
+        # Submitted From Actions
         print(request.POST)
         if request.POST.get("orderID") == "":
             order = models.OrderIndividual()
         else:
             orderId = request.POST.get("orderID")
             order = models.OrderIndividual.objects.get(id=orderId)
-            temp , mapObj = getOrderDetail(orderId)
+            temp  = getOrderDetail(orderId)
 
         tempaddress = request.POST.get("address")
         print("Address :- ",tempaddress.strip())
@@ -422,13 +427,17 @@ def orderNewCreate(request):
         order.email = request.POST.get("eamil")
         order.mobileNumber = request.POST.get("mobileNo")
         order.address = tempaddress.strip()
-        order.deliveredAt = request.POST.get("dataTime")
+        order.deliveryDate = request.POST.get("dataTime")
         order.save()
 
         print("Order ")
         print(order)
     else:
-        return redirect("inventory:order")
+        # // New Order Blank Form
+        return render(request, 'orderNew.html', {
+            "active": "order",
+            "heading": "Create",
+        })
 
     return render(request, 'orderAddItems.html', {
         "ItemList": itemList,
@@ -440,48 +449,45 @@ def orderNewCreate(request):
     })
 
 
-@csrf_exempt
 def orderAddItems(request):
 
-    data = json.loads(request.body)
-    print(data)
+    print("From data")
+    print(request.POST)
     print("Order Items")
-    orderId = data["orderID"]
-    itemId = data["itemID"]
-    t = models.Order.objects.filter(orderId_id=orderId,itemId__itemId_id=itemId)
-    if len(t) == 0:
-        print("New Items")
-        for key,value in data.items():
-            if key != "orderID" and key != "itemID":
-                temp = models.Order()
-                print("Key :- ",key,"\nValue :",value)
-                temp.orderId_id = orderId
-                tempItem = models.Items.objects.get(itemId_id=itemId,ingredientId_id=key)
-                print("Selected ITem :- ",tempItem)
-                temp.itemId = tempItem
-                temp.quantity = value
-                print(temp)
-                temp.save()
-    else:
-        print("Edit Items")
-        for key,value in data.items():
-            if key != "orderID" and key != "itemID":
-                tempItem = models.Items.objects.get(itemId_id=itemId,ingredientId_id=key)
-                temp = models.Order.objects.get(orderId_id=orderId,itemId=tempItem)
-                print("Key :- ",key,"\nValue :",value)
-                print("Selected ITem :- ",tempItem)
-                temp.quantity = value
-                print(temp)
-                temp.save()
+    orderId = request.POST.get("orderID")
 
-    return JsonResponse({
-        "msg": "Data received",
-        "status": 200,
-        "id" : temp.id,
-    })
+    temp = list(models.Order.objects.filter(orderId_id=orderId))
+    print("Temp List")
+    print(temp)
+
+    for k,v in request.POST.items():
+        if "itemID" in k:
+            try:
+                tempItem = models.Order.objects.get(orderId_id=orderId,orderItem_id=v,deletedAt=None)
+                print("Object Found")
+                print(tempItem)
+                # if tempItem.deletedAt != None:
+                #     tempItem.deletedAt = None
+                #     tempItem.save()
+                # tempItem.deletedAt = datetime.now()
+                temp.remove(tempItem)
+            except:
+                tempItem = models.Order(orderId_id=orderId,orderItem_id=v)
+                tempItem.save()
+                print("Except Block")
+                print(v)
+                # pass
+
+    print("New Added Items")
+    for i in temp:
+        print(i)
+        i.deletedAt = datetime.now()
+        i.save()
+
+    return redirect('inventory:orderDetail', orderId)
 
 
-@csrf_exempt
+#  No longer Needed
 def orderDeleteItem(request):
     res = {}
     if request.method == "POST":
@@ -542,10 +548,12 @@ def orderPrint(request,orderId):
 
 def orderPrintData(request, orderId, dataType):
 
+    print("Main")
     if dataType != "main":
         print(orderId)
+        print("Main :- ")
         print(dataType)
-        storeDetails = models.Store.objects.get(id=dataType)
+        storeDetails = models.Category.objects.get(id=dataType)
         (data, storeList) = getPrintData(orderId,dataType)
 
         return render(request, "pdf/pdf1.html", {
@@ -555,33 +563,16 @@ def orderPrintData(request, orderId, dataType):
         })
 
 
+    (data, storeList) = getPrintData(orderId)
     orderDetail = models.OrderIndividual.objects.get(id=orderId)
     tempOredrData = models.Order.objects.filter(orderId_id=orderId)
     orderData = list()
     print(tempOredrData)
+    print("Data :- ")
+    print(data)
     tempDict = {}
     itemIdList = []
-    for i in tempOredrData:
-        if i.itemId.itemId not in itemIdList:
-            itemIdList.append(i.itemId.itemId)
 
-        tempDict[i.itemId.itemId.id] = tempDict.get(i.itemId.itemId.id, [])
-        tempDict[i.itemId.itemId.id].append({
-            "name":i.itemId.ingredientId.name,
-            "value" : i.quantity
-        })
-    for i in itemIdList:
-        orderData.append({
-            "itemId": i.id,
-            "ItemName": i.name,
-            "ItemData" : tempDict[i.id]
-        })
-    print("Item ID List ")
-    print(itemIdList)
-    print("Items Detail List")
-    print(tempDict)
-    print("Order data List")
-    print(orderData)
 
     return render(request, 'pdf/pdf2.html',{
         "msg" : "main Method",
@@ -589,11 +580,11 @@ def orderPrintData(request, orderId, dataType):
             "id":orderDetail.id,
             "name":orderDetail.name,
             "address":orderDetail.address,
-            "date": orderDetail.deliveredAt,
+            "date": orderDetail.deliveryDate,
             "mo_number":orderDetail.mobileNumber,
             "numberOfPerson":orderDetail.numberOfPerson
         },
-        "orderdata": orderData
+        "orderdata": data
     })
 
 
@@ -755,44 +746,28 @@ def test1(request):
 
 def getOrderDetail(OrderID):
 
-    mapObject = {}
-    t1 = models.IngredientIndividual.objects.all()
-    for i in t1:
-        mapObject[i.id] = i.name
-    print("Map Object :- ")
-    print(mapObject)
     print(OrderID)
     temp = dict()
-    fields = dict()
+    fields = list()
     items = list()
-    ingredients = list()
     order = models.OrderIndividual.objects.get(id=OrderID)
-    orderItems = models.Order.objects.filter(orderId=OrderID)
+    orderItems = models.Order.objects.filter(orderId=OrderID,deletedAt=None)
     print(orderItems)
     lastName = ""
-    if len(orderItems) > 1:
-        for i in orderItems:
-            if i.itemId.itemId.id not in items:
-                print(i)
-                items.append(i.itemId.itemId.id)
-                if len(items) > 1:
-                    fields[items[-2]] = {
-                        "name": lastName,
-                        "ingredient": ingredients
-                    }
-                    ingredients = []
-            ingredients.append(
-                {
-                    "id": models.IngredientIndividual.objects.get(id=i.itemId.ingredientId.id).id,
-                    "name": models.IngredientIndividual.objects.get(id=i.itemId.ingredientId.id).name,
-                    "quantity": i.quantity,
-                }
-            )
-            lastName = i.itemId.itemId.name
-        fields[items[-1]] = {
-                        "name": lastName,
-                        "ingredient": ingredients
-                    }
+    for i in orderItems:
+        items = []
+        t1 = models.Items.objects.filter(itemId_id=i.orderItem.id)
+        for j in t1:
+            items.append({
+                "id": j.ingredientId.id,
+                "name": j.ingredientId.name
+            })
+        fields.append({
+            "id" : i.orderItem.id,
+            "name": i.orderItem.name,
+            "ingredients": items
+        })
+
     print("fiedls :- ", fields)
     temp["orderId"] = order.id
     temp["orderName"] = order.name
@@ -801,10 +776,10 @@ def getOrderDetail(OrderID):
     temp["address"] = order.address
     temp["email"] = order.email
     temp["fields"] = fields
-    temp["deliverDate"] = order.deliveredAt
+    temp["deliverDate"] = order.deliveryDate
     temp["createdAt"] = order.createdAt
 
-    return temp, mapObject
+    return temp
 
 
 # //Suportive Funtions
@@ -812,38 +787,61 @@ def getPrintData(orderId,storeId=-1):
     storeList = []
     storeOrder = list()
     storeOrderList = list()
-    tempOrderData = models.Order.objects.filter(orderId_id=orderId)
+    categoryList = []
+    category = models.Category.objects.all()
+    for i in category:
+        categoryList.append({
+            "id" : i.id,
+            "name" : i.name,
+        })
+    tempOrderData = models.Order.objects.filter(orderId_id=orderId,deletedAt=None)
     count = -1
+    print("Print Data Function")
+    print("Category :- ")
+    print(category)
+    print("Order Data :- ")
+    print(tempOrderData)
+    ingredientList = []
+    orderList = []
     if storeId == -1:
         for i in tempOrderData:
-            t1 = i.itemId.ingredientId.orderAt
-            if t1 not in storeList:
-                storeList.append(t1)
-                storeOrder.append(
-                    {
-                        "id": t1.id,
-                        "name": t1.name,
-                        "data": storeOrderList
-                    }
-                )
-                count = count + 1
-            t2 = {
-                "name": i.itemId.ingredientId.name,
-                "value": i.quantity,
-            }
-            print(storeOrder[count]["data"].append(t2))
-            print(t1.name)
-            print(i.quantity)
-    else:
-        for i in tempOrderData:
-            t1 = i.itemId.ingredientId.orderAt
-            if t1.id == int(storeId):
-                print("if Condition")
-                print(str(i.itemId.ingredientId.name).encode('utf-8').decode())
-                storeOrder.append({
-                    "name": str(i.itemId.ingredientId.name).encode('utf-8').decode(),
-                    "value": i.quantity,
-                })
+            tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id)
+            for j in tempItem:
+                ingredientList.append(j.ingredientId.name)
+            orderList.append({
+                "ItemName" : i.orderItem.name,
+                "ingredient": ingredientList,
+            })
+    # if storeId == -1:
+    #     for i in tempOrderData:
+    #         t1 = i.itemId.ingredientId.orderAt
+    #         if t1 not in storeList:
+    #             storeList.append(t1)
+    #             storeOrder.append(
+    #                 {
+    #                     "id": t1.id,
+    #                     "name": t1.name,
+    #                     "data": storeOrderList
+    #                 }
+    #             )
+    #             count = count + 1
+    #         t2 = {
+    #             "name": i.itemId.ingredientId.name,
+    #             "value": i.quantity,
+    #         }
+    #         print(storeOrder[count]["data"].append(t2))
+    #         print(t1.name)
+    #         print(i.quantity)
+    # else:
+    #     for i in tempOrderData:
+    #         t1 = i.itemId.ingredientId.orderAt
+    #         if t1.id == int(storeId):
+    #             print("if Condition")
+    #             print(str(i.itemId.ingredientId.name).encode('utf-8').decode())
+    #             storeOrder.append({
+    #                 "name": str(i.itemId.ingredientId.name).encode('utf-8').decode(),
+    #                 "value": i.quantity,
+    #             })
 
 
-    return storeOrder,storeList
+    return orderList,categoryList

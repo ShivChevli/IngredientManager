@@ -96,7 +96,7 @@ class Order(models.Model):
         verbose_name="To track Order",
     )
     orderItem = models.ForeignKey(
-        Items,
+        ItemIndividual,
         related_name="ItemName",
         on_delete=models.CASCADE,
         verbose_name="Items With Ingredient Which need to Order",
@@ -107,4 +107,8 @@ class Order(models.Model):
     deletedAt = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} : {self.orderId} : {self.orderItem.itemId.name} : {self.orderItem.ingredientId.name}"
+        deleteStr = ""
+        if self.deletedAt != None:
+            deleteStr = "Deleted"
+
+        return f"{self.id} : {self.orderId} : {self.orderItem.name} : {deleteStr}"
