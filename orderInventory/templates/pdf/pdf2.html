@@ -26,12 +26,17 @@
                 <h3><span>Name : </span> {{ orderDetail.name }}</h3>
                 <span>Date :- {{ orderDetail.date }}</span>
                 <p>
-                    afjsfhkjahfk jashdfjkahsdkjfhasjkfd ajdhfkja jfhaksjdf ajdshfkja sdjfhkj
+                    આઈટ :-
+                </p>
+                <p>
+                    {% for orderdatum in orderdata %}
+                        {{ orderdatum.ItemName }} ,
+                    {% endfor %}
                 </p>
         </div>
         {% for order in orderdata %}
             <div class="order-div">
-                <h1>{{ order.ItemName }}</h1>
+                <h1>{{ order.number }}) &nbsp; {{ order.ItemName }}</h1>
                 <ul>
                     {% for ItemData in order.ingredient %}
                         <li> {{ ItemData }} :- <span>______________________</span></li>

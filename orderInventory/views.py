@@ -541,7 +541,8 @@ def orderPrint(request,orderId):
     return render(request, "pdf/pdfPresentetor.html", {
         "orderName": models.OrderIndividual.objects.get(id=orderId).name,
         "storeList": storeList,
-        "orderId" : orderId
+        "orderId" : orderId,
+        "active" : "order",
     })
 
 
@@ -557,9 +558,8 @@ def orderPrintData(request, orderId, dataType):
         (data, storeList) = getPrintData(orderId,dataType)
 
         return render(request, "pdf/pdf1.html", {
-            "data":data,
-            "storeData": storeDetails,
-            "date" : models.OrderIndividual.objects.get(id=orderId).deliveredAt
+            # "data":data,
+            "storeData": data,
         })
 
 
@@ -803,15 +803,33 @@ def getPrintData(orderId,storeId=-1):
     print(tempOrderData)
     ingredientList = []
     orderList = []
+    count = 0
     if storeId == -1:
         for i in tempOrderData:
+            ingredientList = []
             tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id)
+            print("Order Item ")
+            print(tempItem)
             for j in tempItem:
                 ingredientList.append(j.ingredientId.name)
             orderList.append({
+                "number": count,
                 "ItemName" : i.orderItem.name,
                 "ingredient": ingredientList,
             })
+            count = count +1
+    else:
+        for i in tempOrderData:
+            tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id)
+            for j in tempItem:
+                if j.ingredientId.category_id == storeId:
+                    ingredientList.append(j.ingredientId.name)
+            orderList.append({
+                "number": count,
+                "ItemName" : i.orderItem.name,
+                "ingredient": ingredientList,
+            })
+            count = count +1
     # if storeId == -1:
     #     for i in tempOrderData:
     #         t1 = i.itemId.ingredientId.orderAt
