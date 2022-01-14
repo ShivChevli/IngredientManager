@@ -47,32 +47,37 @@
 
 
         <div class="category-div">
+            <a href="{% url 'inventory:orderPrintData' orderId "client" %}" target="_blank">
+                Client Copy
+            </a>
+        </div>
+        <div class="category-div">
             <a href="{% url 'inventory:orderPrintData' orderId "main" %}" target="_blank">
                 Master Copy
             </a>
         </div>
         <div class="category-div">
-            <a href="{% url 'inventory:orderPrintData' orderId 1 %}">
+            <a href="{% url 'inventory:orderPrintData' orderId 1 %}" target="_blank">
                 Dairy product
             </a>
         </div>
         <div class="category-div">
-            <a href="">
+            <a href="{% url 'inventory:orderPrintData' orderId 2 %}" target="_blank">
                 Vegetable
             </a>
         </div>
         <div class="category-div">
-            <a href="">
+            <a href="{% url 'inventory:orderPrintData' orderId 3 %}" target="_blank">
                 Exotic
             </a>
         </div>
         <div class="category-div">
-            <a href="">
+            <a href="{% url 'inventory:orderPrintData' orderId 4 %}" target="_blank">
                 kariyana
             </a>
         </div>
         <div class="category-div">
-            <a href="">
+            <a href="{% url 'inventory:orderPrintData' orderId 5 %}" target="_blank">
                 Others
             </a>
         </div>

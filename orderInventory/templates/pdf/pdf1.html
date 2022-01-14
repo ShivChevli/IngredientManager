@@ -9,7 +9,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Layout</title>
     <link rel="stylesheet" href="{% static 'css/pdfStyle.css' %}" >
-
+    <style>
+        .logo-img-div{
+            width: 100px;
+            {#height: 100px;#}
+        }
+        .logo-img-div img{
+            width: 100%;
+        }
+        .detail-box,.itemlist-box{
+            width: 48%;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .order-detail-item {
+            margin: 18px 0 !important;
+        }
+        .order-detail-item h3{
+            margin: 0px 30px 0px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Readex Pro', sans-serif;
+            padding-bottom: 0px !important;
+            border-bottom: 1px solid #000;
+            color: #000;
+        }
+        .order-detail-item p {
+            font-size: 18px;
+            padding: 10px 30px;
+            color: #000;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Readex Pro', sans-serif;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,31 +55,47 @@
         <span>શ્રીગણેશાયનમઃ </span>
         <span>શ્રી જયબાપાસીતારામ</span>
     </header>
-    {{ storeData }}
     <main>
-        <div class="order-detail">
-            <div>
-                <h1><span>Store Name :-</span> {{ storeData.name }}</h1>
-                <h1><span>Address :-</span> {{ storeData.address }}</h1>
+        <div class="logo-img-div">
+            <img src="{% static 'img/Shree Jay Jalaram Logo.jpg' %}" alt="">
+        </div>
+
+        <div class="detail-box">
+            <div class="order-detail-item">
+                    <h3>Name :- </h3>
+                    <p>{{ orderDetail.name }}</p>
             </div>
-            <div>
-                <span>Data :- {{ date }}</span>
-                <h1><span>Email Address :-</span> {{ storeData.emailAddress }}</h1>
-                <h1><span>Mobile Number :- </span> {{ storeData.mobileNumber }}</h1>
+            <div class="order-detail-item">
+                    <h3>Address :- </h3>
+                    <p>{{ orderDetail.address }}</p>
+            </div>
+            <div class="order-detail-item">
+                    <h3>Number :- </h3>
+                    <p>{{ orderDetail.mobileNumber }}</p>
+            </div>
+            <div class="order-detail-item">
+                    <h3>Funtion Date :- </h3>
+                    <p>{{ orderDetail.deliveryDate }}</p>
+            </div>
+            <div class="order-detail-item">
+                    <h3>Number of Person :- </h3>
+                    <p>{{ orderDetail.numberOfPerson }}</p>
             </div>
         </div>
-        <ul>
-            {% for datum in data %}
-                <li> {{ datum.name }} : {{ datum.value }} Kg </li>
-            {% endfor %}
-        </ul>
-    </main>
-            <button class="button-remove button-style-1" onclick="printPDF()">Print</button>
 
+        <div class="itemlist-box">
+            {% for dataindex,value in orderdata.items %}
+                <li>{{ value}}</li>
+            {% endfor %}
+
+        </div>
+    </main>
+
+    <button onclick="printPDF()"> Print</button>
 </body>
 <script>
     function printPDF(){
-        document.querySelector("button").style.display = 'none';
+        {#document.querySelector("button").style.display = 'none';#}
         print();
     }
     /*

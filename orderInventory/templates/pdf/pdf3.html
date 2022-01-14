@@ -9,14 +9,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Layout</title>
     <link rel="stylesheet" href="{% static 'css/pdfStyle.css' %}" >
+    <link rel="stylesheet" href="{% static 'js/pageprofile.js' %}" >
     <style>
         .item-box{
             display: flex;
             flex-wrap: wrap;
             flex-direction: column;
         }
+        @page {
+            size: A4 portrait;
+            @bottom-left {
+                content: counter(page) ' of ' counter(pages);
+            }
+            margin: 10mm 10mm 100mm 10mm;
+                {#@frame content_frame{          /* Content Frame */#}
+                {#    left: 0pt;#}
+                {#    width: 100pt;#}
+                {#    top: 0pt;#}
+                {#    height: 800pt;#}
+                {#}#}
+        }
+        @media print {
+            body{
+                padding: 0 !important;
+            }
+            #jsonData{
+                content: counter(page);
+            }
+        }
         .order-div{
-            {#display: block;#}
+            display: block;
+            width: 90%;
+            overflow-x: hidden;
+            page-break-inside: auto;
+        }
+        .main-div li{
+            display: inline-block;
+            width: 49%;
+            font-size: 18px;
+        }
+        .main-div h1{
+            width: 100%;
+        }
+        .main-div li span{
+            width: 40%;
+            display: inline-block;
+            margin-right: 30px;
+        }
+        .main-div li span:nth-of-type(2){
+            width: 40%;
+            border-bottom: 1px solid #000;
+            margin-right: 0px;
+        }
+        #jsonData{
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+          content: counter(page);
         }
     </style>
 </head>
@@ -30,7 +79,7 @@
         <span>શ્રીગણેશાયનમઃ </span>
         <span>શ્રી જયબાપાસીતારામ</span>
     </header>
-    <main>
+    <main class="main-div">
         <div class="order-detail fontSize">
                 {% ifnotequal category "main" %}
                     <h3><span>Category : </span> {{ category }}</h3>
@@ -59,19 +108,17 @@
             {% for order in orderdata %}
                 <div class="order-div">
                     <h1>{{ order.number }}) &nbsp; {{ order.ItemName }}</h1>
-                    <ul>
                         {% for ItemData in order.ingredient %}
-                            <li> {{ ItemData }} :- <span>______________________</span></li>
+                            <li> <span>{{ ItemData }} :-</span> <span> </span></li>
                         {% endfor %}
-                    </ul>
                 </div>
             {% endfor %}
 {#        </div>#}
-    {{ orderdata}}
+{#    {{ orderdata}}#}
     </main>
     <button class="button-remove button-style-1" onclick="printPDF()">Print</button>
     <span id="jsonData">
-        {{ orderdata }}
+
     </span>
 </body>
 <script>

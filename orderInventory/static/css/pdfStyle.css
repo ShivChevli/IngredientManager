@@ -4,15 +4,15 @@
     src: url('../ttf/NotoSansGujarati-Bold.ttf');
 }
 
-@page {
-     size: a4 portrait;
-    @frame content_frame{          /* Content Frame */
-        left: 0pt;
-        width: 100pt;
-        top: 0pt;
-        height: 877pt;
-    }
-}
+/*@page {*/
+/*     size: a4 portrait;*/
+/*    @frame content_frame{          !* Content Frame *!*/
+/*        left: 0pt;*/
+/*        width: 100pt;*/
+/*        top: 0pt;*/
+/*        height: 875pt;*/
+/*    }*/
+/*}*/
 
 * {
     font-family: 'MY' !important;

@@ -30,7 +30,7 @@ def index(request):
         "toolbar": True,
         "putPlus": True,
         "active": "home",
-        "data": "",
+        "data": order,
         "heading": "Recent Files",
     })
 
@@ -549,44 +549,77 @@ def orderPrint(request,orderId):
 
 def orderPrintData(request, orderId, dataType):
 
+    mapObj = {
+        "1": "Dairy Product",
+        "2": "Vegetable",
+        "3": "Exotic",
+        "4":"kariyana",
+        "5":"other",
+    }
     print("Main")
-    if dataType != "main":
-        print(orderId)
-        print("Main :- ")
-        print(dataType)
-        storeDetails = models.Category.objects.get(id=dataType)
-        (data, storeList) = getPrintData(orderId,dataType)
+    orderDetail = models.OrderIndividual.objects.get(id=orderId)
 
-        return render(request, "pdf/pdf1.html", {
-            # "data":data,
-            "storeData": data,
+    if dataType == "main":
+            (data, storeList) = getPrintData(orderId)
+            tempOredrData = models.Order.objects.filter(orderId_id=orderId)
+            orderData = list()
+            print(tempOredrData)
+            print("Data :- ")
+            print(data)
+
+
+            return render(request, 'pdf/pdf3.html',{
+                "msg" : "main Method",
+                "orderDetail": {
+                    "id":orderDetail.id,
+                    "name":orderDetail.name,
+                    "address":orderDetail.address,
+                    "date": orderDetail.deliveryDate,
+                    "mo_number":orderDetail.mobileNumber,
+                    "numberOfPerson":orderDetail.numberOfPerson
+                },
+                "orderdata": data,
+                "date": orderDetail.deliveryDate,
+                "category": "main",
+                "jsonData" : json.dumps(data),
+            })
+
+    if dataType == "client":
+        tempData = models.Order.objects.filter(orderId_id=orderId)
+        data = {}
+        for i in tempData:
+            data[i.orderItem.id] = i.orderItem.name
+        tempOredrData = models.Order.objects.filter(orderId_id=orderId)
+        orderData = list()
+        print(tempOredrData)
+        print("Data :- ")
+        print(data)
+
+        return render(request, 'pdf/pdf1.html', {
+            "msg": "main Method",
+            "orderDetail": orderDetail,
+            "orderdata": data,
+            "date": orderDetail.deliveryDate,
+            "category": "main",
+            "jsonData": json.dumps(data),
         })
 
+    print(orderId)
+    print("Main :- ")
+    print(dataType)
+    (data, storeList) = getPrintData(orderId, dataType)
 
-    (data, storeList) = getPrintData(orderId)
-    orderDetail = models.OrderIndividual.objects.get(id=orderId)
-    tempOredrData = models.Order.objects.filter(orderId_id=orderId)
-    orderData = list()
-    print(tempOredrData)
-    print("Data :- ")
-    print(data)
-    tempDict = {}
-    itemIdList = []
+    print("OrderId ")
+    print(dataType)
+    print(mapObj[dataType])
 
-
-    return render(request, 'pdf/pdf2.html',{
-        "msg" : "main Method",
-        "orderDetail": {
-            "id":orderDetail.id,
-            "name":orderDetail.name,
-            "address":orderDetail.address,
-            "date": orderDetail.deliveryDate,
-            "mo_number":orderDetail.mobileNumber,
-            "numberOfPerson":orderDetail.numberOfPerson
-        },
-        "orderdata": data
+    return render(request, "pdf/pdf2.html", {
+        # "data":data,
+        "orderdata": data,
+        "date": orderDetail.deliveryDate,
+        "category": mapObj[dataType],
+        "jsonData": json.dumps(data),
     })
-
 
 
 # Fountain to Experiment with PDF Generation
@@ -803,7 +836,7 @@ def getPrintData(orderId,storeId=-1):
     print(tempOrderData)
     ingredientList = []
     orderList = []
-    count = 0
+    count = 1
     if storeId == -1:
         for i in tempOrderData:
             ingredientList = []
@@ -820,16 +853,17 @@ def getPrintData(orderId,storeId=-1):
             count = count +1
     else:
         for i in tempOrderData:
-            tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id)
-            for j in tempItem:
-                if j.ingredientId.category_id == storeId:
+            tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id,ingredientId__category_id=storeId)
+            if len(tempItem) != 0:
+                ingredientList = []
+                for j in tempItem:
                     ingredientList.append(j.ingredientId.name)
-            orderList.append({
-                "number": count,
-                "ItemName" : i.orderItem.name,
-                "ingredient": ingredientList,
-            })
-            count = count +1
+                orderList.append({
+                    "number": count,
+                    "ItemName" : i.orderItem.name,
+                    "ingredient": ingredientList,
+                })
+                count = count +1
     # if storeId == -1:
     #     for i in tempOrderData:
     #         t1 = i.itemId.ingredientId.orderAt
