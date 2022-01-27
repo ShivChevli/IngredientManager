@@ -230,6 +230,9 @@ try{
                     div[i].style.display = "none";
                 }
             }
+            document.querySelectorAll(".search-input").forEach(input=>{
+                input.value = filter;
+            })
         }
     })
 }

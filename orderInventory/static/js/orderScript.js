@@ -173,8 +173,63 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 })
 
-try{
-    document.querySelectorAll(".text").forEach(p=>{
+
+//Add Item Functions
+function updateOrderItemList() {
+
+    document.querySelectorAll(".delete").forEach(btn=>{
+        btn.onclick = function (){
+            console.log("Bin Btn Click ");
+            let itemId = this.dataset.itemid;
+            console.log(this);
+            console.log(itemId);
+            document.querySelector(`#hiddenInput input[value="${itemId}"]`).remove();
+            this.remove();
+
+            document.querySelector("#avalable-items").innerHTML += `
+                <div class="suggetion-list-item">
+                    <p class="text" data-itemid="${itemId}" data-queryItem="item_one">${addedItemList[itemId]}
+                    </p>
+                    <button class="add button-remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M15 2.013H9V9H2v6h7v6.987h6V15h7V9h-7z"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+            delete addedItemList[itemId];
+            // if(confirm("Do you really want to Delete this Order ?")){
+            //     let itemId = btn.parentElement.parentElement.dataset.itemid;
+            //     let orderId = btn.parentElement.parentElement.parentElement.dataset.orderid;
+            //     console.log(itemId);
+            //     console.log(orderId);
+            //     console.log(addedItemList.pop(itemId));
+            // }
+            // else{
+            //     alert("You Go in Else Part");
+            // }
+            updateAvelableItem();
+        }
+    })
+
+    updateAvelableItem();
+}
+
+
+
+//Support Function for tracking addable item into order List
+//it also add event listner to all P tag for adding into Order Item
+function updateAvelableItem(){
+    document.querySelectorAll("#item-list-box .suggetion-list-item p").forEach(p=>{
+
+        let id = p.dataset.itemid
+        if(id in addedItemList){
+            p.parentElement.remove();
+        }
+    })
+
+        document.querySelectorAll(".text").forEach(p=>{
         p.onclick = function () {
             console.log("Button CLick");
             const itemId = this.dataset.itemid;
@@ -182,8 +237,6 @@ try{
             console.log(this);
             console.log(this.dataset.itemid);
             addedItemList[itemId] = itemName;
-            // addedItemList[div.   dataset.itemid] = div.children[0].innerText;
-            // Object.assign(addedItemList, {itemId: itemName})
 
             let input= document.createElement("input");
             input.type = "text";
@@ -194,6 +247,8 @@ try{
             document.querySelector("#hiddenInput").append(input);
 
             // addedItemList.push(itemId);
+
+            this.parentElement.remove();
 
             document.querySelector("#orderItems").innerHTML += `
             <div class="suggetion-list-item delete" data-itemid="${itemId}">
@@ -278,65 +333,5 @@ try{
             // document.getElementById("add-item-form").style.display = "none";
         }
     });
-}
-catch (e) {
-    console.log("Add item to Order Function");
-}
 
-
-//Add Item Functions
-function updateOrderItemList() {
-
-    document.querySelectorAll(".delete").forEach(btn=>{
-        btn.onclick = function (){
-            console.log("Bin Btn Click ");
-            let itemId = this.dataset.itemid;
-            console.log(this);
-            console.log(itemId);
-            document.querySelector(`#hiddenInput input[value="${itemId}"]`).remove();
-            this.remove();
-            delete addedItemList[itemId];
-            // if(confirm("Do you really want to Delete this Order ?")){
-            //     let itemId = btn.parentElement.parentElement.dataset.itemid;
-            //     let orderId = btn.parentElement.parentElement.parentElement.dataset.orderid;
-            //     console.log(itemId);
-            //     console.log(orderId);
-            //     console.log(addedItemList.pop(itemId));
-            // }
-            // else{
-            //     alert("You Go in Else Part");
-            // }
-            updateAvelableItem();
-        }
-    })
-
-    updateAvelableItem();
-}
-
-
-
-//Support Function for tracking addable item into order List
-function updateAvelableItem(){
-    document.querySelectorAll("#item-list-box .suggetion-list-item p").forEach(p=>{
-
-        let id = p.dataset.itemid
-        if(id in addedItemList){
-            p.parentElement.style.display ="none";
-        }
-        else {
-            p.parentElement.style.display = "grid";
-        }
-        // let temp = parseInt(p.dataset.itemid);
-        // console.log("TEmp " +p.dataset.itemid);
-        // console.log(temp in addedItemList);
-        // console.log(typeof(temp));
-        // console.log(temp.length);
-        //
-        // if(temp in addedItemList){
-        //     p.parentElement.style.display = "none";
-        // }
-        // else {
-        //     p.parentElement.style.display = "grid";
-        // }
-    })
 }

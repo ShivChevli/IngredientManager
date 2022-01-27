@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="search-elements">
+                <div class="search-elements" id="available-ingredient">
                     {% for i in options %}
                         <div class="suggetion-list-item">
                             <p class="text_style addIngredients" data-ingredientId="{{ i.id }}" data-queryItem="ingredient_one">{{ i.name }}
@@ -124,28 +124,6 @@
     </section>
 
 {% endblock %}
-{#{% block updateBox %}#}
-{#        <form action="" id="updateForm">#}
-{#            <div class="form-element-box">#}
-{#                <label for="#name" class="from-lable">Item Name</label>#}
-{#                <div class="form-control">#}
-{#                    <input type="text" required class="from-element" name="name" id="ItemName" placeholder="Enter Text">#}
-{#                </div>#}
-{#            </div>#}
-{#            <div>#}
-{#                <h3>Ingredients for Item </h3>#}
-{#                    <div id="updateField">#}
-{##}
-{#                    </div>#}
-{#            </div>#}
-{#            <input type="submit" class="button-remove button-style-1 submit-btn" value="Update">#}
-{#            <button class="button-remove button-style-1 cancel-btn"> cancel</button>#}
-{#        </form>#}
-{##}
-{#{% endblock %}#}
-{#{% block newItemBox %}#}
-{##}
-{#{% endblock %}#}
 
 {% block scripts %}
     <script src="{% static 'js/script.js' %}"></script>
