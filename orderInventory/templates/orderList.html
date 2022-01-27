@@ -6,7 +6,7 @@
 {% block Main %}
 
 <div id="single-section">
-    <section class="single-container">
+    <section class="single-container search-elements">
         {% for i in data %}
         <div class="suggetion-list-item">
             <a href="{% url 'inventory:orderDetail' OrderID=i.id %}">

@@ -6,7 +6,7 @@
 {% block Main %}
 
 <div id="single-section">
-    <section class="single-container">
+    <section class="single-container search-elements">
         {% for i in data %}
         <div class="suggetion-list-item">
             <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="">
+                <div class="search-elements">
                     {% for i in options %}
                         <div class="suggetion-list-item">
                             <p class="text_style addIngredients" data-ingredientId="{{ i.id }}" data-queryItem="ingredient_one">{{ i.name }}

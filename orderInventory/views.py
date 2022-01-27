@@ -553,8 +553,8 @@ def orderPrintData(request, orderId, dataType):
         "1": "Dairy Product",
         "2": "Vegetable",
         "3": "Exotic",
-        "4":"kariyana",
-        "5":"other",
+        "4": "kariyana",
+        "5": "other",
     }
     print("Main")
     orderDetail = models.OrderIndividual.objects.get(id=orderId)
@@ -567,8 +567,16 @@ def orderPrintData(request, orderId, dataType):
             print("Data :- ")
             print(data)
 
-
-            return render(request, 'pdf/pdf3.html',{
+            d = orderDetail.deliveryDate.strftime("%d/%m/%Y")
+            tt1 = orderDetail.deliveryDate.strftime("%H")
+            print("Timimg")
+            if int(tt1) < 15:
+                tt1 = True
+                print("Morning")
+            else:
+                tt1 = False
+                print("Evening")
+            return render(request, 'pdf/pdf2.html',{
                 "msg" : "main Method",
                 "orderDetail": {
                     "id":orderDetail.id,
@@ -579,7 +587,8 @@ def orderPrintData(request, orderId, dataType):
                     "numberOfPerson":orderDetail.numberOfPerson
                 },
                 "orderdata": data,
-                "date": orderDetail.deliveryDate,
+                "date": d,
+                "time": tt1,
                 "category": "main",
                 "jsonData" : json.dumps(data),
             })
@@ -613,10 +622,21 @@ def orderPrintData(request, orderId, dataType):
     print(dataType)
     print(mapObj[dataType])
 
+    d = orderDetail.deliveryDate.strftime("%d/%m/%Y")
+    tt1 = orderDetail.deliveryDate.strftime("%H")
+    print("Timimg")
+    if int(tt1) < 15:
+        tt1 = True
+        print("Morning")
+    else:
+        tt1 = False
+        print("Evening")
+
     return render(request, "pdf/pdf2.html", {
         # "data":data,
         "orderdata": data,
-        "date": orderDetail.deliveryDate,
+        "date": d,
+        "time" : tt1,
         "category": mapObj[dataType],
         "jsonData": json.dumps(data),
     })

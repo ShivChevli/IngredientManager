@@ -42,6 +42,7 @@
             width: 90%;
             overflow-x: hidden;
             page-break-inside: auto;
+            {% comment %} margin: 10px auto; {% endcomment %}
         }
         .main-div li{
             display: inline-block;
@@ -52,12 +53,13 @@
             width: 100%;
         }
         .main-div li span{
-            width: 40%;
+            font-size: 21px;
+            width: 55%;
             display: inline-block;
             margin-right: 30px;
         }
         .main-div li span:nth-of-type(2){
-            width: 40%;
+            width: 30%;
             border-bottom: 1px solid #000;
             margin-right: 0px;
         }
@@ -94,6 +96,11 @@
 
                 {% ifequal category "main" %}
                     <p>
+                    {% if time %}
+                        સવારની
+                    {% else %}
+                        સાંજની
+                    {% endif %}
                         આઈટ :-
                     </p>
                     <p>
@@ -116,14 +123,13 @@
 {#        </div>#}
 {#    {{ orderdata}}#}
     </main>
-    <button class="button-remove button-style-1" onclick="printPDF()">Print</button>
+    <button class="button-remove button-style-1 printBtn" onclick="printPDF()">Print</button>
     <span id="jsonData">
 
     </span>
 </body>
 <script>
     function printPDF(){
-        {#document.querySelector("button").style.display = 'none';#}
         print();
     }
 

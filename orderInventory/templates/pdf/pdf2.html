@@ -13,10 +13,10 @@
         .item-box{
             display: flex;
             flex-wrap: wrap;
-            flex-direction: column;
+            flex-direction: row;
         }
         .order-div{
-            {#display: block;#}
+            display: block;
         }
     </style>
 </head>
@@ -45,6 +45,11 @@
 
                 {% ifequal category "main" %}
                     <p>
+                    {% if time %}
+                        સવારની
+                    {% else %}
+                        સાંજની
+                    {% endif %}
                         આઈટ :-
                     </p>
                     <p>
@@ -55,7 +60,7 @@
                 {% endifequal %}
 
         </div>
-{#        <div class="item-box">#}
+        <div class="item-box">
             {% for order in orderdata %}
                 <div class="order-div">
                     <h1>{{ order.number }}) &nbsp; {{ order.ItemName }}</h1>
@@ -66,12 +71,12 @@
                     </ul>
                 </div>
             {% endfor %}
-{#        </div>#}
-    {{ orderdata}}
+        </div>
+    {% comment %} {{ orderdata}} {% endcomment %}
     </main>
-    <button class="button-remove button-style-1" onclick="printPDF()">Print</button>
+    <button class="button-remove button-style-1 printBtn" onclick="printPDF()">Print</button>
     <span id="jsonData">
-        {{ orderdata }}
+        {% comment %} {{ orderdata }} {% endcomment %}
     </span>
 </body>
 <script>
