@@ -1,5 +1,6 @@
 from django.urls import path
-
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 app_name = "inventory"
@@ -35,4 +36,4 @@ urlpatterns = [
     path('test1/', views.test1, name="test"),
     path('pdf1/', views.pdfGenration1, name="pdfView"),
     path('pdfHtmlView1/', views.pdfHtmlView, name="htmlView"),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

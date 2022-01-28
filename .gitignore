@@ -2,3 +2,5 @@
 temp.py
 .idea
 application.cmd
+media
+orderInventory/templates/pdf/Demo.html

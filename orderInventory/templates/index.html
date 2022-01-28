@@ -6,9 +6,9 @@
 {% block Main %}
     <section class="single-container">
             {% for i in data %}
-                    <a href="{% url 'inventory:orderDetail' i.id %}">
+                    <a href="{% url 'inventory:orderDetail' i.id %}" style="text-decoration: none">
                         <div class="suggetion-list-item">
-                        <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}"  >{{ i.name }} </p>
+                        <p class="text"  data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}"  >{{ i.name }} : {{ i.deliveryDate.date }} </p>
                         <button class="add button-remove" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path

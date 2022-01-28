@@ -10,7 +10,7 @@
         {% for i in data %}
         <div class="suggetion-list-item">
             <a href="{% url 'inventory:orderDetail' OrderID=i.id %}">
-                <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
+                <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} :    {{ i.deliveryDate.date }} </p>
             </a>
             <button class="add button-remove">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

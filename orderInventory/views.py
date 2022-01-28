@@ -5,14 +5,22 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
 
+
+from weasyprint import HTML, CSS
 from xhtml2pdf import pisa
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
+from django.conf import settings
+import tempfile
 
 import encodings
 from . import models
 from datetime import datetime
 import json
 import io
+
+####################################################
+# Try WeasyPrint Library For Generating PDF
+####################################################
 
 # Create your views here.
 
@@ -24,7 +32,7 @@ def index(request):
     """
         Display Recent Orders list
     """
-    order = models.OrderIndividual.objects.all()
+    order = models.OrderIndividual.objects.filter(deliveryDate__gte=datetime.now()).order_by("deliveryDate")
     print(order)
     return render(request, 'index.html', {
         "toolbar": True,
@@ -350,7 +358,7 @@ def orderHome(request):
     """
         display list of all order list from past
     """
-    order = models.OrderIndividual.objects.all()
+    order = models.OrderIndividual.objects.all().order_by("-createdAt")
     print(order)
     return render(request, 'orderList.html', {
         "toolbar": True,
@@ -510,32 +518,6 @@ def orderDeleteItem(request):
 
 def orderPrint(request,orderId):
     print("Order Id ", orderId)
-    # res = dict()
-    # storeList = []
-    # storeOrder = list()
-    # storeOrderList = list()
-    # tempOrderData = models.Order.objects.filter(orderId_id=orderId)
-    # count = -1
-    # for i in tempOrderData:
-    #     t1 = i.itemId.ingredientId.orderAt
-    #     if t1 not in storeList:
-    #         storeList.append(t1)
-    #         storeOrder.append(
-    #             {
-    #                 "id": t1.id,
-    #                 "name": t1.name,
-    #                 "data": storeOrderList
-    #             }
-    #         )
-    #         count = count +1
-    #     t2 = {
-    #         "name": i.itemId.ingredientId.name,
-    #         "value": i.quantity,
-    #     }
-    #     print(storeOrder[count]["data"].append(t2))
-    #     print(t1.name)
-    #     print(i.quantity)
-    #
     storeOrder, storeList = getPrintData(orderId)
     print(storeOrder)
     return render(request, "pdf/pdfPresentetor.html", {
@@ -576,7 +558,7 @@ def orderPrintData(request, orderId, dataType):
             else:
                 tt1 = False
                 print("Evening")
-            return render(request, 'pdf/pdf2.html',{
+            return render(request, 'pdf/pdf3.html',{
                 "msg" : "main Method",
                 "orderDetail": {
                     "id":orderDetail.id,
@@ -632,7 +614,7 @@ def orderPrintData(request, orderId, dataType):
         tt1 = False
         print("Evening")
 
-    return render(request, "pdf/pdf2.html", {
+    return render(request, "pdf/pdf3.html", {
         # "data":data,
         "orderdata": data,
         "date": d,
@@ -642,12 +624,13 @@ def orderPrintData(request, orderId, dataType):
     })
 
 
-# Fountain to Experiment with PDF Generation
+# Function to Experiment with PDF Generation
 def pdfGenration1(request):
     data = models.IngredientIndividual.objects.all()
 
-    template_path = 'pdf/pdf1.html'
+    template_path = 'pdf/Demo.html'
     context = {'data': data}
+
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
 
@@ -658,17 +641,41 @@ def pdfGenration1(request):
     response['Content-Disposition'] = 'filename="report.pdf"'
 
     # find the template and render it.
-    template = get_template(template_path)
-    html = template.render(context)
+    template = render_to_string(template_path,context=context)
+    print(template)
+    html = HTML(string=template)
+    from weasyprint.text.fonts import FontConfiguration
 
+    font_config = FontConfiguration()
+
+    # html.write_pdf(settings.MEDIA_ROOT+"/pdf_documents/demo1.pdf", font_config=font_config)
+    result = html.write_pdf()
+
+    from django_weasyprint import WeasyTemplateResponse
     # create a pdf
-    pisa_status = pisa.CreatePDF(io.BytesIO(html.encoding('utf-8')),
-        dest=response,encoding="binary")
+    # pisa_status = pisa.CreatePDF(io.BytesIO(html.encoding('utf-8')),
+    #     dest=response,encoding="binary")
 
     # if error then show some funy view
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
+    # if pisa_status.err:
+    #     return HttpResponse('We had some errors <pre>' + html + '</pre>')
+
+    # response = HttpResponse(content_type='application/pdf;')
+    # response['Content-Disposition'] = 'inline; filename=list_people.pdf'
+    # response['Content-Transfer-Encoding'] = 'binary'
+    # # response["body"] = result
+    # with tempfile.NamedTemporaryFile(delete=True) as output:
+    #     output.write(result)
+    #     output.flush()
+    #     output = open(output.name, 'r')
+    #     response.write(output.read())
+    print("What id Return")
+    print(WeasyTemplateResponse(request,html.write_pdf()))
+    res = {
+        "msg" : "Hello"
+    }
+    return JsonResponse(res)
+
 
 
 def pdfHtmlView(request):
@@ -682,6 +689,7 @@ def pdfHtmlView(request):
         "Content-Disposition": 'attachment; filename="report.pdf"'
     }
     response = HttpResponse(html, headers=header)
+
     # print(request)
     # request['Content-Disposition'] = 'attachment; filename="report.pdf"'
     print(response)
