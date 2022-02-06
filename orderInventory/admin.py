@@ -4,6 +4,7 @@ from . import models
 # Register your models here.
 
 admin.site.register(models.Category)
+admin.site.register(models.Type)
 admin.site.register(models.Order)
 admin.site.register(models.OrderIndividual)
 admin.site.register(models.Items)

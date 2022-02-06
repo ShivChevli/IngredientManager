@@ -16,67 +16,27 @@
             flex-wrap: wrap;
             flex-direction: column;
         }
-        @page {
-            size: A4 portrait;
-            @bottom-left {
-                content: counter(page) ' of ' counter(pages);
-            }
-            margin: 10mm 10mm 100mm 10mm;
+        {#@page {#}
+        {#    size: A4 portrait;#}
+        {#    @bottom-left {#}
+        {#        content: counter(page) ' of ' counter(pages);#}
+        {#    }#}
+        {#    margin: 10mm 10mm 100mm 10mm;#}
                 {#@frame content_frame{          /* Content Frame */#}
                 {#    left: 0pt;#}
                 {#    width: 100pt;#}
                 {#    top: 0pt;#}
                 {#    height: 800pt;#}
                 {#}#}
-        }
-        @media print {
-            body{
-                padding: 0 !important;
-            }
-            #jsonData{
-                content: counter(page);
-            }
-        }
-        .order-div{
-            display: block;
-            width: 90%;
-            overflow-x: hidden;
-            page-break-inside: auto;
-            {% comment %} margin: 10px auto; {% endcomment %}
-        }
-        .main-div li{
-            display: inline-block;
-            width: 49%;
-            font-size: 18px;
-        }
-        .main-div h1{
-            width: 100%;
-        }
-        .main-div li span{
-            font-size: 21px;
-            width: 55%;
-            display: inline-block;
-            margin-right: 30px;
-        }
-        .main-div li span:nth-of-type(2){
-            width: 30%;
-            border-bottom: 1px solid #000;
-            margin-right: 0px;
-        }
-        #jsonData{
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-          content: counter(page);
-        }
-        .shree-div span{
-            width: 4px;
-            border-radius: 1px;
-            height: 16px;
-            background-color: #000;
-            display: inline-block;
-            margin-left: 3px;
-        }
+        {#}#}
+        {#@media print {#}
+        {#    body{#}
+        {#        padding: 0 !important;#}
+        {#    }#}
+        {#    #jsonData{#}
+        {#        content: counter(page);#}
+        {#    }#}
+        {#}#}
     </style>
 </head>
 
@@ -122,7 +82,7 @@
 {#        <div class="item-box">#}
             {% for order in orderdata %}
                 <div class="order-div">
-                    <h1>{{ order.number }}) &nbsp; {{ order.ItemName }}</h1>
+                    <h1>{{ order.number }}) {{ order.ItemName }}</h1>
                         {% for ItemData in order.ingredient %}
                             <li> <span>{{ ItemData }} :-</span> <span> </span></li>
                         {% endfor %}
@@ -132,9 +92,7 @@
 {#    {{ orderdata}}#}
     </main>
     <button class="button-remove button-style-1 printBtn" onclick="printPDF()">Print</button>
-    <span id="jsonData">
 
-    </span>
 </body>
 <script>
     function printPDF(){

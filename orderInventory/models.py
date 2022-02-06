@@ -12,13 +12,27 @@ def checkMobileNumber(value):
         raise ValidationError(f'{value} must be digits')
 
 
+class Type(models.Model):
+    type = models.CharField(max_length=32, unique=True)
+
+    def __str__(self):
+        return f"{self.id} : {self.type}"
+
+
 class ItemIndividual(models.Model):
     name = models.CharField(max_length=64)
+    type = models.ForeignKey(
+        Type,
+        related_name="Item_Type",
+        on_delete=models.SET(None),
+        null=True,
+        blank=True
+    )
     createdAt = models.DateTimeField(default=datetime.now)
     modifyAt = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.id} : {self.name}"
+        return f"{self.id} : {self.name} : {self.type}"
 
 
 class Category(models.Model):
@@ -45,7 +59,6 @@ class IngredientIndividual(models.Model):
             "name": self.name,
             "orderAt": self.category,
         }
-
 
 
 class Items(models.Model):

@@ -189,6 +189,13 @@ function setDataFromUpdateItem(data,queryID){
     console.log("setDataFromUpdateItem Call ");
 
     document.getElementById("name").value = data.ItemName;
+    console.log("Type value  :- "+ data.type);
+    if(data.type == null){
+        console.log("value is Null :- "+ data.type);
+    }
+    else{
+        document.getElementById("typeId").value = data.type;
+    }
     for(let i in data.ingredient){
 
             for(let j in data.ingredient[i]) {

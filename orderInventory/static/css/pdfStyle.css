@@ -3,17 +3,6 @@
     font-family: 'MY';
     src: url('../ttf/NotoSansGujarati-Bold.ttf');
 }
-
-/*@page {*/
-/*     size: a4 portrait;*/
-/*    @frame content_frame{          !* Content Frame *!*/
-/*        left: 0pt;*/
-/*        width: 100pt;*/
-/*        top: 0pt;*/
-/*        height: 875pt;*/
-/*    }*/
-/*}*/
-
 @media print {
     .printBtn{
         display: none;
@@ -22,6 +11,15 @@
         padding: 0 !important;
     }
 }
+
+@page {
+    size: A4 portrait;
+    @bottom-left {
+        content: counter(page) ' of ' counter(pages);
+    }
+    margin: 10mm 10mm 100mm 10mm;
+}
+
 * {
     font-family: 'MY' !important;
     box-sizing: border-box;
@@ -41,6 +39,14 @@ body{
     padding: 30px 10px;
     font-size: 25px;
 }
+.shree-div span{
+    width: 4px;
+    border-radius: 1px;
+    height: 16px;
+    background-color: #000;
+    display: inline-block;
+    margin-left: 3px;
+}
 header {
     display: flex;
     text-align: center;
@@ -55,18 +61,6 @@ main {
 .fontSize{
     font-size: 20px;
 }
-ul{
-    padding: 0px 20px;
-}
-ul li{
-    font-size: 21px;
-    line-height: 35px;
-    list-style: none;
-}
-/*.name-div{*/
-/*    display: grid;*/
-/*    grid-template-columns: repeat(12,1fr)*/
-/*}*/
 .order-detail{
     display: grid;
     width: 100%;
@@ -95,27 +89,36 @@ ul li{
 .order-detail p:nth-of-type(2){
     grid-column: 3/13;
 }
-/*.order-detail*/
-/*.order-detail{*/
-/*    width: 28px;*/
-/*    display: inline-block;*/
-/*}*/
-/*.order-detail h3{*/
-/*    grid-column: 1/8;*/
-/*}*/
-/*.order-detail span{*/
-/*    grid-column: 8/12;*/
-/*}*/
-.order-div {
-    display: inline-block;
-    width: 49%;
-    vertical-align: top;
+
+.order-div{
+    display: block;
+    width: 90%;
+    overflow-x: hidden;
     padding: 10px 50px;
-    page-break-inside: avoid;
+    page-break-inside: auto;
 }
 .order-div h1{
     margin-bottom: 20px;
     width: 80%;
     border-bottom: 2px solid;
     padding: 10px 0;
+}
+.main-div li{
+    display: inline-block;
+    width: 49%;
+    font-size: 18px;
+}
+.main-div h1{
+    width: 100%;
+}
+.main-div li span{
+    font-size: 21px;
+    width: 55%;
+    display: inline-block;
+    margin-right: 30px;
+}
+.main-div li span:nth-of-type(2){
+    width: 30%;
+    border-bottom: 1px solid #000;
+    margin-right: 0px;
 }

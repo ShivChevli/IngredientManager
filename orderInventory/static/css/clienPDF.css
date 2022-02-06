@@ -1,0 +1,92 @@
+@font-face {
+    font-family: 'MY';
+    src: url('../ttf/NotoSansGujarati-Bold.ttf');
+}
+@media print {
+    .printBtn{
+        display: none;
+    }
+    body{
+        padding: 0  0 !important;
+        margin: 0;
+    }
+    main{
+        margin: 0;
+    }
+}
+
+@page {
+    size: A4 portrait;
+    @bottom-left {
+        content: counter(page) ' of ' counter(pages);
+    }
+    /*margin: 10mm 10mm 10mm 10mm;*/
+}
+
+* {
+    font-family: 'MY' !important;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body{
+    padding: 20px 50px;
+    overflow-x: hidden;
+}
+.date {
+    text-align: right;
+    padding: 10px 0;
+    padding-right: 100px;
+}
+.shree-div{
+    text-align: center;
+    padding: 30px 10px;
+    font-size: 25px;
+}
+.shree-div span{
+    width: 4px;
+    border-radius: 1px;
+    height: 16px;
+    background-color: #000;
+    display: inline-block;
+    margin-left: 3px;
+}
+header {
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+main {
+    width: 1200px;
+    margin: 0px auto;
+    color: var(--text-color);
+}
+.logo-img-div{
+    display: block;
+    width: 90%;
+}
+.logo-img-div img{
+    width: 100%;
+}
+table{
+    width: 100%;
+    /*border : 2px solid black;*/
+    font-size: 20px;
+    font-weight: 600;
+    border-collapse: collapse;
+}
+table td{
+    border: 1px solid black;
+    margin: 0;
+    padding: 5px 10px;
+}
+.timing-title{
+    text-align: center;
+    margin: 15px auto;
+}
+
+.wrapper-class{
+    width: 90%;
+}

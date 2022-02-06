@@ -9,7 +9,7 @@
     <section class="single-container search-elements">
         {% for i in data %}
         <div class="suggetion-list-item">
-            <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
+            <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} : {{ i.type.type }} </p>
             <form method="POST" action="{% url 'inventory:delete_items' %}" style="text-align: center" id="deleteFromItems">
                 {% csrf_token %}
                 <input type="number" name="itemID" value="{{ i.id }}"  style="display: none">
@@ -37,10 +37,26 @@
             {% csrf_token %}
 
             <!-- New Item Name -->
-            <div class="form-element-box">
-                <label for="#name" class="from-lable">Item Name</label>
-                <div class="form-control">
-                    <input type="text" required class="from-element " name="name" id="name" placeholder="Enter Text">
+            <div class="two-input-inline">
+                <div class="form-element-box">
+                    <label for="name" class="from-lable">Item Name</label>
+                    <div class="form-control">
+                        <input type="text" required class="from-element " name="name" id="name" placeholder="Enter Text">
+                    </div>
+                </div>
+                <div class="form-element-box">
+                    <label for="typeId" class="from-lable">Type</label>
+                    <div class="form-control">
+                        <select class="from-element" name="type" id="typeId">
+                            <option value="0">------------------------------------</option>
+                            <option value="1">Welcome juice</option>
+                            <option value="2">Starter</option>
+                            <option value="3">Live Counter</option>
+                            <option value="4">Main Course</option>
+                            <option value="5">Dessert</option>
+                            <option value="6">Water</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <section>

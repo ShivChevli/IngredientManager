@@ -230,7 +230,7 @@ def newItems(request):
         new item name
     """
     if request.method == "POST":
-        print("Submited Data")
+        print("Submitted Data")
         print(request.POST)
 
         itemId = request.POST.get("ItemId")
@@ -241,12 +241,16 @@ def newItems(request):
         # Get Item if it's Exist else create New
         if itemId == "":
             # New Item Created
-            Item = models.ItemIndividual(name=request.POST.get("name"))
+            Item = models.ItemIndividual(name=request.POST.get("name"), type_id=request.POST.get("type"))
             Item.save()
         else:
             # update Item Fetch
             print(itemId)
             Item = models.ItemIndividual.objects.get(id=itemId)
+            Item.name = request.POST.get("name")
+            Item.type_id = request.POST.get("type")
+            Item.save()
+            print(Item)
             tempList = list(models.Items.objects.filter(itemId=Item))
             print("Before Deleting")
             print(tempList)
@@ -265,7 +269,6 @@ def newItems(request):
                     if tempIngredient in tempList:
                         # print("Ingredient Found")
                         tempList.remove(tempIngredient)
-
                 except:
                     print("New Item Entry :- ")
                     tempIngredient = models.Items(itemId=Item,ingredientId_id=value)
@@ -515,8 +518,7 @@ def orderDeleteItem(request):
     return JsonResponse(res)
 
 
-
-def orderPrint(request,orderId):
+def orderPrint(request, orderId):
     print("Order Id ", orderId)
     storeOrder, storeList = getPrintData(orderId)
     print(storeOrder)
@@ -526,7 +528,6 @@ def orderPrint(request,orderId):
         "orderId" : orderId,
         "active" : "order",
     })
-
 
 
 def orderPrintData(request, orderId, dataType):
@@ -541,6 +542,16 @@ def orderPrintData(request, orderId, dataType):
     print("Main")
     orderDetail = models.OrderIndividual.objects.get(id=orderId)
 
+    d = orderDetail.deliveryDate.strftime("%d/%m/%Y")
+    tt1 = orderDetail.deliveryDate.strftime("%H")
+    print("Timimg")
+    if int(tt1) < 15:
+        tt1 = True
+        print("Morning")
+    else:
+        tt1 = False
+        print("Evening")
+
     if dataType == "main":
             (data, storeList) = getPrintData(orderId)
             tempOredrData = models.Order.objects.filter(orderId_id=orderId)
@@ -549,15 +560,7 @@ def orderPrintData(request, orderId, dataType):
             print("Data :- ")
             print(data)
 
-            d = orderDetail.deliveryDate.strftime("%d/%m/%Y")
-            tt1 = orderDetail.deliveryDate.strftime("%H")
-            print("Timimg")
-            if int(tt1) < 15:
-                tt1 = True
-                print("Morning")
-            else:
-                tt1 = False
-                print("Evening")
+
             return render(request, 'pdf/pdf3.html',{
                 "msg" : "main Method",
                 "orderDetail": {
@@ -576,13 +579,16 @@ def orderPrintData(request, orderId, dataType):
             })
 
     if dataType == "client":
+
         tempData = models.Order.objects.filter(orderId_id=orderId)
+        temp = models.Type.objects.all()
         data = {}
+        for i in temp:
+            data[i.type] = list()
+
         for i in tempData:
-            data[i.orderItem.id] = i.orderItem.name
-        tempOredrData = models.Order.objects.filter(orderId_id=orderId)
-        orderData = list()
-        print(tempOredrData)
+            data[i.orderItem.type.type].append(i.orderItem.name)
+
         print("Data :- ")
         print(data)
 
@@ -590,6 +596,7 @@ def orderPrintData(request, orderId, dataType):
             "msg": "main Method",
             "orderDetail": orderDetail,
             "orderdata": data,
+            "time": tt1,
             "date": orderDetail.deliveryDate,
             "category": "main",
             "jsonData": json.dumps(data),
@@ -677,7 +684,6 @@ def pdfGenration1(request):
     return JsonResponse(res)
 
 
-
 def pdfHtmlView(request):
     data = models.IngredientIndividual.objects.all()
 
@@ -718,6 +724,13 @@ def getDetail(request):
 
             data["fields"] = dict()
             data["fields"]["ItemName"] = models.ItemIndividual.objects.get(id=data_id).name
+            temp100 = models.ItemIndividual.objects.get(id=data_id).type
+
+            if temp100 == None or temp == "":
+                data["fields"]["type"] = 0
+            else:
+                data["fields"]["type"] = temp100.id
+
             data["fields"]["ingredient"] = list()
             print("Return Json : ", data)
 
