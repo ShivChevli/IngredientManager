@@ -249,6 +249,7 @@ def newItems(request):
             Item = models.ItemIndividual.objects.get(id=itemId)
             Item.name = request.POST.get("name")
             Item.type_id = request.POST.get("type")
+            Item.modifyAt = datetime.now()
             Item.save()
             print(Item)
             tempList = list(models.Items.objects.filter(itemId=Item))
@@ -376,7 +377,7 @@ def orderHome(request):
 @cache_control(max_age=3600)
 def orderDetail(request, OrderID):
     """
-        Display Detail of Query order in Editing moed
+        Display Detail of Query order in Editing mode
         input :- Accept OrderId as it's url parameter
         output :- Render Edit order Template along with data
     """

@@ -2,6 +2,9 @@
     font-family: 'MY';
     src: url('../ttf/NotoSansGujarati-Bold.ttf');
 }
+/*
+    Need to Try property of orphans
+*/
 @media print {
     .printBtn{
         display: none;
@@ -12,6 +15,10 @@
     }
     main{
         margin: 0;
+        padding: 0;
+    }
+    .wrapper-class{
+        margin: 0 !important;
     }
 }
 
@@ -31,7 +38,7 @@
 
 body{
     padding: 20px 50px;
-    overflow-x: hidden;
+    /*overflow-x: hidden;*/
 }
 .date {
     text-align: right;
@@ -76,17 +83,24 @@ table{
     font-size: 20px;
     font-weight: 600;
     border-collapse: collapse;
+    margin: 25px 0;
 }
-table td{
+table td,th{
     border: 1px solid black;
     margin: 0;
     padding: 5px 10px;
 }
-.timing-title{
+h1{
     text-align: center;
     margin: 15px auto;
+    font-size: 2.5em;
 }
-
 .wrapper-class{
-    width: 90%;
+    width: 89%;
+    margin: 0 auto;
+}
+.extra_charge_table{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
