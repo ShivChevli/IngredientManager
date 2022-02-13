@@ -55,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 else{
                                     if(document.getElementById("updateElementID") !== undefined){
                                         document.getElementById("updateElementID").defaultValue = getId;
-                                        document.getElementById("deleteElementId").defaultValue = parseInt(getId);
                                     }
                                     setData(data.fields,qI);
                                 }
@@ -76,20 +75,20 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
     //Delete element in Store and Ingredient Form
-    try{
-        document.getElementById("deleteFrom").onsubmit = function (){
-            console.log("data :-");
-            if(confirm("Do you Sure want to Delete this Item ?")){
-                return true;
-            }
-            else{
-                 return false;
-            }
-        }
-    }
-    catch (e) {
-        console.log('This Is Not From Extended Template');
-    }
+    // try{
+    //     document.getElementById("deleteFrom").onsubmit = function (){
+    //         console.log("data :-");
+    //         if(confirm("Do you Sure want to Delete this Item ?")){
+    //             return true;
+    //         }
+    //         else{
+    //              return false;
+    //         }
+    //     }
+    // }
+    // catch (e) {
+    //     console.log('This Is Not From Extended Template');
+    // }
 
     try{
         document.querySelectorAll("#deleteFromItems").forEach(p=>{

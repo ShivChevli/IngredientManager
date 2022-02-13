@@ -56,14 +56,8 @@
         <h1> Details </h1>
         <ul class="detail-list">
         </ul>
-        <form method="POST" id="deleteFrom" >
-            {% csrf_token %}
-            <input type="number" id="deleteElementId" style="display: none" name="deleteElementId">
-
-            <button class="button-remove button-style-1 button-style-2 edit" role="button" type="button">Edit</button>
-            <button type="submit" class="button-remove button-style-1 delete-btn"> Delete</button>
-            <button class="button-remove button-style-1 cancel-btn" role="button" type="button" >Cancel</button>
-        </form>
+        <button class="button-remove button-style-1 button-style-2 edit" role="button" type="button">Edit</button>
+        <button class="button-remove button-style-1 cancel-btn" role="button" type="button" >Cancel</button>
 
     </section>
 

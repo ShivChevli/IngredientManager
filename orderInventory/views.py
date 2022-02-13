@@ -101,16 +101,22 @@ def deleteCategory(request):
         input :- Accept only Category Id
         output : Redirect to list of Category
     """
-    if request.method == "POST":
+    msg = "Invalid Category ID"
+    if request.method == "GET":
         print("Delete Post For Category Method")
         print("Data :", request.POST.get("deleteElementId"))  # retrieve StoreId From Submitted Form
-        deleteCategory = models.Category.objects.get(id=request.POST.get("deleteElementId"))
+        deleteCategory = models.Category.objects.get(id=request.GET.get("deleteElementId"))
 
         print("Delete Element :- ", deleteCategory)
         # print("After :- ",ingre)
         # deleteCategory.delete()
+        msg = f"Category {deleteCategory.name} with Id {deleteCategory.id} is Deleted Successfully"
 
-    return redirect('inventory:category')
+    # return redirect('inventory:category')
+    return  JsonResponse({
+        "Status": 200,
+        "Message": msg,
+    })
 
 
 #####################################################
@@ -186,15 +192,22 @@ def deleteIngredient(request):
         input :- Accept Ingredient Id from User
         output :- Redirect To Ingredient List
     """
-    if request.method == "POST":
+    msg = "Invalid Ingredient ID"
+    if request.method == "GET":
         print("Delete Post Method")
-        print("Data :", request.POST.get("deleteElementId"))
-        ingre = models.IngredientIndividual.objects.get(id=request.POST.get("deleteElementId"))
+        print("Data :", request.GET.get("deleteElementId"))
+        ingre = models.IngredientIndividual.objects.get(id=request.GET.get("deleteElementId"))
 
         print("Before :- ", ingre)
-        ingre.delete()
+        print("Delete Ingredient Call")
+        msg = f"Ingredient {ingre.name} with Id {ingre.id} is Deleted Successfully"
+        # ingre.delete()
 
-    return redirect('inventory:ingredient')
+    # return redirect('inventory:ingredient')
+    return JsonResponse({
+        "Status": 200,
+        "Message": msg,
+    })
 
 
 #####################################################
