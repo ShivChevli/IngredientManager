@@ -33,7 +33,6 @@ def index(request):
         Display Recent Orders list
     """
     order = models.OrderIndividual.objects.filter(deliveryDate__gte=datetime.now()).order_by("deliveryDate")
-    print(order)
     return render(request, 'index.html', {
         "toolbar": True,
         "putPlus": True,
@@ -406,7 +405,7 @@ def orderNewTemplate(request):
 def orderEditTemplate(request,id):
     order = models.OrderIndividual.objects.get(id=id)
     return render(request, 'orderNew.html', {
-        "data":order,
+        "data": order,
         "active": "order",
         "orderID": id,
         "heading": "Edit",
@@ -678,9 +677,9 @@ def pdfGenration1(request):
     #     output = open(output.name, 'r')
     #     response.write(output.read())
     print("What id Return")
-    print(WeasyTemplateResponse(request,html.write_pdf()))
+    print(WeasyTemplateResponse(request, html.write_pdf()))
     res = {
-        "msg" : "Hello"
+        "msg": "Hello"
     }
     return JsonResponse(res)
 
@@ -714,14 +713,11 @@ def getDetail(request):
         if data == "ingredient_one":
             temp = models.IngredientIndividual.objects.filter(id=data_id)
             res = serializers.serialize("json", temp)
-            print(res)
         elif data == "item_one":
             l = list()
             data = dict()
             l.append(data)
             temp = list(models.Items.objects.filter(itemId=data_id))
-            print("Item One Called")
-            print(temp)
 
             data["fields"] = dict()
             data["fields"]["ItemName"] = models.ItemIndividual.objects.get(id=data_id).name
@@ -733,31 +729,23 @@ def getDetail(request):
                 data["fields"]["type"] = temp100.id
 
             data["fields"]["ingredient"] = list()
-            print("Return Json : ", data)
 
             if len(temp) > 0:
                 for i in temp:
-                    print(i.ingredientId.id)
-                    print(models.IngredientIndividual.objects.get(id=i.ingredientId.id))
                     key = models.IngredientIndividual.objects.get(id=i.ingredientId.id)
                     data["fields"]["ingredient"].append({i.ingredientId.id : key.name})
-                # res = serializers.serialize("json", l)
             res = l
 
-            print(res)
         elif data == "category_one":
             temp = models.Category.objects.filter(id=data_id)
             res = serializers.serialize("json", temp)
-            print(res)
         elif data == 'order_one':
             temp = dict()
             fields = dict()
-            print("data : ", data)
             items = list()
             ingredients = list()
             order = models.OrderIndividual.objects.get(id=data_id)
             orderItems = models.Order.objects.filter(orderId=data_id)
-            print(orderItems)
             for i in orderItems:
                 if i.itemId.itemId.name not in items:
                     items.append(i.itemId.itemId.name)
@@ -776,30 +764,6 @@ def getDetail(request):
             temp["createdAt"] = order.createdAt
             res = list()
             res.append(temp)
-            print(res)
-        else:
-            res = {
-                "message": "None Empty Error",
-                "data": ""
-            }
-    else:
-        return redirect("inventory:ingredient")
-
-    return JsonResponse(res, safe=False)
-
-
-def getAllDetail(request):
-    if request.method == "GET":
-        data = request.GET.get("queryItem")
-        data_id = request.GET.get("queryId")
-        if data == "ingredient_all":
-            temp = models.IngredientIndividual.objects.all()
-            res = serializers.serialize("json", temp)
-            print(res)
-        elif data == "store_all":
-            temp = models.Store.objects.all()
-            res = serializers.serialize("json", temp)
-            print(res)
         else:
             res = {
                 "message": "None Empty Error",
@@ -859,24 +823,19 @@ def getOrderDetail(OrderID):
 
 # //Suportive Funtions
 def getPrintData(orderId,storeId=-1):
-    storeList = []
-    storeOrder = list()
-    storeOrderList = list()
     categoryList = []
     category = models.Category.objects.all()
     for i in category:
         categoryList.append({
-            "id" : i.id,
-            "name" : i.name,
+            "id": i.id,
+            "name": i.name,
         })
     tempOrderData = models.Order.objects.filter(orderId_id=orderId,deletedAt=None)
-    count = -1
     print("Print Data Function")
     print("Category :- ")
     print(category)
     print("Order Data :- ")
     print(tempOrderData)
-    ingredientList = []
     orderList = []
     count = 1
     if storeId == -1:
@@ -906,36 +865,5 @@ def getPrintData(orderId,storeId=-1):
                     "ingredient": ingredientList,
                 })
                 count = count +1
-    # if storeId == -1:
-    #     for i in tempOrderData:
-    #         t1 = i.itemId.ingredientId.orderAt
-    #         if t1 not in storeList:
-    #             storeList.append(t1)
-    #             storeOrder.append(
-    #                 {
-    #                     "id": t1.id,
-    #                     "name": t1.name,
-    #                     "data": storeOrderList
-    #                 }
-    #             )
-    #             count = count + 1
-    #         t2 = {
-    #             "name": i.itemId.ingredientId.name,
-    #             "value": i.quantity,
-    #         }
-    #         print(storeOrder[count]["data"].append(t2))
-    #         print(t1.name)
-    #         print(i.quantity)
-    # else:
-    #     for i in tempOrderData:
-    #         t1 = i.itemId.ingredientId.orderAt
-    #         if t1.id == int(storeId):
-    #             print("if Condition")
-    #             print(str(i.itemId.ingredientId.name).encode('utf-8').decode())
-    #             storeOrder.append({
-    #                 "name": str(i.itemId.ingredientId.name).encode('utf-8').decode(),
-    #                 "value": i.quantity,
-    #             })
-
 
     return orderList,categoryList

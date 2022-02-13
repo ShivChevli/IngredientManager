@@ -255,7 +255,7 @@ main .section2{
     overflow-y: auto;
 }
 #orderItems{
-    height: 450px;
+    height: 400px;
     overflow-y: auto;
 }
 #newItemBox section{
@@ -302,6 +302,10 @@ main .section2{
 #section1 .toolbox{
     padding-right: 0;
     padding-left: 0;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: var(--bg-color-alter);
 }
 #addNewIngredientBtn{
     float: right;
@@ -550,6 +554,10 @@ main .section2{
 .toolbox2{
     width: 100%;
     padding: 20px !important;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: var(--bg-color-alter);
 }
 
 section h1{
@@ -565,9 +573,10 @@ section h1{
 }
 
 @media screen and (min-width: 1367px){
-    main section{
-        max-height: 75vh !important;
+    main .display-home-item{
+        max-height: 73vh !important;
     }
+
     #newItemBox section{
         height: 64vh !important;
         max-height: 64vh !important;

@@ -32,7 +32,7 @@ urlpatterns = [
     path('OrderPrintOptions/<int:orderId>', views.orderPrint, name="orderPrint"),
     path('OrderPrintData/<int:orderId>/<str:dataType>', views.orderPrintData, name="orderPrintData"),
     path('detail/', views.getDetail, name="getInfo"),
-    path('detailAll/', views.getAllDetail, name="getInfoAll"),
+
     path('test1/', views.test1, name="test"),
     path('pdf1/', views.pdfGenration1, name="pdfView"),
     path('pdfHtmlView1/', views.pdfHtmlView, name="htmlView"),

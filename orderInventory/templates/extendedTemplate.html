@@ -5,7 +5,7 @@
 {% endblock %}
 {% block Main %}
 
-    <section class="single-container search-elements" id="single-section">
+    <section class="single-container search-elements display-home-item" id="single-section">
         {% for i in data %}
         <div class="suggetion-list-item">
             <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} </p>
