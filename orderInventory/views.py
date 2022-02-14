@@ -235,15 +235,23 @@ def itemsHome(request):
     })
 
 
+@csrf_exempt
 def newItems(request):
     """
         Add New Item to Database
         input :- Takes Series for form data named as ingredientId{i} and value{i} with addidtional argument of
         new item name
     """
+    # print(request.POST)
+    # return JsonResponse({
+    #     "Status": 200,
+    #     "msg": "Data Recived"
+    # })
     if request.method == "POST":
         print("Submitted Data")
         print(request.POST)
+
+        json = request.POST.get("json")
 
         itemId = request.POST.get("ItemId")
         print("itemId ", itemId)
@@ -254,7 +262,7 @@ def newItems(request):
         if itemId == "":
             # New Item Created
             Item = models.ItemIndividual(name=request.POST.get("name"), type_id=request.POST.get("type"))
-            Item.save()
+            # Item.save()
         else:
             # update Item Fetch
             print(itemId)
@@ -262,7 +270,7 @@ def newItems(request):
             Item.name = request.POST.get("name")
             Item.type_id = request.POST.get("type")
             Item.modifyAt = datetime.now()
-            Item.save()
+            # Item.save()
             print(Item)
             tempList = list(models.Items.objects.filter(itemId=Item))
             print("Before Deleting")
@@ -287,7 +295,7 @@ def newItems(request):
                     tempIngredient = models.Items(itemId=Item,ingredientId_id=value)
                     # print("update Item Entry :- ")
                     print(tempIngredient)
-                    tempIngredient.save()
+                    # tempIngredient.save()
 
         print("After Deleting")
         print(tempList)
@@ -297,7 +305,17 @@ def newItems(request):
         for i in tempList:
             print("Delete items")
             print(i)
-            i.delete()
+            # i.delete()
+        print(json)
+        if json == "true":
+            return JsonResponse({
+                "Status": 200,
+                "msg": "Data Recived",
+                "data": {
+                    "name": Item.name,
+                    "id": Item.id
+                }
+            })
 
     else:
         print(request.GET)
@@ -463,6 +481,8 @@ def orderNewCreate(request):
             "heading": "Create",
         })
 
+    IngredientOption  = models.IngredientIndividual.objects.all();
+
     return render(request, 'orderAddItems.html', {
         "ItemList": itemList,
         "orderFor": order.name,
@@ -470,6 +490,7 @@ def orderNewCreate(request):
         "data": temp,
         "active": "order",
         "queryItem": "order_one",
+        "options":IngredientOption,
     })
 
 

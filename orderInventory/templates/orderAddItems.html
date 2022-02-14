@@ -4,9 +4,8 @@
     Add Items to Order : {{ orderFor }}
 {% endblock %}
 {% block Main %}
-
     <div id="edit-view">
-        <section class="single-container">
+        <section id="orderBox" class="single-container">
 
                 <div id="page2">
                     <section>
@@ -32,29 +31,6 @@
                                     </button>
                                 </div>
                             {% endfor %}
-<!--
-{#                                <div class="item-box" data-itemid="{{ dataItem }}" >#}
-{#                                    <h2 class="item-name">#}
-{#                                        <span class="item-name-text">#}
-{#                                            {{ values.name }}#}
-{#                                        </span>#}
-{#                                        <span class="bin">#}
-{#                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >#}
-{#                                                <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm4 12H8v-9h2v9zm6 0h-2v-9h2v9zm.618-15L15 2H9L7.382 4H3v2h18V4z">#}
-{#                                                </path>#}
-{#                                        </svg>#}
-{#                                        </span>#}
-{#                                    </h2>#}
-{#                                    <ul class="ingredient-list">#}
-{#                                        {% for it in values.ingredient %}#}
-{#                                            <li data-ingredientId="{{ it.id }}"><label>{{ it.name }}</label> : <span>{{ it.quantity }}</span>  Kg </li>#}
-{#                                        {% endfor %}#}
-{##}
-{#                                    </ul>#}
-{#                                    <button class="button-remove button-style-1 edit-btn " type="button" role="button" id="editeBtn" > Edit </button>#}
-{#                                </div>#}
-
--->
                         </div>
                     </form>
                     <button type="submit" form="AddItemToOrderForm" class="button-remove button-style-1" id="submit-btn">
@@ -64,7 +40,7 @@
 
                     <section class="section2" id="item-list-box">
                         <h1>Available Items
-                            <button class="button-remove button-style-1" style="float: right;margin-top: -24px !important;">New Item</button>
+                            <button class="button-remove button-style-1" id="newItemBtn" style="float: right;margin-top: -24px !important;">New Item</button>
                         </h1>
                         <div class="toolbox2" id="toolbox">
                             <div class="search-bar">
@@ -107,10 +83,9 @@
                 </div>
         </section>
 
+        <section class="single-container" id="newItemBox">
 
-    <section class="single-container" id="newItemBox">
-
-        <form action="{% url 'inventory:new_items' %}" style="display: inline" method="POST" id="newItem">
+        <form style="display: inline" method="POST" id="newItemFrom">
             <input type="text" name="ItemId" id="updateItemId" style="display: none"/>
             <div id="newIngredientHidden">
 
@@ -118,10 +93,27 @@
             {% csrf_token %}
 
             <!-- New Item Name -->
-            <div class="form-element-box">
-                <label for="#name" class="from-lable">Item Name</label>
-                <div class="form-control">
-                    <input type="text" required class="from-element " name="name" id="name" placeholder="Enter Text">
+            <div class="two-input-inline">
+                <div class="form-element-box">
+                    <label for="name" class="from-lable">Item Name</label>
+                    <div class="form-control">
+                        <input type="text" required class="from-element " name="name" id="itemNameInput" placeholder="Enter Text">
+                    </div>
+                </div>
+                <div class="form-element-box">
+                    <label for="typeId" class="from-lable">Type</label>
+                    <div class="form-control">
+                        <select class="from-element" name="type" id="typeId">
+                            <option value="0">------------------------------------</option>
+                            <option value="1">Welcome juice</option>
+                            <option value="2">Starter</option>
+                            <option value="3">Soup Counter</option>
+                            <option value="4">Live Counter</option>
+                            <option value="5">Main Course</option>
+                            <option value="6">Dessert</option>
+                            <option value="7">Water</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <section>
@@ -130,10 +122,12 @@
 
                 </div>
                 <input type="submit" class="button-remove button-style-1 submit-btn" value="Create" id="newItemSubmitBtn">
-                <button type="reset" class="button-remove button-style-1 cancel-btn" id="close" role="button" >
+                <button type="reset" class="button-remove button-style-1 cancel-btn" id="closeItemBtn" role="button" >
                     close
                 </button>
             </section>
+
+
         </form>
 
             <section class="section2" id="ingredient-list-box">
@@ -152,7 +146,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="search-elements">
+                <div class="search-elements" id="available-ingredient">
                     {% for i in options %}
                         <div class="suggetion-list-item">
                             <p class="text_style addIngredients" data-ingredientId="{{ i.id }}" data-queryItem="ingredient_one">{{ i.name }}
@@ -181,19 +175,21 @@
                     </div>
 
                     <div class="form-element-box">
-                    <label for="" class="from-lable">Purchase At</label>
+                    <label for="" class="from-lable">Category</label>
                         <div class="form-control">
                             <select class="from-element" name="categoryId" required>
                                 <option value="0" >-------------</option>
-                                {% for d in Category %}
-                                    <option value="{{ d.id }}">{{ d.name }}</option>
-                                {% endfor %}
+                                <option value="1" >Dairy Products</option>
+                                <option value="2" >vegetables</option>
+                                <option value="3" >Exotic</option>
+                                <option value="4" >Kariyana</option>
+                                <option value="5" >Others</option>
                             </select>
                         </div>
                     </div>
 
 
-                    <button class="button-remove button-style-1 cancel-btn" id="closeEditBtn" role="button"> Cancel</button>
+                    <button class="button-remove button-style-1 cancel-btn" id="closeEditBtn" type="button" role="button"> Cancel</button>
                     <button class="button-remove button-style-1" id="addBtn" type="submit"> Add</button>
 
                 </form>

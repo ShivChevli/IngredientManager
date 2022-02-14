@@ -74,22 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     })
 
-    //Delete element in Store and Ingredient Form
-    // try{
-    //     document.getElementById("deleteFrom").onsubmit = function (){
-    //         console.log("data :-");
-    //         if(confirm("Do you Sure want to Delete this Item ?")){
-    //             return true;
-    //         }
-    //         else{
-    //              return false;
-    //         }
-    //     }
-    // }
-    // catch (e) {
-    //     console.log('This Is Not From Extended Template');
-    // }
-
     try{
         document.querySelectorAll("#deleteFromItems").forEach(p=>{
             p.onsubmit = function (){
