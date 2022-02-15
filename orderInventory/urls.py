@@ -23,7 +23,6 @@ urlpatterns = [
 
     path('OrderList/', views.orderHome, name="orderList"),
     path('OrderDetail/<int:OrderID>/', views.orderDetail, name="orderDetail"),
-    # path('OrderNew/', views.orderNewTemplate, name="orderNew"),
     path('Order/', views.orderNewCreate, name="orderNewCreate"),
     path('OrderAddItems/', views.orderAddItems, name="orderAddItems"),
     # path('OrderDeleteItems/', views.orderDeleteItem, name="orderDeleteItems"),

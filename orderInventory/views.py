@@ -72,7 +72,7 @@ def newCategory(request):
         new_category = models.Category()
         new_category.name = request.POST.get("name")
         print("After Category :- ", new_category)
-        # new_category.save()
+        new_category.save()
 
     return redirect('inventory:category')
 
@@ -90,7 +90,7 @@ def updateCategory(request):
         update_category.name = request.POST.get("name")
 
         print("After Category :- ", update_category)
-        # update_category.save()
+        update_category.save()
 
     return redirect('inventory:category')
 
@@ -262,7 +262,7 @@ def newItems(request):
         if itemId == "":
             # New Item Created
             Item = models.ItemIndividual(name=request.POST.get("name"), type_id=request.POST.get("type"))
-            # Item.save()
+            Item.save()
         else:
             # update Item Fetch
             print(itemId)
@@ -270,7 +270,7 @@ def newItems(request):
             Item.name = request.POST.get("name")
             Item.type_id = request.POST.get("type")
             Item.modifyAt = datetime.now()
-            # Item.save()
+            Item.save()
             print(Item)
             tempList = list(models.Items.objects.filter(itemId=Item))
             print("Before Deleting")
@@ -295,7 +295,7 @@ def newItems(request):
                     tempIngredient = models.Items(itemId=Item,ingredientId_id=value)
                     # print("update Item Entry :- ")
                     print(tempIngredient)
-                    # tempIngredient.save()
+                    tempIngredient.save()
 
         print("After Deleting")
         print(tempList)
@@ -305,7 +305,7 @@ def newItems(request):
         for i in tempList:
             print("Delete items")
             print(i)
-            # i.delete()
+            i.delete()
         print(json)
         if json == "true":
             return JsonResponse({
@@ -349,7 +349,7 @@ def updateItems(request):
                     tempIngredient = models.Items(itemId=updateItem,ingredientId_id=value)
                     # print("update Item Entry :- ")
                     # print(tempIngredient)
-                    # tempIngredient.save()
+                    tempIngredient.save()
 
         print("After Deleting")
         print(tempList)
@@ -393,7 +393,7 @@ def orderHome(request):
         display list of all order list from past
     """
     order = models.OrderIndividual.objects.all().order_by("-createdAt")
-    print(order)
+    # print(order)
     return render(request, 'orderList.html', {
         "toolbar": True,
         "putPlus": True,
@@ -413,25 +413,24 @@ def orderDetail(request, OrderID):
     """
     temp = getOrderDetail(OrderID)
     itemList = models.ItemIndividual.objects.all()
-    print("Order Details")
-    print(temp)
+    # print("Order Details")
+    # print(temp)
     return render(request, "order.html", {
         # "toolbar": True,
         "putPlus": True,
         "ItemList": itemList,
         "active": "order",
         "data": temp,
-        # "mapData": mapObj,
         "queryItem": "order_one",
         "heading": "Order",
     })
 
 # No longer Needed This Functions
-def orderNewTemplate(request):
-    return render(request, 'orderNew.html',{
-        "active": "order",
-        "heading": "Create",
-    })
+# def orderNewTemplate(request):
+#     return render(request, 'orderNew.html',{
+#         "active": "order",
+#         "heading": "Create",
+#     })
 
 def orderEditTemplate(request,id):
     order = models.OrderIndividual.objects.get(id=id)
@@ -454,16 +453,15 @@ def orderNewCreate(request):
     temp = dict()
     if request.method == "POST":
         # Submitted From Actions
-        print(request.POST)
         if request.POST.get("orderID") == "":
             order = models.OrderIndividual()
         else:
             orderId = request.POST.get("orderID")
             order = models.OrderIndividual.objects.get(id=orderId)
-            temp  = getOrderDetail(orderId)
+            temp = getOrderDetail(orderId)
 
         tempaddress = request.POST.get("address")
-        print("Address :- ",tempaddress.strip())
+        # print("Address :- ",tempaddress.strip())
         order.name = request.POST.get("name")
         order.numberOfPerson = request.POST.get("numPerson")
         order.email = request.POST.get("eamil")
@@ -472,8 +470,6 @@ def orderNewCreate(request):
         order.deliveryDate = request.POST.get("dataTime")
         order.save()
 
-        print("Order ")
-        print(order)
     else:
         # // New Order Blank Form
         return render(request, 'orderNew.html', {
@@ -496,36 +492,20 @@ def orderNewCreate(request):
 
 def orderAddItems(request):
 
-    print("From data")
-    print(request.POST)
-    print("Order Items")
     orderId = request.POST.get("orderID")
-
     temp = list(models.Order.objects.filter(orderId_id=orderId))
-    print("Temp List")
-    print(temp)
+
 
     for k,v in request.POST.items():
         if "itemID" in k:
             try:
-                tempItem = models.Order.objects.get(orderId_id=orderId,orderItem_id=v,deletedAt=None)
-                print("Object Found")
-                print(tempItem)
-                # if tempItem.deletedAt != None:
-                #     tempItem.deletedAt = None
-                #     tempItem.save()
-                # tempItem.deletedAt = datetime.now()
+                tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v,deletedAt=None)
                 temp.remove(tempItem)
             except:
-                tempItem = models.Order(orderId_id=orderId,orderItem_id=v)
+                tempItem = models.Order(orderId_id=orderId, orderItem_id=v)
                 tempItem.save()
-                print("Except Block")
-                print(v)
-                # pass
 
-    print("New Added Items")
     for i in temp:
-        print(i)
         i.deletedAt = datetime.now()
         i.save()
 
@@ -533,29 +513,29 @@ def orderAddItems(request):
 
 
 #  No longer Needed
-def orderDeleteItem(request):
-    res = {}
-    if request.method == "POST":
-        print(request.POST)
-        print(request.POST.get("orderId"))
-        print(request.POST.get("itemId"))
-        order = models.Order.objects.filter(orderId_id=request.POST.get("orderId"),itemId__itemId_id=request.POST.get("itemId"))
-        print("Order Data")
-        print(order)
-        for i in order:
-            print(i)
-            i.delete()
-        res["msg"] = "data Received"
-    else:
-        return redirect('inventory:order')
-
-    return JsonResponse(res)
+# def orderDeleteItem(request):
+#     res = {}
+#     if request.method == "POST":
+#         print(request.POST)
+#         print(request.POST.get("orderId"))
+#         print(request.POST.get("itemId"))
+#         order = models.Order.objects.filter(orderId_id=request.POST.get("orderId"),itemId__itemId_id=request.POST.get("itemId"))
+#         print("Order Data")
+#         print(order)
+#         for i in order:
+#             print(i)
+#             i.delete()
+#         res["msg"] = "data Received"
+#     else:
+#         return redirect('inventory:order')
+#
+#     return JsonResponse(res)
 
 
 def orderPrint(request, orderId):
-    print("Order Id ", orderId)
+    # print("Order Id ", orderId)
     storeOrder, storeList = getPrintData(orderId)
-    print(storeOrder)
+    # print(storeOrder)
     return render(request, "pdf/pdfPresentetor.html", {
         "orderName": models.OrderIndividual.objects.get(id=orderId).name,
         "storeList": storeList,
