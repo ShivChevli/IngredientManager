@@ -6,7 +6,7 @@
 {% block Main %}
 
 <div id="single-section">
-    <section class="single-container search-elements">
+    <section class="single-container list-container search-elements">
         {% for i in data %}
         <div class="suggetion-list-item">
             <p class="text" data-itemid="{{ i.id }}" data-queryItem="{{ queryItem }}">{{ i.name }} : {{ i.type.type }} </p>

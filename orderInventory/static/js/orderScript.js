@@ -235,8 +235,7 @@ function updateAvelableItem(){
             console.log("Button CLick");
             const itemId = this.dataset.itemid;
             let itemName = this.innerHTML;
-            console.log(this);
-            console.log(this.dataset.itemid);
+
             addedItemList[itemId] = itemName;
 
             let input= document.createElement("input");
@@ -329,7 +328,8 @@ function addItemIngredient(addBtn){
             </button>
         </div>
     `;
-
+    IngredientListUpdate();
+    scrollTOEnd("#itemIngredients");
 }
 
 
@@ -537,4 +537,19 @@ try{
 }
 catch (e) {
     console.log("This function is for item page");
+}
+
+
+function scrollTOEnd(element_selector){
+    //Utility Function
+    //Function To scroll at End of element
+    //Input :- Query Selector
+    //return :- Void
+    try{
+        let tmp = document.querySelector(element_selector);
+        tmp.scrollTo(0,tmp.scrollHeight);
+    }
+    catch (e) {
+        console.error("Wrong Query Selector");
+    }
 }

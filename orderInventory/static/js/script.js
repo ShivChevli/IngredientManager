@@ -203,7 +203,6 @@ function setDataFromUpdateItem(data,queryID){
 
                 document.getElementById("newIngredientHidden").appendChild(input);
 
-
             }
     }
 
@@ -216,7 +215,8 @@ function setDataFromUpdateItem(data,queryID){
     console.log(document.getElementById("newItemSubmitBtn").value = "Update");
 
     ItemIngredientUpdate();
-
+    IngredientListUpdate();
+    scrollTOEnd("#itemIngredients");
 
     return false;
 }
@@ -277,7 +277,6 @@ try{
 
                 document.getElementById("newIngredientHidden").appendChild(input);
 
-
                 ItemIngredientUpdate();
 
             })
@@ -298,18 +297,13 @@ catch (e) {
 
 //Set data for Category and Ingredient
 function setData(data,queryitem){
-    console.log("Query Item :"+queryitem);
+
     let ul = document.querySelector(".detail-list");
     ul.innerHTML = "";
-    console.log("Set Data Method called");
-    console.log(data);
     for(let item in data){
         if(data[item] != null && item !== "createdAt"){
-            console.log("Items :- ", item);
             try{
-                console.log("Input From Set");
                 document.getElementById(item).value = data[item];
-
             }
             catch(e){
                 console.log("Catch Block : "+item+" field Does not Exists")
@@ -321,15 +315,6 @@ function setData(data,queryitem){
                 console.log("Category set");
                 li.innerHTML = `<span>${item.toUpperCase() } : </span> ${findSore(data[item])}`;
             }
-            // else if(typeof(data[item]) == 'object'){
-            //     let table = creatTable(data[item])
-            //     let span1 = document.createElement("span");
-            //     span1.innerHTML = item.toUpperCase();
-            //     let span2 = document.createElement("span");
-            //     span2.appendChild(table);
-            //     li.appendChild(span1);
-            //     li.appendChild(span2);
-            // }
             else {
                 li.innerHTML = `<span>${item.toUpperCase() } : </span> ${data[item]}`;
             }
@@ -344,7 +329,7 @@ function setData(data,queryitem){
 function findSore(id){
     op = document.querySelector(`select`).options;
     for(let i=0;i<op.length;i++){
-        if (op[i].value == id){
+        if (parseInt(op[i].value) === id){
             return op[i].innerText;
         }
     }
@@ -375,15 +360,15 @@ function ItemIngredientUpdate(){
             IngredientListUpdate();
         }
     });
-    IngredientListUpdate()
 }
 
 function IngredientListUpdate(){
+    //Supportive Function
+
+    //Remove Ingredient Which is already in Item
     document.querySelectorAll("#ingredient-list-box .addIngredients").forEach(p=>{
         let tt = p.dataset.ingredientid;
         if(tt in addedIngredient){
-            console.log("Display None");
-            console.log(tt);
             p.parentElement.remove();
         }
     })
@@ -396,12 +381,6 @@ function IngredientListUpdate(){
         addIngredient.forEach(p=>{
             p.onclick = function (){
 
-                // document.getElementById("editFromHeading").innerText = p.innerText;
-                // document.getElementById("id").innerText = p.dataset.ingredientid;
-                console.log(p.dataset.ingredientid);
-                // document.getElementById("add-ingredient-form").style.display = "inline-block";
-                // document.getElementById("ingredient-list-box").style.display = "none";
-                // document.getElementById("defaultValue").focus();
                 addItemIngredient(p);
                 ItemIngredientUpdate();
 
@@ -471,51 +450,20 @@ function addItemIngredient(addBtn){
         </div>
     `;
 
+    IngredientListUpdate();
+    scrollTOEnd("#itemIngredients");
 }
 
-
-function addFields(data){
-    let updateField = document.getElementById("updateField");
-    data.forEach(div=>{
-            for(let key in div){
-            console.log("Key : "+key+"\nValue :- "+div[key]);
-                updateField.innerHTML += `<div class="form-element-box">
-                                        <label for=${key} class="from-lable">${key}</label>
-                                        <div class="form-control">
-                                            <input type="number" required class="from-element" value="${div[key]}" name=${key} id=${key} placeholder="Enter ${key} value">
-                                        </div>
-                                    </div>`;
-        }
-    })
-}
-
-
-function createRecentList(data) {
-    let div = document.createElement("div");
-    div.classList.add("suggetion-list-item");
-    div.innerHTML = `\
-        <p class='text'>${data}</p>\
-        <button class='add button-remove' >\
-            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
-                <path d="M2.165 19.551c.186.28.499.449.835.449h15c.4 0 .762-.238.919-.606l3-7A.998.998 0 0 0 21 11h-1V8c0-1.103-.897-2-2-2h-6.655L8.789 4H4c-1.103 0-2 .897-2 2v13h.007a1 1 0 0 0 .158.551zM18 8v3H6c-.4 0-.762.238-.919.606L4 14.129V8h14z"></path>\
-            </svg>\
-        </button >`;
-    document.querySelector(".single-container").appendChild(div);
-}
-
-function createFormElement(type, name, lable = "", id = "") {
-    let div = document.createElement("div");
-    div.classList.add("form-element-box");
-    let formDiv = document.createElement("div");
-    formDiv.classList.add("form-control");
-    formDiv.innerHTML = `<input type="${type}" class="from-element" name="${name}">`;
-    if (lable !== "") {
-        let l = document.createElement('label');
-        l.classList.add('from-lable');
-        l.innerHTML = lable;
-        div.appendChild(l);
-        l.id = id;
+function scrollTOEnd(element_selector){
+    //Utility Function
+    //Function To scroll at End of element
+    //Input :- Query Selector
+    //return :- Void
+    try{
+        let tmp = document.querySelector(element_selector);
+        tmp.scrollTo(0,tmp.scrollHeight);
     }
-    div.appendChild(formDiv);
-    document.querySelector(".section2").appendChild(div);
+    catch (e) {
+        console.error("Wrong Query Selector");
+    }
 }

@@ -4,7 +4,7 @@
     Recent Files
 {% endblock %}
 {% block Main %}
-    <section class="single-container">
+    <section class="single-container list-container">
             {% for i in data %}
                     <a href="{% url 'inventory:orderDetail' i.id %}" style="text-decoration: none">
                         <div class="suggetion-list-item">
@@ -19,7 +19,14 @@
                     </div>
                     </a>
                 {% endfor %}
-        </section>
+
+    </section>
 {% endblock %}
 {% block scripts %}
+    <script>
+        document.querySelector(".toolbox .add").onclick=function (){
+            window.history.pushState("/orderInventory/Order/","NewOrder");
+            window.location.replace("/orderInventory/Order/");
+        }
+    </script>
 {% endblock %}

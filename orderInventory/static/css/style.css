@@ -10,7 +10,7 @@ section::-webkit-scrollbar {
 }
 section::-webkit-scrollbar-track {
   /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
-  /*box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 
 }
 section::-webkit-scrollbar-thumb {
@@ -570,6 +570,23 @@ section h1{
 
 .edit-btn{
     margin: 10px auto !important;
+}
+
+.list-container{
+    max-height: 550px;
+}
+.list-container::-webkit-scrollbar {
+  width: 7px;
+}
+.list-container::-webkit-scrollbar:hover {
+  width: 12px !important;
+}
+.list-container::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+.list-container::-webkit-scrollbar:hover {
+  width: 0.7em;
 }
 
 @media screen and (min-width: 1367px){
