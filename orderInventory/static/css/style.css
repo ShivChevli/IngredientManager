@@ -5,21 +5,6 @@
     font-family: 'Readex Pro', sans-serif;
     scrollbar-width: thin;
 }
-section::-webkit-scrollbar {
-  width: 3px;
-}
-section::-webkit-scrollbar-track {
-  /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-
-}
-section::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-  outline: 1px solid slategrey;
-}
-section::-webkit-scrollbar:hover {
-  width: 0.7em;
-}
 
 .two-input-inline .form-element-box{
     width: 60%;
@@ -575,19 +560,6 @@ section h1{
 .list-container{
     max-height: 550px;
 }
-.list-container::-webkit-scrollbar {
-  width: 7px;
-}
-.list-container::-webkit-scrollbar:hover {
-  width: 12px !important;
-}
-.list-container::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-  outline: 1px solid slategrey;
-}
-.list-container::-webkit-scrollbar:hover {
-  width: 0.7em;
-}
 
 @media screen and (min-width: 1367px){
     main .display-home-item{
@@ -604,3 +576,42 @@ section h1{
         padding: 0;
     }
 }
+
+
+/*
+    ####################################################
+                   To Add Scholar Style
+    ####################################################
+*/
+
+/*section::-webkit-scrollbar {*/
+/*  width: 3px;*/
+/*}*/
+/*section::-webkit-scrollbar-track {*/
+/*  !*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*!*/
+/*  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+
+/*}*/
+/*section::-webkit-scrollbar-thumb {*/
+/*  background-color: darkgrey;*/
+/*  outline: 1px solid slategrey;*/
+/*}*/
+/*section::-webkit-scrollbar:hover {*/
+/*  width: 0.7em;*/
+/*}*/
+
+
+
+/*.single-container::-webkit-scrollbar {*/
+/*  width: 7px;*/
+/*}*/
+/*.single-container::-webkit-scrollbar:hover {*/
+/*  width: 12px !important;*/
+/*}*/
+/*.single-container::-webkit-scrollbar-thumb {*/
+/*  background-color: darkgrey;*/
+/*  outline: 1px solid slategrey;*/
+/*}*/
+/*.single-container::-webkit-scrollbar:hover {*/
+/*  width: 0.7em;*/
+/*}*/

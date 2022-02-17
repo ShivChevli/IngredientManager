@@ -18,14 +18,12 @@ urlpatterns = [
 
     path('Items/', views.itemsHome, name="items"),
     path('ItemsNew/', views.newItems, name="new_items"),
-    # path('ItemsUpdate/', views.updateItems, name="update_items"),
     path('ItemsDelete/', views.deleteItems, name="delete_items"),
 
     path('OrderList/', views.orderHome, name="orderList"),
     path('OrderDetail/<int:OrderID>/', views.orderDetail, name="orderDetail"),
     path('Order/', views.orderNewCreate, name="orderNewCreate"),
     path('OrderAddItems/', views.orderAddItems, name="orderAddItems"),
-    # path('OrderDeleteItems/', views.orderDeleteItem, name="orderDeleteItems"),
 
     path('OrderEdit/<int:id>', views.orderEditTemplate, name="orderEdit"),
     path('OrderPrintOptions/<int:orderId>', views.orderPrint, name="orderPrint"),

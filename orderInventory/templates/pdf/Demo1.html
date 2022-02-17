@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="US-ASCII">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Layout</title>
+    <style>
+        @font-face {
+            font-face-name: Custom;
+            src: url("{% static 'ttf/NotoSansGujarati-Bold.ttf' %}");
+        }
+
+        *{
+            font-family: Custom;
+            padding: 0;
+            margin: 0;
+            font-size: 13px;
+        }
+        @page  {
+            size: A4;
+            margin: 10mm;
+            @bottom-right {
+                content: "Page " counter(page) " out of "  counters(page,"");
+                margin-bottom: 10px;
+            }
+        }
+
+        .shree-div{
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .shree-div span{
+            width: 2px;
+            border-radius: 1px;
+            height: 10px;
+            background-color: #000;
+            display: inline-block;
+            margin-left: 0px;
+        }
+        header {
+            display: flex;
+            text-align: center;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+        .logo-img-div img{
+            width: 100%;
+        }
+
+        table{
+            width: 100%;
+            margin: 7px 5px;
+            border-collapse: collapse;
+        }
+
+        tr td:nth-of-type(1){
+            font-weight: 500;
+        }
+        table:nth-of-type(2) tr td:nth-of-type(1){
+            {#width: 100px !important;#}
+             width: 165px;
+        }
+
+        .extra_charge_table{
+            width: 350px !important;
+            margin: 5px auto;
+            text-align: center;
+        }
+        td,th{
+            border: 1px solid #000;
+            padding: 7px;
+        }
+
+        .item-list{
+            padding-left: 30px;
+            line-height: 18px;
+        }
+        h1{
+            font-size: 20px;
+            text-align: center;
+            padding: 7px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shree-div">
+        શ્રી૧<span></span>
+    </div>
+    <header>
+        <span>શ્રી જય જલારામ</span>
+        <span>શ્રીગણેશાયનમઃ </span>
+        <span>શ્રી જયબાપાસીતારામ</span>
+    </header>
+    <main   >
+        <div class="logo-img-div">
+            <img src="{% static 'img/NANVIN_BHAI_MANU_PACAKGES.png' %}" alt="">
+        </div>
+
+            <!-- client Detail Table -->
+            <table class="client-detail-table">
+                <tr>
+                    <td>Client Name : </td>
+                    <td>{{ orderDetail.name }}</td>
+                </tr>
+                <tr>
+                    <td>Event Data :</td>
+                    <td>{{ orderDetail.deliveryDate.date }}</td>
+                </tr>
+                <tr>
+                    <td>Venue :</td>
+                    <td>{{ orderDetail.address }}</td>
+                </tr>
+                <tr>
+                    <td>NO. Of Persons : </td>
+                    <td>{{ orderDetail.numberOfPerson }}</td>
+                </tr>
+            </table>
+
+            <h1 class="timing-title">
+                {% if time %}
+                    Lunch
+                {% else %}
+                    Dinner
+                {% endif %}
+            Items
+            </h1>
+
+            <table class="itemTable">
+                {% for key,value in orderdata.items %}
+                    <tr>
+                        <td >{{ key }}</td>
+                        <td>
+                            <div>
+                                <ol class="item-list">
+                                    {% for i in value %}
+                                        <li> {{ i }}</li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        <h1>Extra Charges</h1>
+        <div>
+            <table class="extra_charge_table">
+                <tr>
+                    <th></th>
+                    <th>No. </th>
+                </tr>
+                <tr>
+                    <td>P.R.O</td>
+                    <td width="200"></td>
+                </tr>
+                <tr>
+                    <td>Bombay Boys</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Decoration</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+    </main>
+
+</body>
+</html>

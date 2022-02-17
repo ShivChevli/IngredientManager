@@ -5,18 +5,20 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
 
-
 from weasyprint import HTML, CSS
 from xhtml2pdf import pisa
 from django.template.loader import get_template, render_to_string
 from django.conf import settings
 import tempfile
 
+from django_weasyprint import WeasyTemplateResponse
+
 import encodings
 from . import models
 from datetime import datetime
 import json
 import io
+
 
 ####################################################
 # Try WeasyPrint Library For Generating PDF
@@ -40,6 +42,7 @@ def index(request):
         "data": order,
         "heading": "Recent Files",
     })
+
 
 #####################################################
 ################# Store Functions  #################
@@ -113,7 +116,7 @@ def deleteCategory(request):
         msg = f"Category {deleteCategory.name} with Id {deleteCategory.id} is Deleted Successfully"
 
     # return redirect('inventory:category')
-    return  JsonResponse({
+    return JsonResponse({
         "Status": 200,
         "Message": msg,
     })
@@ -152,14 +155,14 @@ def newIngredient(request):
         print(request.POST)
         print("data", request.POST.get("categoryId"))
         print("data", request.POST.get("name"))
-        ingre = models.IngredientIndividual(name=request.POST.get("name"),category_id=request.POST.get("categoryId"))
+        ingre = models.IngredientIndividual(name=request.POST.get("name"), category_id=request.POST.get("categoryId"))
         print("New Ingredient")
         ingre.save()
         if request.POST.get("json") == "1":
             print("Return JSON")
             return JsonResponse({
-                "status" : 200,
-                "newIngredientId":ingre.id
+                "status": 200,
+                "newIngredientId": ingre.id
             })
     return redirect('inventory:ingredient')
 
@@ -242,19 +245,11 @@ def newItems(request):
         input :- Takes Series for form data named as ingredientId{i} and value{i} with addidtional argument of
         new item name
     """
-    # print(request.POST)
-    # return JsonResponse({
-    #     "Status": 200,
-    #     "msg": "Data Recived"
-    # })
     if request.method == "POST":
-        print("Submitted Data")
-        print(request.POST)
 
         json = request.POST.get("json")
 
         itemId = request.POST.get("ItemId")
-        print("itemId ", itemId)
 
         tempList = []
 
@@ -265,48 +260,28 @@ def newItems(request):
             Item.save()
         else:
             # update Item Fetch
-            print(itemId)
             Item = models.ItemIndividual.objects.get(id=itemId)
             Item.name = request.POST.get("name")
             Item.type_id = request.POST.get("type")
             Item.modifyAt = datetime.now()
             Item.save()
-            print(Item)
             tempList = list(models.Items.objects.filter(itemId=Item))
-            print("Before Deleting")
-            print(tempList)
-            print(len(tempList))
-
 
         for key, value in request.POST.items():
-            # if "ingredientId" in key:
-            #     print("New Item Entry :- ")
-            #     newItemEntry = models.Items(itemId=Item, ingredientId_id=value)
-            #     print(newItemEntry)
 
             if "ingredientId" in key:
                 try:
-                    tempIngredient = models.Items.objects.get(itemId=Item,ingredientId_id=value)
+                    tempIngredient = models.Items.objects.get(itemId=Item, ingredientId_id=value)
                     if tempIngredient in tempList:
-                        # print("Ingredient Found")
                         tempList.remove(tempIngredient)
                 except:
-                    print("New Item Entry :- ")
-                    tempIngredient = models.Items(itemId=Item,ingredientId_id=value)
-                    # print("update Item Entry :- ")
-                    print(tempIngredient)
+                    tempIngredient = models.Items(itemId=Item, ingredientId_id=value)
                     tempIngredient.save()
-
-        print("After Deleting")
-        print(tempList)
-        print(len(tempList))
 
         # Ingredient Deleted From Items
         for i in tempList:
-            print("Delete items")
-            print(i)
             i.delete()
-        print(json)
+
         if json == "true":
             return JsonResponse({
                 "Status": 200,
@@ -319,45 +294,6 @@ def newItems(request):
 
     else:
         print(request.GET)
-    return redirect('inventory:items')
-
-# No Longer Need of this funtionn it was added with New ingredient from
-def updateItems(request):
-    """
-        Update Item Data
-        input :- accept same data as new items Just addition about item_id which need to update
-    """
-    if request.method == "POST":
-        itemId = request.POST.get("ItemId")
-        updateItem = models.ItemIndividual.objects.get(id=itemId)
-
-        tempList = list(models.Items.objects.filter(itemId=updateItem))
-        print("Before Deleting")
-        print(tempList)
-        print(len(tempList))
-
-
-        for key, value in request.POST.items():
-            if "ingredientId" in key:
-                try:
-                    tempIngredient = models.Items.objects.get(itemId=updateItem,ingredientId_id=value)
-                    if tempIngredient in tempList:
-                        # print("Ingredient Found")
-                        tempList.remove(tempIngredient)
-                except:
-                    # print("Ingredient Does Not Exist")
-                    tempIngredient = models.Items(itemId=updateItem,ingredientId_id=value)
-                    # print("update Item Entry :- ")
-                    # print(tempIngredient)
-                    tempIngredient.save()
-
-        print("After Deleting")
-        print(tempList)
-        print(len(tempList))
-
-        # Ingredient Deleted From Items
-        for i in tempList:
-            print(i)
 
     return redirect('inventory:items')
 
@@ -370,16 +306,11 @@ def deleteItems(request):
     if request.method == "POST":
         itemIndividual = models.ItemIndividual.objects.get(id=request.POST.get('itemID'))
         items = models.Items.objects.filter(itemId=itemIndividual)
-        print("items Name :- ")
-        print(itemIndividual)
-        print("Item's Ingredients ")
         for i in items:
-            print(items)
             i.delete()
         itemIndividual.delete()
 
     return redirect('inventory:items')
-
 
 
 #####################################################
@@ -393,7 +324,6 @@ def orderHome(request):
         display list of all order list from past
     """
     order = models.OrderIndividual.objects.all().order_by("-createdAt")
-    # print(order)
     return render(request, 'orderList.html', {
         "toolbar": True,
         "putPlus": True,
@@ -413,8 +343,7 @@ def orderDetail(request, OrderID):
     """
     temp = getOrderDetail(OrderID)
     itemList = models.ItemIndividual.objects.all()
-    # print("Order Details")
-    # print(temp)
+
     return render(request, "order.html", {
         # "toolbar": True,
         "putPlus": True,
@@ -425,14 +354,7 @@ def orderDetail(request, OrderID):
         "heading": "Order",
     })
 
-# No longer Needed This Functions
-# def orderNewTemplate(request):
-#     return render(request, 'orderNew.html',{
-#         "active": "order",
-#         "heading": "Create",
-#     })
-
-def orderEditTemplate(request,id):
+def orderEditTemplate(request, id):
     order = models.OrderIndividual.objects.get(id=id)
     return render(request, 'orderNew.html', {
         "data": order,
@@ -461,7 +383,6 @@ def orderNewCreate(request):
             temp = getOrderDetail(orderId)
 
         tempaddress = request.POST.get("address")
-        # print("Address :- ",tempaddress.strip())
         order.name = request.POST.get("name")
         order.numberOfPerson = request.POST.get("numPerson")
         order.email = request.POST.get("eamil")
@@ -477,7 +398,7 @@ def orderNewCreate(request):
             "heading": "Create",
         })
 
-    IngredientOption  = models.IngredientIndividual.objects.all();
+    IngredientOption = models.IngredientIndividual.objects.all();
 
     return render(request, 'orderAddItems.html', {
         "ItemList": itemList,
@@ -486,20 +407,18 @@ def orderNewCreate(request):
         "data": temp,
         "active": "order",
         "queryItem": "order_one",
-        "options":IngredientOption,
+        "options": IngredientOption,
     })
 
 
 def orderAddItems(request):
-
     orderId = request.POST.get("orderID")
     temp = list(models.Order.objects.filter(orderId_id=orderId))
 
-
-    for k,v in request.POST.items():
+    for k, v in request.POST.items():
         if "itemID" in k:
             try:
-                tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v,deletedAt=None)
+                tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v, deletedAt=None)
                 temp.remove(tempItem)
             except:
                 tempItem = models.Order(orderId_id=orderId, orderItem_id=v)
@@ -512,40 +431,18 @@ def orderAddItems(request):
     return redirect('inventory:orderDetail', orderId)
 
 
-#  No longer Needed
-# def orderDeleteItem(request):
-#     res = {}
-#     if request.method == "POST":
-#         print(request.POST)
-#         print(request.POST.get("orderId"))
-#         print(request.POST.get("itemId"))
-#         order = models.Order.objects.filter(orderId_id=request.POST.get("orderId"),itemId__itemId_id=request.POST.get("itemId"))
-#         print("Order Data")
-#         print(order)
-#         for i in order:
-#             print(i)
-#             i.delete()
-#         res["msg"] = "data Received"
-#     else:
-#         return redirect('inventory:order')
-#
-#     return JsonResponse(res)
-
-
 def orderPrint(request, orderId):
-    # print("Order Id ", orderId)
     storeOrder, storeList = getPrintData(orderId)
-    # print(storeOrder)
+
     return render(request, "pdf/pdfPresentetor.html", {
         "orderName": models.OrderIndividual.objects.get(id=orderId).name,
         "storeList": storeList,
-        "orderId" : orderId,
-        "active" : "order",
+        "orderId": orderId,
+        "active": "order",
     })
 
 
 def orderPrintData(request, orderId, dataType):
-
     mapObj = {
         "1": "Dairy Product",
         "2": "Vegetable",
@@ -553,44 +450,57 @@ def orderPrintData(request, orderId, dataType):
         "4": "kariyana",
         "5": "other",
     }
-    print("Main")
+
     orderDetail = models.OrderIndividual.objects.get(id=orderId)
 
     d = orderDetail.deliveryDate.strftime("%d/%m/%Y")
     tt1 = orderDetail.deliveryDate.strftime("%H")
-    print("Timimg")
+
     if int(tt1) < 15:
         tt1 = True
-        print("Morning")
     else:
         tt1 = False
-        print("Evening")
 
     if dataType == "main":
-            (data, storeList) = getPrintData(orderId)
-            tempOredrData = models.Order.objects.filter(orderId_id=orderId)
-            orderData = list()
-            print(tempOredrData)
-            print("Data :- ")
-            print(data)
+        (data, storeList) = getPrintData(orderId)
+        tempOredrData = models.Order.objects.filter(orderId_id=orderId)
+        orderData = list()
 
 
-            return render(request, 'pdf/pdf3.html',{
-                "msg" : "main Method",
-                "orderDetail": {
-                    "id":orderDetail.id,
-                    "name":orderDetail.name,
-                    "address":orderDetail.address,
-                    "date": orderDetail.deliveryDate,
-                    "mo_number":orderDetail.mobileNumber,
-                    "numberOfPerson":orderDetail.numberOfPerson
-                },
-                "orderdata": data,
-                "date": d,
-                "time": tt1,
-                "category": "main",
-                "jsonData" : json.dumps(data),
-            })
+        # return render(request, 'pdf/pdf3.html', {
+        #     "msg": "main Method",
+        #     "orderDetail": {
+        #         "id": orderDetail.id,
+        #         "name": orderDetail.name,
+        #         "address": orderDetail.address,
+        #         "date": orderDetail.deliveryDate,
+        #         "mo_number": orderDetail.mobileNumber,
+        #         "numberOfPerson": orderDetail.numberOfPerson
+        #     },
+        #     "orderdata": data,
+        #     "date": d,
+        #     "time": tt1,
+        #     "category": "main",
+        #     "jsonData": json.dumps(data),
+        # })
+
+        context = {
+            "msg": "main Method",
+            "orderDetail": {
+                "id": orderDetail.id,
+                "name": orderDetail.name,
+                "address": orderDetail.address,
+                "date": orderDetail.deliveryDate,
+                "mo_number": orderDetail.mobileNumber,
+                "numberOfPerson": orderDetail.numberOfPerson
+            },
+            "orderdata": data,
+            "date": d,
+            "time": tt1,
+            "category": "main",
+            "jsonData": json.dumps(data),
+        }
+        return pdfGenration1(request,context)
 
     if dataType == "client":
 
@@ -603,10 +513,7 @@ def orderPrintData(request, orderId, dataType):
         for i in tempData:
             data[i.orderItem.type.type].append(i.orderItem.name)
 
-        print("Data :- ")
-        print(data)
-
-        return render(request, 'pdf/pdf1.html', {
+        context = {
             "msg": "main Method",
             "orderDetail": orderDetail,
             "orderdata": data,
@@ -614,43 +521,48 @@ def orderPrintData(request, orderId, dataType):
             "date": orderDetail.deliveryDate,
             "category": "main",
             "jsonData": json.dumps(data),
-        })
+        }
 
-    print(orderId)
-    print("Main :- ")
-    print(dataType)
+        return pdfGenration1(request, context, True)
+
+        # return render(request, 'pdf/pdf1.html', {
+        #     "msg": "main Method",
+        #     "orderDetail": orderDetail,
+        #     "orderdata": data,
+        #     "time": tt1,
+        #     "date": orderDetail.deliveryDate,
+        #     "category": "main",
+        #     "jsonData": json.dumps(data),
+        # })
+
+
     (data, storeList) = getPrintData(orderId, dataType)
 
-    print("OrderId ")
-    print(dataType)
-    print(mapObj[dataType])
+    # return render(request, "pdf/pdf3.html", {
+    #     "orderdata": data,
+    #     "date": d,
+    #     "time": tt1,
+    #     "category": mapObj[dataType],
+    #     "jsonData": json.dumps(data),
+    # })
 
-    d = orderDetail.deliveryDate.strftime("%d/%m/%Y")
-    tt1 = orderDetail.deliveryDate.strftime("%H")
-    print("Timimg")
-    if int(tt1) < 15:
-        tt1 = True
-        print("Morning")
-    else:
-        tt1 = False
-        print("Evening")
-
-    return render(request, "pdf/pdf3.html", {
-        # "data":data,
+    context ={
         "orderdata": data,
         "date": d,
-        "time" : tt1,
+        "time": tt1,
         "category": mapObj[dataType],
         "jsonData": json.dumps(data),
-    })
+    }
+
+    return pdfGenration1(request, context)
 
 
 # Function to Experiment with PDF Generation
-def pdfGenration1(request):
+def pdfGenration1(request, context, clientPdf=False):
     data = models.IngredientIndividual.objects.all()
 
     template_path = 'pdf/Demo.html'
-    context = {'data': data}
+    # context = {'data': data}
 
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
@@ -662,17 +574,16 @@ def pdfGenration1(request):
     response['Content-Disposition'] = 'filename="report.pdf"'
 
     # find the template and render it.
-    template = render_to_string(template_path,context=context)
+    template = render_to_string(template_path, context=context)
     print(template)
     html = HTML(string=template)
     from weasyprint.text.fonts import FontConfiguration
 
     font_config = FontConfiguration()
 
-    # html.write_pdf(settings.MEDIA_ROOT+"/pdf_documents/demo1.pdf", font_config=font_config)
+    html.write_pdf(settings.MEDIA_ROOT+"/pdf_documents/demo1.pdf", font_config=font_config)
     result = html.write_pdf()
 
-    from django_weasyprint import WeasyTemplateResponse
     # create a pdf
     # pisa_status = pisa.CreatePDF(io.BytesIO(html.encoding('utf-8')),
     #     dest=response,encoding="binary")
@@ -690,12 +601,24 @@ def pdfGenration1(request):
     #     output.flush()
     #     output = open(output.name, 'r')
     #     response.write(output.read())
-    print("What id Return")
-    print(WeasyTemplateResponse(request, html.write_pdf()))
     res = {
         "msg": "Hello"
     }
-    return JsonResponse(res)
+    header = {
+        "content-type": 'application/pdf',
+        "Content-Disposition": "report",
+
+    }
+
+    if clientPdf :
+        return WeasyTemplateResponse(request=request, filename="report.pdf", template='pdf/Demo1.html', attachment=False,
+                              headers=header, context=context)
+
+    print("What id Return")
+    print(WeasyTemplateResponse(request=request, filename="report.pdf", template=template_path, attachment=False,
+                                context=context, headers=header).rendered_content)
+
+    return WeasyTemplateResponse(request=request,filename="report.pdf", template=template_path,attachment=False, headers=header, context=context)
 
 
 def pdfHtmlView(request):
@@ -747,7 +670,7 @@ def getDetail(request):
             if len(temp) > 0:
                 for i in temp:
                     key = models.IngredientIndividual.objects.get(id=i.ingredientId.id)
-                    data["fields"]["ingredient"].append({i.ingredientId.id : key.name})
+                    data["fields"]["ingredient"].append({i.ingredientId.id: key.name})
             res = l
 
         elif data == "category_one":
@@ -799,13 +722,13 @@ def test1(request):
 
 def getOrderDetail(OrderID):
 
-    print(OrderID)
+    # print(OrderID)
+
     temp = dict()
     fields = list()
     items = list()
     order = models.OrderIndividual.objects.get(id=OrderID)
-    orderItems = models.Order.objects.filter(orderId=OrderID,deletedAt=None)
-    print(orderItems)
+    orderItems = models.Order.objects.filter(orderId=OrderID, deletedAt=None)
     lastName = ""
     for i in orderItems:
         items = []
@@ -816,12 +739,11 @@ def getOrderDetail(OrderID):
                 "name": j.ingredientId.name
             })
         fields.append({
-            "id" : i.orderItem.id,
+            "id": i.orderItem.id,
             "name": i.orderItem.name,
             "ingredients": items
         })
 
-    print("fiedls :- ", fields)
     temp["orderId"] = order.id
     temp["orderName"] = order.name
     temp["mobileNumber"] = order.mobileNumber
@@ -836,7 +758,7 @@ def getOrderDetail(OrderID):
 
 
 # //Suportive Funtions
-def getPrintData(orderId,storeId=-1):
+def getPrintData(orderId, storeId=-1):
     categoryList = []
     category = models.Category.objects.all()
     for i in category:
@@ -844,40 +766,33 @@ def getPrintData(orderId,storeId=-1):
             "id": i.id,
             "name": i.name,
         })
-    tempOrderData = models.Order.objects.filter(orderId_id=orderId,deletedAt=None)
-    print("Print Data Function")
-    print("Category :- ")
-    print(category)
-    print("Order Data :- ")
-    print(tempOrderData)
+    tempOrderData = models.Order.objects.filter(orderId_id=orderId, deletedAt=None)
     orderList = []
     count = 1
     if storeId == -1:
         for i in tempOrderData:
             ingredientList = []
             tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id)
-            print("Order Item ")
-            print(tempItem)
             for j in tempItem:
                 ingredientList.append(j.ingredientId.name)
             orderList.append({
                 "number": count,
-                "ItemName" : i.orderItem.name,
+                "ItemName": i.orderItem.name,
                 "ingredient": ingredientList,
             })
-            count = count +1
+            count = count + 1
     else:
         for i in tempOrderData:
-            tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id,ingredientId__category_id=storeId)
+            tempItem = models.Items.objects.filter(itemId_id=i.orderItem_id, ingredientId__category_id=storeId)
             if len(tempItem) != 0:
                 ingredientList = []
                 for j in tempItem:
                     ingredientList.append(j.ingredientId.name)
                 orderList.append({
                     "number": count,
-                    "ItemName" : i.orderItem.name,
+                    "ItemName": i.orderItem.name,
                     "ingredient": ingredientList,
                 })
-                count = count +1
+                count = count + 1
 
-    return orderList,categoryList
+    return orderList, categoryList
