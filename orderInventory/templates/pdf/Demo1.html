@@ -7,7 +7,7 @@
     <meta charset="US-ASCII">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Layout</title>
+    <title>{{ title }}</title>
     <style>
         @font-face {
             font-face-name: Custom;
@@ -18,20 +18,23 @@
             font-family: Custom;
             padding: 0;
             margin: 0;
-            font-size: 13px;
+            font-size: 12px;
         }
         @page  {
             size: A4;
-            margin: 10mm;
+            margin: 3mm 10mm 5mm;
             @bottom-right {
                 content: "Page " counter(page) " out of "  counters(page,"");
                 margin-bottom: 10px;
+                font-size: 13px;
             }
         }
 
         .shree-div{
             text-align: center;
             margin-bottom: 5px;
+            margin-top: 0;
+            font-size: 15px;
         }
         .shree-div span{
             width: 2px;
@@ -39,13 +42,17 @@
             height: 10px;
             background-color: #000;
             display: inline-block;
-            margin-left: 0px;
+            margin-left: 0;
         }
         header {
             display: flex;
             text-align: center;
             justify-content: space-around;
             margin-bottom: 15px;
+        }
+
+        header span{
+            font-size: 15px !important;
         }
         .logo-img-div img{
             width: 100%;
@@ -57,14 +64,6 @@
             border-collapse: collapse;
         }
 
-        tr td:nth-of-type(1){
-            font-weight: 500;
-        }
-        table:nth-of-type(2) tr td:nth-of-type(1){
-            {#width: 100px !important;#}
-             width: 165px;
-        }
-
         .extra_charge_table{
             width: 350px !important;
             margin: 5px auto;
@@ -72,12 +71,30 @@
         }
         td,th{
             border: 1px solid #000;
-            padding: 7px;
+            padding: 5px 7px;
         }
 
+        .client-detail-table th{
+            width: 150px;
+            font-weight: 600;
+        }
+        .itemTable td {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .itemTable th{
+            width: 150px;
+            font-weight: 600;
+        }
         .item-list{
-            padding-left: 30px;
-            line-height: 18px;
+            padding-left: 25px;
+            line-height: 19px;
+        }
+        .item-list li {
+            font-size: 14px!important;
+        }
+        .item-list li span{
+            font-size: 15px!important;
         }
         h1{
             font-size: 20px;
@@ -105,19 +122,19 @@
             <!-- client Detail Table -->
             <table class="client-detail-table">
                 <tr>
-                    <td>Client Name : </td>
+                    <th scope="row">Client Name : </th>
                     <td>{{ orderDetail.name }}</td>
                 </tr>
                 <tr>
-                    <td>Event Data :</td>
+                    <th scope="row">Event Data :</th>
                     <td>{{ orderDetail.deliveryDate.date }}</td>
                 </tr>
                 <tr>
-                    <td>Venue :</td>
+                    <th scope="row">Venue :</th>
                     <td>{{ orderDetail.address }}</td>
                 </tr>
                 <tr>
-                    <td>NO. Of Persons : </td>
+                    <th scope="row">NO. Of Persons : </th>
                     <td>{{ orderDetail.numberOfPerson }}</td>
                 </tr>
             </table>
@@ -134,12 +151,12 @@
             <table class="itemTable">
                 {% for key,value in orderdata.items %}
                     <tr>
-                        <td >{{ key }}</td>
+                        <th scope="row" >{{ key }}</th>
                         <td>
                             <div>
                                 <ol class="item-list">
                                     {% for i in value %}
-                                        <li> {{ i }}</li>
+                                        <li> <span> {{ i }} </span> </li>
                                     {% endfor %}
                                 </ol>
                             </div>

@@ -463,8 +463,8 @@ def orderPrintData(request, orderId, dataType):
 
     if dataType == "main":
         (data, storeList) = getPrintData(orderId)
-        tempOredrData = models.Order.objects.filter(orderId_id=orderId)
-        orderData = list()
+        # tempOredrData = models.Order.objects.filter(orderId_id=orderId)
+        # orderData = list()
 
 
         # return render(request, 'pdf/pdf3.html', {
@@ -497,6 +497,7 @@ def orderPrintData(request, orderId, dataType):
             "orderdata": data,
             "date": d,
             "time": tt1,
+            "title": "Main PDF",
             "category": "main",
             "jsonData": json.dumps(data),
         }
@@ -518,6 +519,7 @@ def orderPrintData(request, orderId, dataType):
             "orderDetail": orderDetail,
             "orderdata": data,
             "time": tt1,
+            "title": "Client Pdf",
             "date": orderDetail.deliveryDate,
             "category": "main",
             "jsonData": json.dumps(data),
@@ -550,6 +552,7 @@ def orderPrintData(request, orderId, dataType):
         "orderdata": data,
         "date": d,
         "time": tt1,
+        "title": "Category",
         "category": mapObj[dataType],
         "jsonData": json.dumps(data),
     }
@@ -559,64 +562,20 @@ def orderPrintData(request, orderId, dataType):
 
 # Function to Experiment with PDF Generation
 def pdfGenration1(request, context, clientPdf=False):
-    data = models.IngredientIndividual.objects.all()
 
     template_path = 'pdf/Demo.html'
-    # context = {'data': data}
-
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='application/pdf')
 
     # code for download
     # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-
-    # code from Display
-    response['Content-Disposition'] = 'filename="report.pdf"'
-
-    # find the template and render it.
-    template = render_to_string(template_path, context=context)
-    print(template)
-    html = HTML(string=template)
-    from weasyprint.text.fonts import FontConfiguration
-
-    font_config = FontConfiguration()
-
-    html.write_pdf(settings.MEDIA_ROOT+"/pdf_documents/demo1.pdf", font_config=font_config)
-    result = html.write_pdf()
-
-    # create a pdf
-    # pisa_status = pisa.CreatePDF(io.BytesIO(html.encoding('utf-8')),
-    #     dest=response,encoding="binary")
-
-    # if error then show some funy view
-    # if pisa_status.err:
-    #     return HttpResponse('We had some errors <pre>' + html + '</pre>')
-
-    # response = HttpResponse(content_type='application/pdf;')
-    # response['Content-Disposition'] = 'inline; filename=list_people.pdf'
-    # response['Content-Transfer-Encoding'] = 'binary'
-    # # response["body"] = result
-    # with tempfile.NamedTemporaryFile(delete=True) as output:
-    #     output.write(result)
-    #     output.flush()
-    #     output = open(output.name, 'r')
-    #     response.write(output.read())
-    res = {
-        "msg": "Hello"
-    }
     header = {
         "content-type": 'application/pdf',
         "Content-Disposition": "report",
 
     }
 
-    if clientPdf :
+    if clientPdf:
         return WeasyTemplateResponse(request=request, filename="report.pdf", template='pdf/Demo1.html', attachment=False,
                               headers=header, context=context)
-
-    print("What id Return")
-    print(WeasyTemplateResponse(request=request, filename="report.pdf", template=template_path, attachment=False,
-                                context=context, headers=header).rendered_content)
 
     return WeasyTemplateResponse(request=request,filename="report.pdf", template=template_path,attachment=False, headers=header, context=context)
 
