@@ -4,7 +4,7 @@ techStack :
     Python, Django(v3.2.9), HTML5, CSS3, fetch API, JavaScript , sqlite3
 
 dependent Library : 
-    xml2pdf(v0.2.5), djangorestframework(v3.12.4)
+    django_weasyprint(v2.1.0), djangorestframework(v3.12.4), 
 
 To run ths application locally follow below steps.
 

@@ -172,8 +172,9 @@
     const date = new Date();
     document.getElementById("date").innerText = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 
+    console.log(localStorage.getItem("theme"));
 
-    if(localStorage.getItem("theme") === ""){
+    if(localStorage.getItem("theme") === null){
         console.log("Theme Set");
         localStorage.setItem("theme","light");
     }
