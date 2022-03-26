@@ -411,7 +411,7 @@ def orderAddItems(request):
 
         for i in temp:
             i.deletedAt = datetime.now()
-        i.save()
+            i.save()
 
     return redirect('inventory:orderDetail', orderId)
 
