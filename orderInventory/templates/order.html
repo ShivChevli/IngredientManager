@@ -39,13 +39,21 @@
                     <p>{{ data.numberOfPerson }}</p>
                 </div>
                 <div class="section4">
-                    <a href="{% url 'inventory:orderList' %}" class="button-remove button-style-1 cancel-btn"> Cancel</a>
+                    <button onclick="back()" class="button-remove button-style-1 cancel-btn"> Cancel</button>
                     <a href="{% url 'inventory:orderPrint' data.orderId %}" class="button-remove  button-style-1 button-style-2 ">
                         Print
                     </a>
                     <a href="{% url 'inventory:orderEdit' data.orderId  %}" id="editBtn" class="button-remove button-style-1">
                         Edit
                     </a>
+{#                    <a href=""  class="button-remove button-style-1 cancel-btn"> Lock Order</a>#}
+
+                    <form method="post" id="deleteOrderFrom" action="{% url 'inventory:delete_order'%}" onsubmit="confirmSubmission(event)">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ data.orderId}}" name="orderId">
+                        <button class="button-remove button-style-1 cancel-btn" role="button" type="submit"> Delete</button>
+                    </form>
+
                 </div>
             </section>
         <section class="section2" id="section1">
@@ -81,4 +89,14 @@
 
 {% block scripts %}
     <script src="{% static 'js/orderScript.js' %}"></script>
+    <script>
+        function back(){
+            window.history.back();
+        }
+        function confirmSubmission(event) {
+            if (confirm("Do you Really want to delete this data ?") == false) {
+                return event.preventDefault();
+            }
+        }
+    </script>
 {% endblock %}

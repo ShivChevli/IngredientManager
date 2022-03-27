@@ -28,6 +28,7 @@ class ItemIndividual(models.Model):
         null=True,
         blank=True
     )
+    confirmItem = models.BooleanField(default=False)
     createdAt = models.DateTimeField(default=datetime.now)
     modifyAt = models.DateTimeField(blank=True, null=True)
 
@@ -93,6 +94,7 @@ class OrderIndividual(models.Model):
     numberOfPerson = models.IntegerField(blank=True,null=True)
     email = models.EmailField(blank=True,null=True)
     deliveryDate = models.DateTimeField(blank=True, null=True)
+    confirmOrder = models.BooleanField(default=False)
     createdAt = models.DateTimeField(default=datetime.now)
     modifyAt = models.DateTimeField(default=None, blank=True, null=True)
     deletedAt = models.DateTimeField(default=None, blank=True, null=True)

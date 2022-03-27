@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
 
+from django.utils import timezone
 from weasyprint import HTML, CSS
 
 from django.template.loader import get_template, render_to_string
@@ -244,7 +245,7 @@ def newItems(request):
             Item = models.ItemIndividual.objects.get(id=itemId)
             Item.name = request.POST.get("name")
             Item.type_id = request.POST.get("type")
-            Item.modifyAt = datetime.now()
+            Item.modifyAt = timezone.now()
             Item.save()
             tempList = list(models.Items.objects.filter(itemId=Item))
 
@@ -303,9 +304,9 @@ def deleteItems(request):
 @cache_control(max_age=3600)
 def orderHome(request):
     """
-        display list of all order list from past
+        display list of all confirm order list from past
     """
-    order = models.OrderIndividual.objects.all().order_by("-createdAt")
+    order = models.OrderIndividual.objects.filter(confirmOrder=True).order_by("-createdAt")
     return render(request, 'orderList.html', {
         "toolbar": True,
         "putPlus": True,
@@ -326,14 +327,14 @@ def orderDetail(request, OrderID):
     print(OrderID)
     temp = getOrderDetail(OrderID)
     # print(temp)
-    itemList = models.ItemIndividual.objects.all()
 
     return render(request, "order.html", {
         # "toolbar": True,
         "putPlus": True,
-        "ItemList": itemList,
+        # "ItemList": itemList,
         "active": "order",
         "data": temp,
+        "confirm": temp["isConfirm"],
         "queryItem": "order_one",
         "heading": "Order",
     })
@@ -398,20 +399,25 @@ def orderNewCreate(request):
 
 def orderAddItems(request):
     orderId = request.POST.get("orderID")
-    temp = list(models.Order.objects.filter(orderId_id=orderId))
-
+    temp = list(models.Order.objects.filter(orderId_id=orderId, deletedAt=None))
     for k, v in request.POST.items():
         if "itemID" in k:
             try:
                 tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v, deletedAt=None)
                 temp.remove(tempItem)
             except:
-                tempItem = models.Order(orderId_id=orderId, orderItem_id=v)
-                tempItem.save()
+                try:
+                    tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v)
+                    tempItem.modifyAt = timezone.now()
+                    tempItem.deletedAt = None
+                    tempItem.save()
+                except:
+                    tempItem = models.Order(orderId_id=orderId, orderItem_id=v)
+                    tempItem.save()
 
-        for i in temp:
-            i.deletedAt = datetime.now()
-            i.save()
+    for i in temp:
+        i.deletedAt = timezone.now()
+        i.save()
 
     return redirect('inventory:orderDetail', orderId)
 
@@ -425,6 +431,35 @@ def orderPrint(request, orderId):
         "orderId": orderId,
         "active": "order",
     })
+
+
+def clientTalks(request):
+    """
+        display list of all order list from past
+    """
+    order = models.OrderIndividual.objects.filter(confirmOrder=False).order_by("-createdAt")
+    return render(request, 'orderList.html', {
+        "toolbar": True,
+        "putPlus": True,
+        "active": "clientTalks",
+        "data": order,
+        "queryItem": "order_one",
+        "heading": "Client Talks",
+    })
+
+
+def deleteOrder(request):
+    if request.method == "POST":
+        print("Delete Method Called")
+        OrderId = request.POST.get("orderId")
+        obj = models.OrderIndividual.objects.get(id=OrderId)
+        if not obj.confirmOrder :
+            print("order deleted")
+            # obj.delete()
+        else:
+            print("Order id Lock\nnot Able to delete ")
+
+    return redirect("inventory:clientTalksList")
 
 
 def orderPrintData(request, orderId, dataType):
@@ -711,6 +746,7 @@ def getOrderDetail(OrderID):
 
     temp["orderId"] = order.id
     temp["orderName"] = order.name
+    temp["isConfirm"] = order.confirmOrder
     temp["mobileNumber"] = order.mobileNumber
     temp["numberOfPerson"] = order.numberOfPerson
     temp["address"] = order.address

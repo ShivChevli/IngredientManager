@@ -20,15 +20,18 @@ urlpatterns = [
     path('ItemsNew/', views.newItems, name="new_items"),
     path('ItemsDelete/', views.deleteItems, name="delete_items"),
 
-    path('OrderList/', views.orderHome, name="orderList"),
+    path('ConfirmOrderList/', views.orderHome, name="orderList"),
     path('OrderDetail/<int:OrderID>/', views.orderDetail, name="orderDetail"),
     path('Order/', views.orderNewCreate, name="orderNewCreate"),
     path('OrderAddItems/', views.orderAddItems, name="orderAddItems"),
 
     path('OrderEdit/<int:id>', views.orderEditTemplate, name="orderEdit"),
+    path('OrderDelete/', views.deleteOrder, name="delete_order"),
     path('OrderPrintOptions/<int:orderId>', views.orderPrint, name="orderPrint"),
     path('OrderPrintData/<int:orderId>/<str:dataType>', views.orderPrintData, name="orderPrintData"),
     path('detail/', views.getDetail, name="getInfo"),
+
+    path('OrderList/', views.clientTalks, name="clientTalksList"),
 
     path('test1/', views.test1, name="test"),
     path('pdf1/', views.pdfGenration1, name="pdfView"),

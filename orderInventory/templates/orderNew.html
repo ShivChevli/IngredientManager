@@ -56,9 +56,9 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{% url 'inventory:orderList' %}" style="text-decoration: none" class="button-remove  button-style-1 cancel-btn back-btn" id="cancel-btn">
+                    <button role="button" type="button" onclick="back()" style="text-decoration: none" class="button-remove  button-style-1 cancel-btn back-btn" id="cancel-btn">
                         Cancel
-                    </a>
+                    </button>
                     <input class="button-remove button-style-1 submit-btn" style="max-width: 100%" type="submit" value="{{ heading }} And Add Items">
                 </div>
             </form>
@@ -146,6 +146,9 @@
         }
         else{
             console.log("Else Part");
+        }
+        function back(){
+            window.history.back();
         }
     </script>
 
