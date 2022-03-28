@@ -119,6 +119,7 @@ svg{
 .button-remove{
     border: none;
     outline: none;
+    text-decoration: none;
     color: var(--text-color);
     background: transparent;
     cursor: pointer;

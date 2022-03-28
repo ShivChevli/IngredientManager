@@ -27,6 +27,9 @@ urlpatterns = [
 
     path('OrderEdit/<int:id>', views.orderEditTemplate, name="orderEdit"),
     path('OrderDelete/', views.deleteOrder, name="delete_order"),
+    path('OrderLock/<int:OrderId>', views.lockOrder, name="lock_order"),
+
+
     path('OrderPrintOptions/<int:orderId>', views.orderPrint, name="orderPrint"),
     path('OrderPrintData/<int:orderId>/<str:dataType>', views.orderPrintData, name="orderPrintData"),
     path('detail/', views.getDetail, name="getInfo"),

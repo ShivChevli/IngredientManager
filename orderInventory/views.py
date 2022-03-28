@@ -35,7 +35,7 @@ def index(request):
     """
         Display Recent Orders list
     """
-    order = models.OrderIndividual.objects.filter(deliveryDate__gte=datetime.now()).order_by("deliveryDate")
+    order = models.OrderIndividual.objects.filter(deliveryDate__gte=datetime.now(),deletedAt=None,confirmOrder=True).order_by("deliveryDate")
     return render(request, 'index.html', {
         "toolbar": True,
         "putPlus": True,
@@ -301,12 +301,12 @@ def deleteItems(request):
 #####################################################
 
 
-@cache_control(max_age=3600)
+# @cache_control(max_age=3600)
 def orderHome(request):
     """
         display list of all confirm order list from past
     """
-    order = models.OrderIndividual.objects.filter(confirmOrder=True).order_by("-createdAt")
+    order = models.OrderIndividual.objects.filter(confirmOrder=True,deletedAt=None).order_by("-createdAt")
     return render(request, 'orderList.html', {
         "toolbar": True,
         "putPlus": True,
@@ -317,7 +317,7 @@ def orderHome(request):
     })
 
 
-@cache_control(max_age=3600)
+# @cache_control(max_age=3600)
 def orderDetail(request, OrderID):
     """
         Display Detail of Query order in Editing mode
@@ -437,7 +437,7 @@ def clientTalks(request):
     """
         display list of all order list from past
     """
-    order = models.OrderIndividual.objects.filter(confirmOrder=False).order_by("-createdAt")
+    order = models.OrderIndividual.objects.filter(confirmOrder=False,deletedAt=None).order_by("-createdAt")
     return render(request, 'orderList.html', {
         "toolbar": True,
         "putPlus": True,
@@ -455,11 +455,35 @@ def deleteOrder(request):
         obj = models.OrderIndividual.objects.get(id=OrderId)
         if not obj.confirmOrder :
             print("order deleted")
-            # obj.delete()
+            obj.deletedAt = timezone.now()
+            obj.save()
         else:
             print("Order id Lock\nnot Able to delete ")
 
     return redirect("inventory:clientTalksList")
+
+
+def lockOrder(request,OrderId):
+    res = {
+        "status": 200,
+        "msg": "Order Locked",
+        "lock": True
+    }
+    try:
+        data = models.OrderIndividual.objects.get(id=OrderId)
+        data.confirmOrder = not data.confirmOrder
+        res["lock"] = data.confirmOrder
+        data.modifyAt = timezone.now()
+        data.save()
+        print("Order locked", OrderId)
+    except:
+        res["status"] = 301
+        res["msg"] = "Problem in locking Order"
+
+        print("Problem in locking Order")
+
+    print(res)
+    return JsonResponse(res)
 
 
 def orderPrintData(request, orderId, dataType):

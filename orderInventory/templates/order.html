@@ -39,20 +39,39 @@
                     <p>{{ data.numberOfPerson }}</p>
                 </div>
                 <div class="section4">
-                    <button onclick="back()" class="button-remove button-style-1 cancel-btn"> Cancel</button>
-                    <a href="{% url 'inventory:orderPrint' data.orderId %}" class="button-remove  button-style-1 button-style-2 ">
+                    <button onclick="back()" class="button-remove button-style-1 cancel-btn"> Back</button>
+
+                    <a
+                        {% if confirm %}
+                            href="{% url 'inventory:orderPrint' data.orderId %}"
+                        {% else %}
+                            href="{% url 'inventory:orderPrintData' data.orderId "client" %}" target="_blank"
+                        {% endif %}
+                         class="button-remove  button-style-1 button-style-2 " id="printPdf">
                         Print
                     </a>
+
+                    <button id="lockBtn" onclick="lockOrder({{ data.orderId }})" class="button-remove button-style-1 cancel-btn">
+                    {% if confirm  %}
+                        Un-lock
+                    {% else %}
+                        Lock
+                    {% endif %}
+                    </button>
+
+                    <div id="edit-div"
+                    {% if confirm %}
+                        style="display: none"
+                    {% endif %} >
                     <a href="{% url 'inventory:orderEdit' data.orderId  %}" id="editBtn" class="button-remove button-style-1">
                         Edit
                     </a>
-{#                    <a href=""  class="button-remove button-style-1 cancel-btn"> Lock Order</a>#}
-
-                    <form method="post" id="deleteOrderFrom" action="{% url 'inventory:delete_order'%}" onsubmit="confirmSubmission(event)">
+                    <form  style="display: inline-block" method="post" id="deleteOrderFrom" action="{% url 'inventory:delete_order'%}" onsubmit="confirmSubmission(event)">
                         {% csrf_token %}
                         <input type="hidden" value="{{ data.orderId}}" name="orderId">
-                        <button class="button-remove button-style-1 cancel-btn" role="button" type="submit"> Delete</button>
+                        <button class="button-remove  button-style-1 cancel-btn" role="button" type="submit"> Delete</button>
                     </form>
+                    </div>
 
                 </div>
             </section>
@@ -97,6 +116,36 @@
             if (confirm("Do you Really want to delete this data ?") == false) {
                 return event.preventDefault();
             }
+        }
+
+        function lockOrder(orderId){
+            let btn = document.querySelector("#lockBtn");
+            let frm = document.querySelector("#edit-div");
+            let pdf = document.querySelector("#printPdf");
+            fetch(`/orderInventory/OrderLock/${orderId}`)
+                .then(response => response.json())
+                .then(data =>{
+                    console.log(data);
+                    if(data.lock == true){
+                        console.log("order Lock")
+                        btn.innerHTML = "Un-lock";
+                        frm.style.display = "none";
+                        pdf.traget = "_self";
+                        pdf.href =`/orderInventory/OrderPrintOptions/${orderId}`;
+
+                    }
+                    else {
+                        console.log("order un-Lock")
+                        btn.innerHTML = "Lock";
+                        frm.style.display = "block";
+                        pdf.traget = "_blank";
+                        pdf.href =`/orderInventory/OrderPrintData/${orderId}/client`;
+                    }
+
+                })
+            .catch(error=>{
+                console.log(error);
+            })
         }
     </script>
 {% endblock %}
