@@ -71,11 +71,9 @@ def newCategory(request):
         input :- Accept all Necessary data from User through Form
         output : Redirect to list of Category
     """
-    print("New Category")
     if request.method == "POST":
         new_category = models.Category()
         new_category.name = request.POST.get("name")
-        print("After Category :- ", new_category)
         new_category.save()
 
     return redirect('inventory:category')
@@ -87,7 +85,6 @@ def updateCategory(request):
         input :  Accept Name and  Id
         output : Redirect to list of Category
     """
-    print("update Category")
     if request.method == "POST":
         update_category = models.Category.objects.get(id=request.POST.get("updateElementID"))
         # retrieve Category updated data from user
@@ -108,7 +105,7 @@ def deleteCategory(request):
     """
     msg = "Invalid Category ID"
     if request.method == "GET":
-        # print("Delete Category Method")
+        print("Delete Category Method")
         deleteCategory = models.Category.objects.get(id=request.GET.get("deleteElementId"))
 
         print("Delete Element :- ", deleteCategory)
@@ -274,9 +271,6 @@ def newItems(request):
                 }
             })
 
-    else:
-        print("Access of New Item Using Get Method")
-
     return redirect('inventory:items')
 
 
@@ -324,15 +318,17 @@ def orderDetail(request, OrderID):
         input :- Accept OrderId as it's url parameter
         output :- Render Edit order Template along with data
     """
-    print(OrderID)
     temp = getOrderDetail(OrderID)
-    # print(temp)
 
+    if temp["isConfirm"]:
+        activate = "order"
+    else:
+        activate = "clientTalks"
     return render(request, "order.html", {
         # "toolbar": True,
         "putPlus": True,
         # "ItemList": itemList,
-        "active": "order",
+        "active": activate,
         "data": temp,
         "confirm": temp["isConfirm"],
         "queryItem": "order_one",
@@ -342,9 +338,10 @@ def orderDetail(request, OrderID):
 
 def orderEditTemplate(request, id):
     order = models.OrderIndividual.objects.get(id=id)
+
     return render(request, 'orderNew.html', {
         "data": order,
-        "active": "order",
+        "active": "clientTalks",
         "orderID": id,
         "heading": "Edit",
     })
@@ -380,7 +377,7 @@ def orderNewCreate(request):
     else:
         # // New Order Blank Form
         return render(request, 'orderNew.html', {
-            "active": "order",
+            "active": "clientTalks",
             "heading": "Create",
         })
 
@@ -391,7 +388,7 @@ def orderNewCreate(request):
         "orderFor": order.name,
         "orderID": order.id,
         "data": temp,
-        "active": "order",
+        "active": "clientTalks",
         "queryItem": "order_one",
         "options": IngredientOption,
     })
@@ -453,8 +450,7 @@ def deleteOrder(request):
         print("Delete Method Called")
         OrderId = request.POST.get("orderId")
         obj = models.OrderIndividual.objects.get(id=OrderId)
-        if not obj.confirmOrder :
-            print("order deleted")
+        if not obj.confirmOrder:
             obj.deletedAt = timezone.now()
             obj.save()
         else:
@@ -475,14 +471,10 @@ def lockOrder(request,OrderId):
         res["lock"] = data.confirmOrder
         data.modifyAt = timezone.now()
         data.save()
-        print("Order locked", OrderId)
     except:
         res["status"] = 301
         res["msg"] = "Problem in locking Order"
 
-        print("Problem in locking Order")
-
-    print(res)
     return JsonResponse(res)
 
 
@@ -607,7 +599,6 @@ def orderPrintData(request, orderId, dataType):
     }
 
     file_name = orderDetail.name + "_" + mapObj[dataType] + ".pdf"
-    print(file_name)
     return pdfGenration1(request, context, file_name=file_name)
 
 
@@ -623,7 +614,6 @@ def pdfGenration1(request, context, client_pdf=False, file_name="file.pdf"):
     }
     if file_name == "file.pdf":
         file_name = context["title"] + ".pdf"
-        print(file_name)
 
     if client_pdf:
         return WeasyTemplateResponse(request=request, filename=file_name, template='pdf/Demo1.html',
@@ -645,8 +635,6 @@ def pdfHtmlView(request):
         "Content-Disposition": 'attachment; filename="report.pdf"'
     }
     response = HttpResponse(html, headers=header)
-
-    print(response)
 
     # return response
     return render(request, 'pdf/pdf1.html', {
