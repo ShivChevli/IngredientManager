@@ -395,26 +395,30 @@ def orderNewCreate(request):
 
 
 def orderAddItems(request):
-    orderId = request.POST.get("orderID")
-    temp = list(models.Order.objects.filter(orderId_id=orderId, deletedAt=None))
-    for k, v in request.POST.items():
-        if "itemID" in k:
-            try:
-                tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v, deletedAt=None)
-                temp.remove(tempItem)
-            except:
-                try:
-                    tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v)
-                    tempItem.modifyAt = timezone.now()
-                    tempItem.deletedAt = None
-                    tempItem.save()
-                except:
-                    tempItem = models.Order(orderId_id=orderId, orderItem_id=v)
-                    tempItem.save()
 
-    for i in temp:
-        i.deletedAt = timezone.now()
-        i.save()
+    if request.method == "POST":
+        orderId = request.POST.get("orderID")
+        temp = list(models.Order.objects.filter(orderId_id=orderId, deletedAt=None))
+        for k, v in request.POST.items():
+            if "itemID" in k:
+                try:
+                    tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v, deletedAt=None)
+                    temp.remove(tempItem)
+                except:
+                    try:
+                        tempItem = models.Order.objects.get(orderId_id=orderId, orderItem_id=v)
+                        tempItem.modifyAt = timezone.now()
+                        tempItem.deletedAt = None
+                        tempItem.save()
+                    except:
+                        tempItem = models.Order(orderId_id=orderId, orderItem_id=v)
+                        tempItem.save()
+
+        for i in temp:
+            i.deletedAt = timezone.now()
+            i.save()
+    else:
+        return redirect('inventory:orderList')
 
     return redirect('inventory:orderDetail', orderId)
 
@@ -735,13 +739,13 @@ def test1(request):
 
 
 def getOrderDetail(OrderID):
-    print(OrderID)
+    # print(OrderID)
 
     temp = dict()
     fields = list()
     order = models.OrderIndividual.objects.get(id=OrderID)
     orderItems = models.Order.objects.filter(orderId=OrderID, deletedAt=None)
-    print(orderItems)
+    # print(orderItems)
     for i in orderItems:
         items = []
         t1 = models.Items.objects.filter(itemId_id=i.orderItem.id)

@@ -39,7 +39,17 @@
                     <p>{{ data.numberOfPerson }}</p>
                 </div>
                 <div class="section4">
-                    <button onclick="back()" class="button-remove button-style-1 cancel-btn"> Back</button>
+
+
+                    <a id="backBtn"
+                        {% if confirm %}
+                            href="{% url 'inventory:orderList' %}"
+                        {% else %}
+                            href="{% url 'inventory:clientTalksList' %}"
+                        {% endif %}
+                        class="button-remove button-style-1 cancel-btn">
+                        Back
+                    </a>
 
                     <a
                         {% if confirm %}
@@ -120,6 +130,7 @@
 
         function lockOrder(orderId){
             let btn = document.querySelector("#lockBtn");
+            let backBtn = document.querySelector("#backBtn");
             let frm = document.querySelector("#edit-div");
             let pdf = document.querySelector("#printPdf");
             fetch(`/orderInventory/OrderLock/${orderId}`)
@@ -133,6 +144,8 @@
                         pdf.traget = "_self";
                         pdf.href =`/orderInventory/OrderPrintOptions/${orderId}`;
 
+                        backBtn.href = "/orderInventory/ConfirmOrderList";
+
                     }
                     else {
                         console.log("order un-Lock")
@@ -140,6 +153,7 @@
                         frm.style.display = "block";
                         pdf.traget = "_blank";
                         pdf.href =`/orderInventory/OrderPrintData/${orderId}/client`;
+                        backBtn.href = "/orderInventory/OrderList";
                     }
 
                 })

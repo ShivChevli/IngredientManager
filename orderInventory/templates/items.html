@@ -29,7 +29,7 @@
 
     <section class="single-container" id="newItemBox">
 
-        <form action="{% url 'inventory:new_items' %}" style="display: inline" method="POST" id="newItem">
+        <form action="{% url 'inventory:new_items' %}" autocomplete="off" style="display: inline" method="POST" id="newItem">
             <input type="text" name="ItemId" id="updateItemId" style="display: none"/>
             <div id="newIngredientHidden">
 
@@ -41,7 +41,7 @@
                 <div class="form-element-box">
                     <label for="name" class="from-lable">Item Name</label>
                     <div class="form-control">
-                        <input type="text" required class="from-element " name="name" id="name" placeholder="Enter Text">
+                        <input type="text"  autocomplete="off" list="autocompleteOff" required class="from-element " name="name" id="name" placeholder="Enter Text">
                     </div>
                 </div>
                 <div class="form-element-box">
@@ -84,7 +84,7 @@
                     <div class="search-bar">
                         <div class="form-element-box">
                             <div class="form-control">
-                                <input type="text" class="from-element search-input"
+                                <input type="text" autocomplete="off" list="autocompleteOff" class="from-element search-input"
                                     placeholder="Search Element">
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                     <div class="form-element-box">
                         <label for="#name" class="from-lable">Ingredient Name</label>
                         <div class="form-control">
-                            <input type="text" required class="from-element" name="name" id="name" placeholder="Enter Text">
+                            <input type="text" autocomplete="off" list="autocompleteOff" list="auto" required class="from-element" name="name" id="name" placeholder="Enter Text">
                         </div>
                     </div>
 
