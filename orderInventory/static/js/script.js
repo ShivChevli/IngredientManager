@@ -206,9 +206,15 @@ function setDataFromUpdateItem(data,queryID){
             }
     }
 
+    try{
+
     document.getElementById("single-section").style.display = "none";
     document.getElementById("newItemBox").style.display = "block";
 
+    }
+    catch (e) {
+        console.log("Fail to update Dive Property");
+    }
     document.getElementById("updateItemId").defaultValue = queryID;
 
     console.log("Submit Btn");

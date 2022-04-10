@@ -219,6 +219,50 @@ def itemsHome(request):
     })
 
 
+def editItems(request,id):
+    ingredients = models.IngredientIndividual.objects.all()
+    category = models.Category.objects.all()
+    l = list()
+    data = dict()
+    l.append(data)
+    temp = list(models.Items.objects.filter(itemId=id))
+
+    try:
+        temp100 = models.ItemIndividual.objects.get(id=id)
+    except:
+        return redirect('inventory:items')
+
+    data["ItemName"] = temp100.name
+
+    if temp100.type == None or temp == "":
+        data["type"] = 0
+    else:
+        data["type"] = temp100.type.id
+
+    if temp100.confirmItem:
+        data["lock"] = "Ture"
+    else:
+        data["lock"] = "False"
+
+    data["ingredient"] = list()
+
+    if len(temp) > 0:
+        for i in temp:
+            key = models.IngredientIndividual.objects.get(id=i.ingredientId.id)
+            data["ingredient"].append({i.ingredientId.id: key.name})
+
+    print("data : ",data)
+    print("data : ",id)
+
+    return render(request, 'itemEdit.html',{
+        "active": "items",
+        "options": ingredients,
+        "Category": category,
+        "data" : data,
+        "id" : id,
+        "heading": "Edit Item",
+    })
+
 @csrf_exempt
 def newItems(request):
     """
@@ -273,6 +317,24 @@ def newItems(request):
 
     return redirect('inventory:items')
 
+
+def lockItem(request,id):
+    # if request.method == 'GET':
+    #     return redirect('inventory:items')
+    res = {}
+    try:
+        item = models.ItemIndividual.objects.get(id=id)
+        item.confirmItem = not item.confirmItem
+        item.save()
+        res["status"] = 200
+        res["msg"] = "Item update Successfully"
+        res["lock"] = item.confirmItem
+    except:
+        res["status"] = 504
+        res["msg"] = "Query Error"
+        res["lock"] = None
+
+    return JsonResponse(res)
 
 def deleteItems(request):
     """
@@ -731,12 +793,59 @@ def test1(request):
     """
         This function to test New functionality about trying new Technology
     """
-    if request.method == "POST":
-        print(request.POST)
-    else:
-        print(request.GET)
-    return render(request, "form.html")
+    # if request.method == "POST":
+    #     print(request.POST)
+    # else:
+    #     print(request.GET)
+    # return render(request, "form.html")
+    temp = getOrderDetail(4)
 
+    if temp["isConfirm"]:
+        activate = "order"
+    else:
+        activate = "clientTalks"
+    return render(request, "orderSummaryUnlock.html", {
+        # "toolbar": True,
+        "putPlus": True,
+        # "ItemList": itemList,
+        "active": activate,
+        "data": temp,
+        "confirm": temp["isConfirm"],
+        "queryItem": "order_one",
+        "heading": "Order",
+    })
+
+def test2(request,OrderId):
+    res = {
+        "status": 200,
+        "msg": "Order Locked",
+        "lock": True,
+        "data" : [],
+    }
+    temp = []
+    try:
+        data = models.OrderIndividual.objects.get(id=OrderId)
+        items = models.Order.objects.filter(orderId_id=OrderId)
+
+        for i in items:
+            if i.orderItem.confirmItem == False:
+                temp.append({
+                    "id": i.orderItem.id,
+                    "name": i.orderItem.name,
+                })
+
+        if len(temp) == 0:
+            data.confirmOrder = not data.confirmOrder
+            res["msg"] = "Some Items are not lock."
+        res["lock"] = data.confirmOrder
+        res["data"] = temp
+        data.modifyAt = timezone.now()
+        data.save()
+    except:
+        res["status"] = 301
+        res["msg"] = "Problem in locking Order"
+
+    return JsonResponse(res)
 
 def getOrderDetail(OrderID):
     # print(OrderID)
@@ -754,10 +863,17 @@ def getOrderDetail(OrderID):
                 "id": j.ingredientId.id,
                 "name": j.ingredientId.name
             })
+
+        if i.orderItem.confirmItem:
+            lock = "True"
+        else:
+            lock = "False"
+
         fields.append({
             "id": i.orderItem.id,
             "name": i.orderItem.name,
-            "ingredients": items
+            "ingredients": items,
+            "isLock": lock,
         })
 
     temp["orderId"] = order.id

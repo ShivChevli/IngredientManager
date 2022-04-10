@@ -1,0 +1,351 @@
+{% extends 'template.html' %}
+{% load static %}
+{% block heading %}
+    Order For :- <span id="orderFor">Shiv Chevli</span>
+{% endblock %}
+{% block Main %}
+    <style>
+        section{
+            max-height: 80vh !important;
+        }
+        .order-detail{
+            margin: 18px 0 !important;
+        }
+        .confirm-item-btn {
+            padding-right: 18px !important;
+        }
+        .confirm-item-btn svg{
+            width: 25px;
+        }
+        .pop-up-msg{
+            display: none;
+            width: 500px;
+            padding: 20px 30px;
+            position: absolute;
+            top: 20px;
+            background: var(--bg-color-main);
+            color: var(--text-color);
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .pop-up-heading{
+            display: grid;
+            grid-template-columns: repeat(15,1fr);
+            padding: 10px 0px;
+            border-bottom: 2px solid var(--text-color);
+        }
+        .pop-up-msg h3{
+            grid-column: 1/14;
+            padding: 0 20px 10px;
+            color: var(--text-color);
+            border-bottom: None;
+            margin: 0;
+            {#margin-bottom: 15px;#}
+        }
+        .close-pop-btn{
+            grid-column: 14/16;
+            text-align: right;
+            {#float: right;#}
+            padding: 0 20px;
+            cursor: pointer;
+        }
+        .pop-up-list{
+            list-style: disc;
+            margin-left: 30px;
+        }
+    </style>
+    <div id="detail-view">
+
+        <!-- Client Detail Summary -->
+        <section id="orderDetail-section1">
+                <div class="order-detail">
+                    <h3>Name :- </h3>
+                    <p>{{ data.orderName }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Address:- </h3>
+                    <p>{{ data.address }} </p>
+                </div>
+                <div class="order-detail">
+                    <h3>Email :- </h3>
+                    <p>{{ data.email }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Number :- </h3>
+                    <p>{{ data.mobileNumber }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Order Data & time :- </h3>
+                    <p>{{ data.deliverDate }}</p>
+                </div>
+                <div class="order-detail">
+                    <h3>Number of Person</h3>
+                    <p>{{ data.numberOfPerson }}</p>
+                </div>
+                <div class="section4">
+
+
+                    <a id="backBtn"
+                        {% if confirm %}
+                            href="{% url 'inventory:orderList' %}"
+                        {% else %}
+                            href="{% url 'inventory:clientTalksList' %}"
+                        {% endif %}
+                        class="button-remove button-style-1 cancel-btn">
+                        Back
+                    </a>
+
+                    <a
+                        {% if confirm %}
+                            href="{% url 'inventory:orderPrint' data.orderId %}"
+                        {% else %}
+                            href="{% url 'inventory:orderPrintData' data.orderId "client" %}" target="_blank"
+                        {% endif %}
+                         class="button-remove  button-style-1 button-style-2 " id="printPdf">
+                        Print
+                    </a>
+
+                    <button id="lockBtn" class="button-remove button-style-1 cancel-btn">
+                    {% if confirm  %}
+                        Un-lock
+                    {% else %}
+                        Lock
+                    {% endif %}
+                    </button>
+
+                    <div id="edit-div"
+                    {% if confirm %}
+                        style="display: none"
+                    {% endif %} >
+                    <a href="{% url 'inventory:orderEdit' data.orderId  %}" id="editBtn" class="button-remove button-style-1">
+                        Edit
+                    </a>
+                    <form  style="display: inline-block" method="post" id="deleteOrderFrom" action="{% url 'inventory:delete_order'%}" onsubmit="confirmSubmission(event)">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ data.orderId}}" name="orderId">
+                        <button class="button-remove  button-style-1 cancel-btn" role="button" type="submit"> Delete</button>
+                    </form>
+                    </div>
+
+                </div>
+            </section>
+
+        <!-- Client Order Detail Summary -->
+        <section class="section2" id="section1">
+                <h1>Item List</h1>
+                <div class="item-list-box">
+                    <div class="item-box" data-itemid="{{ dataItem.id }}">
+                        <h2 class="item-name">
+                            <span class="item-name-text">
+                                test
+                            </span>
+                            <span class="confirm-item-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path>
+                                    <path
+                                        d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z">
+                                    </path>
+                                </svg>
+                            </span>
+{#                            <span class="arrow">#}
+{#                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">#}
+{#                                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z">#}
+{#                                    </path>#}
+{#                                </svg>#}
+{#                            </span>#}
+                        </h2>
+                        <ul class="ingredient-list">
+{#                            {% for key in dataItem.ingredients %}#}
+                                <li data-ingredientId="{{ key.id }}">item 1</li>
+                                <li data-ingredientId="{{ key.id }}">item 2</li>
+                                <li data-ingredientId="{{ key.id }}">item 3</li>
+                                <li data-ingredientId="{{ key.id }}">item 4</li>
+                                <li data-ingredientId="{{ key.id }}">item 5</li>
+                                <li data-ingredientId="{{ key.id }}">item 6</li>
+{#                            {% endfor %}#}
+                        </ul>
+                        <div style="margin: 20px 0;text-align: center;">
+                            <a href="" class="button-remove  button-style-1 cancel-btn">Edit</a>
+                            <a href="" class="button-remove button-style-1 button-style-2 ">Confirm</a>
+                        </div>
+                    </div>
+
+                    {% for dataItem in data.fields %}
+                        <div class="item-box" data-itemid="{{ dataItem.id }}">
+                        <h2 class="item-name">
+                            <span class="item-name-text">
+                                {{ dataItem.name }}
+                            </span>
+                            {% ifequal dataItem.isLock "True" %}
+                                <span class="arrow">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z">
+                                        </path>
+                                    </svg>
+                                </span>
+                                {% else %}
+                                <span class="confirm-item-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path>
+                                        <path
+                                            d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            {% endifequal %}
+
+{#                            {% endif %}#}
+                        </h2>
+                        <ul class="ingredient-list">
+                            {% for key in dataItem.ingredients %}
+                                <li data-ingredientId="{{ key.id }}">{{ key.name }}</li>
+                            {% endfor %}
+                                <li data-ingredientId="">{{ dataItem.isLocak }}</li>
+
+                        </ul>
+                        {% ifequal dataItem.isLock "False" %}
+
+                            <div style="margin: 20px 0;text-align: center;">
+                                <a href="{% url 'inventory:edit_items_template' dataItem.id %}" class="button-remove  button-style-1 cancel-btn">Edit</a>
+                                <button data-itemid="{{ dataItem.id }}"  class="button-remove button-style-1 button-style-2 lock-item-btn">Confirm</button>
+                            </div>
+
+                        {% endifequal %}
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </section>
+    </div>
+
+    <div class="pop-up-msg" id="pop-up-box">
+
+        <div class="pop-up-heading">
+            <h3>{{ msg }} Test</h3>
+            <span class="close-pop-btn"> X </span>
+        </div>
+        <ul class="pop-up-list">
+            <li>Item 1</li>
+            <li>Item 1</li>
+            <li>Item 1</li>
+            <li>Item 1</li>
+            <li>Item 1</li>
+            <li>Item 1</li>
+            <li>Item 1</li>
+            <li>Item 1</li>
+            <li>Item 1</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/orderScript.js' %}"></script>
+    <script>
+        function back(){
+            window.history.back();
+        }
+        function confirmSubmission(event) {
+            if (confirm("Do you Really want to delete this data ?") == false) {
+                return event.preventDefault();
+            }
+        }
+
+        function lockOrder(orderId){
+            let btn = document.querySelector("#lockBtn");
+            let backBtn = document.querySelector("#backBtn");
+            let frm = document.querySelector("#edit-div");
+            let pdf = document.querySelector("#printPdf");
+            fetch(`/orderInventory/test2/${orderId}`)
+                .then(response => response.json())
+                .then(data =>{
+                    console.log(data);
+                    if(data.lock == true){
+                        console.log("order Lock")
+                        btn.innerHTML = "Un-lock";
+                        frm.style.display = "none";
+                        pdf.traget = "_self";
+                        pdf.href =`/orderInventory/OrderPrintOptions/${orderId}`;
+
+                        backBtn.href = "/orderInventory/ConfirmOrderList";
+
+                    }
+                    else {
+                        popMsg(true,data.msg,data.data)
+                        console.log("order un-Lock")
+                        btn.innerHTML = "Lock";
+                        frm.style.display = "block";
+                        pdf.traget = "_blank";
+                        pdf.href =`/orderInventory/OrderPrintData/${orderId}/client`;
+                        backBtn.href = "/orderInventory/OrderList";
+                    }
+
+                })
+            .catch(error=>{
+                console.log(error);
+            })
+        }
+
+        document.querySelectorAll(".lock-item-btn").forEach(btn=>{
+            btn.onclick = function(){
+                console.log(btn);
+                console.log();
+                let itemId = btn.dataset.itemid;
+                fetch(`/orderInventory/ItemLock/${itemId}`)
+                    .then(response => response.json())
+                    .then(data =>{
+                        console.log(data);
+                        if(data.lock == true){
+                            console.log("Item Lock")
+                            let temp = btn.parentElement.parentElement;
+                            temp.querySelector("h2").children[1].remove();
+
+                            let span = document.createElement("span");
+                            span.classList.add("arrow");
+                            span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                    <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z">
+                                                    </path>
+                                                </svg>`;
+
+                            temp.querySelector("h2").append(span);
+
+                        }
+                        else {
+                            console.log("Item un-Lock")
+                        }
+                    })
+                .catch(error=>{
+                    console.log(error);
+                })
+                console.log(btn.parentElement.parentElement);
+            }
+        })
+        
+        function popMsg(display, msg ="",data={}) {
+            let box = document.querySelector("#pop-up-box");
+            if(display){
+                box.style.display = "block";
+                document.querySelector("#pop-up-box h3").innerHTML = msg;
+                let ul = document.querySelector("#pop-up-box ul");
+                ul.innerHTML = "";
+                for (let ulKey in data) {
+                    console.log(ulKey);
+                    ul.innerHTML += `<li> ${data[ulKey].id} ${data[ulKey].name} </li>`;
+                }
+            }
+            else{
+                box.style.display = "none";
+            }
+        }
+
+        document.querySelector(".close-pop-btn").addEventListener("click",function () {
+                document.querySelector("#pop-up-box").style.display = "none";
+        })
+
+        document.querySelector("#lockBtn").addEventListener("click", function(){
+            lockOrder({{ data.orderId }});
+        })
+    </script>
+{% endblock %}

@@ -17,7 +17,9 @@ urlpatterns = [
     path('IngredientDelete/', views.deleteIngredient,name="delete_ingredient"),
 
     path('Items/', views.itemsHome, name="items"),
-    path('ItemsNew/', views.newItems, name="new_items"),
+    path('ItemNew/', views.newItems, name="new_items"),
+    path('ItemEdit/<int:id>', views.editItems, name="edit_items_template"),
+    path('ItemLock/<int:id>', views.lockItem, name="lock_item"),
     path('ItemsDelete/', views.deleteItems, name="delete_items"),
 
     path('ConfirmOrderList/', views.orderHome, name="orderList"),
@@ -37,6 +39,7 @@ urlpatterns = [
     path('OrderList/', views.clientTalks, name="clientTalksList"),
 
     path('test1/', views.test1, name="test"),
+    path('test2/<int:OrderId>', views.test2, name="test2"),
     path('pdf1/', views.pdfGenration1, name="pdfView"),
     path('pdfHtmlView1/', views.pdfHtmlView, name="htmlView"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

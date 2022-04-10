@@ -1,0 +1,152 @@
+{% extends 'template.html' %}
+{% load static %}
+{% block heading %}
+    {{ heading }}
+{% endblock %}
+{% block Main %}
+    <style>
+        .single-container .button-style-1 {
+            margin: 20px 15px !important;
+        }
+        .wrapper-cls{
+            text-align: center;
+        }
+    </style>
+    <section class="single-container" id="newItemBox" style="display: block">
+
+        <form action="{% url 'inventory:new_items' %}" autocomplete="off" style="display: inline" method="POST" id="newItem">
+            <input type="text" name="ItemId" id="updateItemId" style="display: none"/>
+            <div id="newIngredientHidden">
+
+            </div>
+            {% csrf_token %}
+
+            <!-- New Item Name -->
+            <div class="two-input-inline">
+                <div class="form-element-box">
+                    <label for="name" class="from-lable">Item Name</label>
+                    <div class="form-control">
+                        <input type="text" autocomplete="off" list="autocompleteOff" required class="from-element " name="name" id="name" placeholder="Enter Text">
+                    </div>
+                </div>
+                <div class="form-element-box">
+                    <label for="typeId" class="from-lable">Type</label>
+                    <div class="form-control">
+                        <select class="from-element" value="{{ data.type }}" name="type" id="typeId">
+                            <option value="0">------------------------------------</option>
+                            <option value="1">Welcome juice</option>
+                            <option value="2">Starter</option>
+                            <option value="3">Soup Counter</option>
+                            <option value="4">Live Counter</option>
+                            <option value="5">Main Course</option>
+                            <option value="6">Dessert</option>
+                            <option value="7">Water</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <section>
+                <h1>Item Ingredients </h1>
+                <div id="itemIngredients">
+                    {% for ingr in data.ingredient %}
+
+                    {% endfor %}
+
+                </div>
+                <div class="wrapper-cls">
+                    <input type="submit" class="button-remove button-style-1 submit-btn" value="Create" id="newItemSubmitBtn">
+                    <button type="reset" class="button-remove button-style-1 cancel-btn" id="close" role="button" >
+                        close
+                    </button>
+
+                        <a href="{% url 'inventory:lock_item' id %}" class="button-remove button-style-1">
+                        {% ifequal data.lock "False" %}
+                            Lock
+                        {% else %}
+                            Un-lock
+                        {% endifequal %}
+                        </a>
+                </div>
+            </section>
+
+
+        </form>
+
+            <section class="section2" id="ingredient-list-box">
+                <h1>Available Ingredients
+                    <span>
+                        <button class="button-remove button-style-1" id="addNewIngredientBtn">New</button>
+                    </span>
+                </h1>
+                <div class="toolbox2" id="toolbox">
+                    <div class="search-bar">
+                        <div class="form-element-box">
+                            <div class="form-control">
+                                <input type="text" autocomplete="off" list="autocompleteOff" class="from-element search-input"
+                                    placeholder="Search Element">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-elements" id="available-ingredient">
+                    {% for i in options %}
+                        <div class="suggetion-list-item">
+                            <p class="text_style addIngredients" data-ingredientId="{{ i.id }}" data-queryItem="ingredient_one">{{ i.name }}
+                            </p>
+                            <button class="add button-remove" role="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M15 2.013H9V9H2v6h7v6.987h6V15h7V9h-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+
+            <section class="section2" style="display: none;" id="add-New-ingredient-form">
+
+                <h1 id="editFromHeading">New Ingredient</h1>
+                <form id="newIngredientFrom" method="POST" >
+
+                    <div class="form-element-box">
+                        <label for="#name" class="from-lable">Ingredient Name</label>
+                        <div class="form-control">
+                            <input type="text" autocomplete="off" list="autocompleteOff" list="auto" required class="from-element" name="name" id="name" placeholder="Enter Text">
+                        </div>
+                    </div>
+
+                    <div class="form-element-box">
+                    <label for="" class="from-lable">Category</label>
+                        <div class="form-control">
+                            <select class="from-element" name="categoryId"  required>
+                                <option value="0" >-------------</option>
+                                {% for d in Category %}
+                                    <option value="{{ d.id }}">{{ d.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <button class="button-remove button-style-1 cancel-btn" id="closeEditBtn" role="button"> Cancel</button>
+                    <button class="button-remove button-style-1" id="addBtn" type="submit"> Add</button>
+
+                </form>
+
+            </section>
+
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        let data = {{ data | safe }};
+        let id ={{ id | safe }}
+        setDataFromUpdateItem(data,id);
+        console.log(data);
+        console.log(id);
+    </script>
+{% endblock %}
