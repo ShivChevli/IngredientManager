@@ -32,8 +32,14 @@ class ItemIndividual(models.Model):
     createdAt = models.DateTimeField(default=datetime.now)
     modifyAt = models.DateTimeField(blank=True, null=True)
 
+    def isLock(self):
+        if self.confirmItem:
+            return "Item Locked"
+
+        return ""
+
     def __str__(self):
-        return f"{self.id} : {self.name} : {self.type}"
+        return f"{self.id} : {self.name} : {self.type} : {self.isLock()}"
 
 
 class Category(models.Model):

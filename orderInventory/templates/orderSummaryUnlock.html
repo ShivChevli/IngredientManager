@@ -208,7 +208,7 @@
                         </ul>
                         {% ifequal dataItem.isLock "False" %}
 
-                            <div style="margin: 20px 0;text-align: center;">
+                            <div style="margin: 20px 0;text-align: center;" class="item-btn">
                                 <a href="{% url 'inventory:edit_items_template' dataItem.id %}" class="button-remove  button-style-1 cancel-btn">Edit</a>
                                 <button data-itemid="{{ dataItem.id }}"  class="button-remove button-style-1 button-style-2 lock-item-btn">Confirm</button>
                             </div>
@@ -310,7 +310,7 @@
                                                 </svg>`;
 
                             temp.querySelector("h2").append(span);
-
+                            temp.querySelector(".item-btn").style.display = "none";
                         }
                         else {
                             console.log("Item un-Lock")
@@ -322,7 +322,7 @@
                 console.log(btn.parentElement.parentElement);
             }
         })
-        
+
         function popMsg(display, msg ="",data={}) {
             let box = document.querySelector("#pop-up-box");
             if(display){

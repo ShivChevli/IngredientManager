@@ -43,3 +43,10 @@ urlpatterns = [
     path('pdf1/', views.pdfGenration1, name="pdfView"),
     path('pdfHtmlView1/', views.pdfHtmlView, name="htmlView"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# Demostrate Urls
+#     - test1
+#     - itemDetail/<int:id>
+#     - test2/<int:orderId> //Check Detail about Items
+#
