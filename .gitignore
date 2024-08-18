@@ -1,6 +1,9 @@
 /templates
 temp.py
-.idea
-application.cmd
-media
+/.idea
+media/pdf_documents
 orderInventory/templates/pdf/Demo.html
+.venv
+db.sqlite3
+*/**/*.pyc
+*/**/__pycache__/*

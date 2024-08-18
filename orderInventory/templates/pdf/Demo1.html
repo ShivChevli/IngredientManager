@@ -1,42 +1,37 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta charset="US-ASCII">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'css/pdfFont.css' %}">
     <style>
-        @font-face {
-            font-face-name: Custom;
-            src: url("{% static 'ttf/NotoSansGujarati-Bold.ttf' %}");
+        * {
+            font-size: 15px;
         }
 
-        *{
-            font-family: Custom;
-            padding: 0;
-            margin: 0;
-            font-size: 12px;
-        }
-        @page  {
+        @page {
             size: A4;
             margin: 3mm 10mm 5mm;
+
             @bottom-right {
-                content: "Page " counter(page) " out of "  counters(page,"");
+                content: "Page " counter(page) " out of " counters(page, "");
                 margin-bottom: 10px;
                 font-size: 13px;
             }
         }
 
-        .shree-div{
+        .shree-div {
             text-align: center;
             margin-bottom: 5px;
             margin-top: 0;
             font-size: 15px;
         }
-        .shree-div span{
+
+        .shree-div span {
             width: 2px;
             border-radius: 1px;
             height: 10px;
@@ -44,6 +39,7 @@
             display: inline-block;
             margin-left: 0;
         }
+
         header {
             display: flex;
             text-align: center;
@@ -51,52 +47,61 @@
             margin-bottom: 15px;
         }
 
-        header span{
+        header span {
             font-size: 15px !important;
         }
-        .logo-img-div img{
+
+        .logo-img-div img {
             width: 100%;
         }
 
-        table{
+        table {
             width: 100%;
             margin: 7px 5px;
             border-collapse: collapse;
         }
 
-        .extra_charge_table{
+        .extra_charge_table {
             width: 350px !important;
             margin: 5px auto;
             text-align: center;
         }
-        td,th{
+
+        td,
+        th {
             border: 1px solid #000;
             padding: 5px 7px;
         }
 
-        .client-detail-table th{
+        .client-detail-table th {
             width: 150px;
             font-weight: 600;
         }
+
         .itemTable td {
             font-size: 15px;
             font-weight: 500;
         }
-        .itemTable th{
+
+        .itemTable th {
             width: 150px;
             font-weight: 600;
         }
-        .item-list{
+
+        .item-list {
             padding-left: 25px;
             line-height: 19px;
         }
+
         .item-list li {
-            font-size: 14px!important;
+            font-size: 14px !important;
         }
-        .item-list li span{
-            font-size: 15px!important;
+
+        .item-list li span {
+            font-size: 15px !important;
         }
-        h1{
+
+        h1 {
             font-size: 20px;
             text-align: center;
             padding: 7px;
@@ -114,56 +119,56 @@
         <span>શ્રીગણેશાયનમઃ </span>
         <span>શ્રી જયબાપાસીતારામ</span>
     </header>
-    <main   >
+    <main>
         <div class="logo-img-div">
             <img src="{% static 'img/NANVIN_BHAI_MANU_PACAKGES.png' %}" alt="">
         </div>
 
-            <!-- client Detail Table -->
-            <table class="client-detail-table">
-                <tr>
-                    <th scope="row">Client Name : </th>
-                    <td>{{ orderDetail.name }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Event Data :</th>
-                    <td>{{ orderDetail.deliveryDate.date }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Venue :</th>
-                    <td>{{ orderDetail.address }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">NO. Of Persons : </th>
-                    <td>{{ orderDetail.numberOfPerson }}</td>
-                </tr>
-            </table>
+        <!-- client Detail Table -->
+        <table class="client-detail-table">
+            <tr>
+                <th scope="row">Client Name : </th>
+                <td>{{ orderDetail.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Event Data :</th>
+                <td>{{ orderDetail.deliveryDate.date }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Venue :</th>
+                <td>{{ orderDetail.address }}</td>
+            </tr>
+            <tr>
+                <th scope="row">NO. Of Persons : </th>
+                <td>{{ orderDetail.numberOfPerson }}</td>
+            </tr>
+        </table>
 
-            <h1 class="timing-title">
-                {% if time %}
-                    Lunch
-                {% else %}
-                    Dinner
-                {% endif %}
+        <h1 class="timing-title">
+            {% if time %}
+            Lunch
+            {% else %}
+            Dinner
+            {% endif %}
             Items
-            </h1>
+        </h1>
 
-            <table class="itemTable">
-                {% for key,value in orderdata.items %}
-                    <tr>
-                        <th scope="row" >{{ key }}</th>
-                        <td>
-                            <div>
-                                <ol class="item-list">
-                                    {% for i in value %}
-                                        <li> <span> {{ i }} </span> </li>
-                                    {% endfor %}
-                                </ol>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+        <table class="itemTable">
+            {% for key,value in orderdata.items %}
+            <tr>
+                <th scope="row">{{ key }}</th>
+                <td>
+                    <div>
+                        <ol class="item-list">
+                            {% for i in value %}
+                            <li> <span> {{ i }} </span> </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
 
         <h1>Extra Charges</h1>
         <div>
@@ -190,4 +195,5 @@
     </main>
 
 </body>
+
 </html>

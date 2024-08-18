@@ -675,7 +675,7 @@ def pdfGenration1(request, context, client_pdf=False, file_name="file.pdf"):
     # code for download
     # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
     header = {
-        "content-type": 'application/pdf',
+        "content-type": 'application/pdf; charset=utf-8',
         "Content-Disposition": context["title"],
     }
     if file_name == "file.pdf":
@@ -684,10 +684,15 @@ def pdfGenration1(request, context, client_pdf=False, file_name="file.pdf"):
     if client_pdf:
         return WeasyTemplateResponse(request=request, filename=file_name, template='pdf/Demo1.html',
                                      attachment=False,
-                                     headers=header, context=context)
+                                     headers=header, context=context, options={
+                                        "encoding" : 'utf-8'}
+                                        )
 
     return WeasyTemplateResponse(request=request, filename=file_name, template=template_path, attachment=False,
-                                 headers=header, context=context)
+                                 headers=header, context=context, options={
+                                        "encoding" : 'utf-8'}
+                                        )
+    # return render(request, 'pdf/Demo1.html', context)
 
 
 def pdfHtmlView(request):

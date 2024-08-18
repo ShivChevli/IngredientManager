@@ -1,0 +1,11 @@
+/* put in quotes and add # at the beginning */
+@font-face {
+    font-family: 'MY';
+    src: url('../ttf/NotoSansGujarati-Bold.ttf');
+}
+
+* {
+    font-family: 'MY' !important;
+    box-sizing: border-box;
+    margin: 0;
+}
