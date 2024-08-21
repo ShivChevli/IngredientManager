@@ -42,13 +42,20 @@ Step 4 : Install dependency
 pip install -r requirements.txt
 ```
 
-Step 5: Start Server
+Step 5 : Create database and it seed with Inital data
+
+```bash
+python manage.py migrate
+python manage.py loaddata ./seedData/orderInventory.json
+```
+
+Step 6: Start Server
 
 ```bash
 python manage.py runserver
 ```
 
-Step 6 :
+Step 7 :
 Now open "http://127.0.0.1:8000/orderInventory/" url in your browser to navigate home page of web-application
 
 ## Notes
@@ -58,3 +65,8 @@ linux setup is recommanded setup, We are using one python library which require 
 ```bash
 sudo apt-get install libpangocairo-1.0-0
 ```
+
+- Totake Backup we need to run following command. 
+    ```bash
+    python manage.py dumpdata orderInventory > ./seedData/orderInventory
+    ```

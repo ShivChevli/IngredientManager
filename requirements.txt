@@ -1,4 +1,4 @@
 Django==3.2.25
-django_weasyprint
-SQLAlchemy
-weasyprint
+django_weasyprint==2.0.31
+SQLAlchemy==2.0.31
+weasyprint==61.2
