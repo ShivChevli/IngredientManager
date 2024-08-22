@@ -1,30 +1,25 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Readex Pro', sans-serif;
-    scrollbar-width: thin;
-}
-
-.two-input-inline .form-element-box{
+.two-input-inline .form-element-box {
     width: 60%;
     display: inline-block;
 }
+
 .two-input-inline .form-element-box:nth-of-type(2) {
     width: 30%;
     margin-left: 4% !important;
 }
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
+
 /* 
 3700B3
 5600E8
@@ -32,17 +27,8 @@ input[type=number] {
 
     292929
     */
-:root{
-    --text-color : #fff;
-    --bg-color-main : #610CFF;
-    /* --bg-color-main : #985EFF; */
-    /* --item : rgba(210,210,210,0.5); */
-    --item : #dddddd;
-    --text-alter : #000;
-    --bg-color-alter : #fff;
-    --danger_color : #aa0a0a;
-}
-menu{
+
+menu {
     position: fixed;
     top: 0px;
     left: 0;
@@ -52,27 +38,32 @@ menu{
     background: var(--bg-color-main);
     color: var(--text-color);
 }
-.heading{
+
+.heading {
     margin: 30px;
     padding-bottom: 20px;
     text-align: center;
     overflow: hidden;
 }
+
 /* menu{
     display: none;
 } */
-.menue-option-box{
+.menue-option-box {
     margin: 50px 0;
     height: 500px;
 }
-ul{
+
+ul {
     list-style: none;
     padding: 10px 20px;
 }
-ul li{
+
+ul li {
     margin: 10px 0;
 }
-ul li a{
+
+ul li a {
     display: block;
     /* text-align: center; */
     text-decoration: none;
@@ -80,10 +71,12 @@ ul li a{
     /* border: 1px solid black; */
     padding: 10px;
 }
-.active{
-    border-bottom:1px solid var(--text-color);
+
+.active {
+    border-bottom: 1px solid var(--text-color);
 }
-.list-icon{
+
+.list-icon {
     padding: 0;
     display: inline-block;
     vertical-align: baseline;
@@ -91,7 +84,8 @@ ul li a{
     overflow: hidden;
     /* margin-left: 20px; */
 }
-.list-text{
+
+.list-text {
     display: inline-block;
     vertical-align: baseline;
     margin: 0px 10px;
@@ -99,14 +93,15 @@ ul li a{
     height: 35px;
     overflow: hidden;
 }
-svg{
+
+svg {
     padding: 0;
     width: 40px;
     height: 40px;
     fill: var(--text-color);
 }
 
-.menue-footer{
+.menue-footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -116,7 +111,8 @@ svg{
     height: 100px;
     width: 300px;
 }
-.button-remove{
+
+.button-remove {
     border: none;
     outline: none;
     text-decoration: none;
@@ -130,7 +126,7 @@ svg{
 /* --------------------------------------------------------------------------------
                     Main Sections
 -------------------------------------------------------------------------------- */
-main{
+main {
     position: static;
     height: 100vh;
     /* background: #f00; */
@@ -138,13 +134,16 @@ main{
     background: var(--bg-color-alter);
     overflow-x: hidden;
 }
-main h1,h3{
+
+main h1,
+h3 {
     margin: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--text-alter);
     color: var(--text-alter);
 }
-main section{
+
+main section {
     vertical-align: top;
     padding: 0 30px;
     display: inline-block;
@@ -155,40 +154,46 @@ main section{
     width: 45%;
     max-width: 45vw;
     min-height: 550px;
-    max-height: 620px;
+    /* max-height: 620px; */
 }
-main .section2{
+
+main .section2 {
     /*margin-left: 20px;*/
     width: 50%;
     max-width: 100%;
-    border-right: none ;
+    border-right: none;
 }
-.section2 .detail-list{
+
+.section2 .detail-list {
     padding: 10px 30px;
-    font-size:1.2rem;
+    font-size: 1.2rem;
     color: var(--text-alter);
 }
-.section2 .detail-list span{
+
+.section2 .detail-list span {
     font-weight: 600;
 }
-#date{
+
+#date {
     float: right;
 }
-#new{
+
+#new {
     position: absolute;
     bottom: 50px;
     right: 100px;
     border-radius: 50%;
     color: var(--text-color);
-    background: var(--bg-color-main); 
+    background: var(--bg-color-main);
     overflow: visible;
 }
-#new svg{
+
+#new svg {
     width: 30px;
     height: 30px;
 }
 
-.help{
+.help {
     background: var(--item);
     color: var(--text-alter);
     position: absolute;
@@ -200,92 +205,84 @@ main .section2{
     display: none;
     transition: 1000ms;
 }
-#new:hover .help{
+
+#new:hover .help {
     transition: 1s;
     display: block;
 }
-.single-container{
+
+.single-container {
     border: none;
     width: 100%;
-    padding:  0 50px;
+    padding: 0 50px;
     max-width: 100%;
-    max-height: 620px;
-}
-#single-section{
-    max-height: 575px;
-    /*overflow: hidden;*/
-}
-.toolbox{
-    padding: 10px 50px;
-    margin-bottom: 0;
-    display: grid;
-    grid-template-columns: repeat(12,1fr)
-}
-.toolbox button{
-    height: 50px;
-    /*width: 100px;*/
-}
-.toolbox div:nth-of-type(2){
-    grid-column: 9/13;
-}
-.search-bar{
-    display: inline-block;
-    grid-column: 1/9;
-}
-.search-bar .form-control{
-    width: 100%;
+    /* max-height: 620px; */
 }
 
-#itemIngredients{
+#itemIngredients {
     height: 289px;
     overflow-y: auto;
 }
-#orderItems{
+
+#orderItems {
     height: 400px;
     overflow-y: auto;
 }
-#newItemBox section{
+
+#newItemBox section {
     min-height: 450px;
     max-height: 480px !important;
 }
-.button-style-1{
+
+.button-style-1 {
     overflow: hidden;
     max-width: 100px;
     font-size: 15px;
     font-weight: 600;
     border-radius: 20px;
-    margin: 0px 20px;
+    margin: 0px 10px;
     padding: 10px 20px;
     background-color: var(--bg-color-main);
     border: 2px solid var(--bg-color-main);
-
 }
-.button-style-2{
+
+.button-style-1:last-of-type {
+    margin-right: 20px;
+}
+
+.button-style-2 {
     border-radius: 10px;
     margin: 30px;
 }
-.cancel-btn{
+
+.cancel-btn {
     color: var(--bg-color-main);
     background-color: var(--text-color);
     border: 2px solid var(--bg-color-main);
 }
-.delete-btn{
+
+.delete-btn {
     background-color: var(--danger_color) !important;
 }
-#updateBox{
+
+#updateBox {
     display: none;
 }
-#newItemBox{
+
+#newItemBox {
     display: none;
 }
-#multi-section{
+
+#multi-section {
     display: none;
 }
-#section1 .search-bar{
+
+#section1 .search-bar {
     width: 100%;
     grid-column: 1/13;
 }
-#section1 .toolbox{
+
+#section1 .toolbox {
     padding-right: 0;
     padding-left: 0;
     position: sticky;
@@ -293,34 +290,42 @@ main .section2{
     left: 0;
     background: var(--bg-color-alter);
 }
-#addNewIngredientBtn{
+
+#addNewIngredientBtn {
     float: right;
     margin: 0 !important;
     margin-top: -10px !important;
 }
+
 /* ------------------------------------------------------------------------------
                         Section 1
 ------------------------------------------------------------------------------ */
-.suggetion-container{
+.suggetion-container {
     padding: 20px 10px;
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 500px;
     max-height: 550px;
 }
-.suggetion-list-item{
-    display: grid;
-    grid-template-columns: repeat(12,1fr);
-    background:  var(--item);
+
+.suggetion-list-item {
+    /* display: grid;
+    grid-template-columns: repeat(12, 1fr); */
+    display: flex;
+    background: var(--item);
     margin: 10px 0;
     padding: 10px 20px 15px;
     border-radius: 5px;
 }
-.suggetion-list-item a{
-    grid-column: 1 / 12;
+
+.suggetion-list-item a {
+    flex-grow: 1;
+    /* grid-column: 1 / 12; */
 }
-.suggetion-list-item .text{
-    grid-column: 1 / 12;
+
+.suggetion-list-item .text {
+    /* grid-column: 1 / 12; */
+    flex-grow: 1;
     /* display: inline-flexbox; */
     /* width: 80%; */
     display: inline-block;
@@ -328,7 +333,8 @@ main .section2{
     cursor: pointer;
     color: var(--text-alter);
 }
-.text_style{
+
+.text_style {
     grid-column: 1 / 12;
     display: inline-block;
     font-weight: 600;
@@ -336,39 +342,45 @@ main .section2{
     color: var(--text-alter);
 
 }
-.suggetion-list-item .add{
-    grid-column: 12 / 12;
+
+.suggetion-list-item .add {
+    /* grid-column: 12 / 12; */
     /* width: 18%; */
     margin: 0 20px;
     text-align: right;
     padding: 0 !important;
-    padding-top: 2px !important ;
+    padding-top: 2px !important;
 }
-.suggetion-list-item .add svg{
+
+.suggetion-list-item .add svg {
     width: 20px;
     height: 20px;
     fill: var(--text-alter);
 }
+
 /* ======================================================================
                     Form
 ====================================================================== */
-.form-element-box{
+.form-element-box {
     margin: 20px;
     margin-top: 0;
 }
-.form-element-box .from-lable{
+
+.form-element-box .from-lable {
     display: block;
     margin: 10px;
     font-size: 18px;
     font-weight: 600;
     color: var(--text-alter);
 }
-.form-control{
+
+.form-control {
     border-radius: 5px;
     border: 1px solid var(--text-alter);
     padding: 10px 20px;
 }
-.from-element{
+
+.from-element {
     width: 100%;
     display: block;
     border: none;
@@ -377,42 +389,49 @@ main .section2{
     color: var(--text-alter);
     background-color: var(--bg-color-alter);
 }
-.single-container .button-style-1{
+
+.single-container .button-style-1 {
     border-radius: 5px !important;
     margin: 20px 30px;
 }
-.single-container .form-element-box{
+
+.single-container .form-element-box {
     margin-left: 30px;
 }
+
 /*--------------------------------------------------------------------------*/
 /*                    Detail Table*/
 /*--------------------------------------------------------------------------*/
-.detail-table{
+.detail-table {
     font-weight: 900;
     /*border: px solid var(--bg-color-main);*/
     border-collapse: collapse;
     margin: 20px auto;
 }
-.detail-table td{
+
+.detail-table td {
     margin: 0;
     padding: 10px 20px;
     border: 3px solid var(--bg-color-main);
 }
-.detail-table td:nth-of-type(even){
+
+.detail-table td:nth-of-type(even) {
     font-weight: 400;
 }
 
 /*---------------------------------------------------------------------------*/
 /*                            Order List */
 /*---------------------------------------------------------------------------*/
-.section3{
+.section3 {
     display: block;
     padding: 20px 50px;
 }
-.section3 h2{
+
+.section3 h2 {
     margin: 15px 0;
 }
-.section3 h3{
+
+.section3 h3 {
     font-size: 23px;
     text-decoration: none;
     margin: 20px 0px 0px;
@@ -420,14 +439,17 @@ main .section2{
     /*margin-top:0 ;*/
     padding-bottom: 0;
 }
-.section3 ul{
+
+.section3 ul {
     padding-left: 50px;
 }
-.section3 ul li{
+
+.section3 ul li {
     font-size: 21px;
     list-style: decimal;
 }
-.item-box{
+
+.item-box {
     position: relative;
     background-color: #eee;
     padding: 20px 0px;
@@ -440,87 +462,103 @@ main .section2{
     background: var(--item);
     color: var(--text-alter);
 }
-.item-box ul{
+
+.item-box ul {
     padding: 0 50px;
 }
+
 .item-box ul li {
     font-size: 15px;
 }
-.item-box ul li label{
+
+.item-box ul li label {
     font-weight: 600;
 }
 
-.item-name{
+.item-name {
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(12,1fr);
+    grid-template-columns: repeat(12, 1fr);
     vertical-align: middle;
-    font-size: 18px ;
+    font-size: 18px;
     vertical-align: center;
     line-height: 20px;
 }
-.item-name .item-name-text{
+
+.item-name .item-name-text {
     grid-column: 1/11;
     padding: 0 30px;
 }
-.item-name span:nth-child(2){
+
+.item-name span:nth-child(2) {
     text-align: right;
-    padding-right: 10px ;
+    padding-right: 10px;
     margin-top: -10px;
     grid-column: 11/13;
 }
-.item-name span svg{
+
+.item-name span svg {
     fill: var(--text-alter);
 }
-.item-box .edit-btn{
-    margin:0 50px !important;
+
+.item-box .edit-btn {
+    margin: 0 50px !important;
 }
-.ingredient-list{
+
+.ingredient-list {
     font-size: 15px;
 }
-.bin svg{
+
+.bin svg {
     height: 28px;
     /*padding-right: 10px;*/
     margin-top: 9px
 }
+
 /* .item-box:hover {
     transition: cubic-bezier(0.075, 0.82, 0.165, 1);
     height: auto;
 } */
-.order-detail{
+.order-detail {
     margin: 8px 0;
 }
 
-.order-detail p{
+.order-detail p {
     font-size: 18px;
     padding: 10px 30px;
     color: var(--text-alter);
 }
-.section4{
+
+.section4 {
     padding: 20px;
-     text-align: center;
+    text-align: center;
     /* margin-right: 300px; */
 }
-.section4 .button-style-1{
+
+.section4 .button-style-1 {
     margin: 10px !important;
 }
-.section4 #editBtn{
+
+.section4 #editBtn {
     padding: 12px 25px;
 }
 
-#orderDetail-section1{
+#orderDetail-section1 {
     max-height: 700px;
 }
-#orderDetail-section1 h3{
+
+#orderDetail-section1 h3 {
     margin: 0px 30px 0px;
     padding-bottom: 0px !important;
 }
-#submit-btn{
+
+#submit-btn {
     margin: 10px 50px !important;
 }
-.single-container .form-element-box{
+
+.single-container .form-element-box {
     max-width: 1000px;
-    margin: 20px 0px!important;
+    margin: 20px 0px !important;
 }
 
 /*#page1{*/
@@ -529,15 +567,16 @@ main .section2{
 /*#page2 section{*/
 /*    max-width: 45vw !important;*/
 /*}*/
-.toolbox2 .search-bar{
+.toolbox2 .search-bar {
     width: 100%;
     padding: 0;
 }
-.toolbox2 .search-bar .form-element-box{
+
+.toolbox2 .search-bar .form-element-box {
     margin: 0 !important;
 }
 
-.toolbox2{
+.toolbox2 {
     width: 100%;
     padding: 20px !important;
     position: sticky;
@@ -546,33 +585,30 @@ main .section2{
     background: var(--bg-color-alter);
 }
 
-section h1{
+section h1 {
     margin: 30px 0 !important;
 }
 
-.section2 .button-style-1{
-    margin: 10px 20px !important    ;
+.section2 .button-style-1 {
+    margin: 10px 20px !important;
 }
 
-.edit-btn{
+.edit-btn {
     margin: 10px auto !important;
 }
 
-.list-container{
-    max-height: 550px;
-}
-
-@media screen and (min-width: 1367px){
-    main .display-home-item{
+@media screen and (min-width: 1367px) {
+    /* main .display-home-item {
         max-height: 73vh !important;
-    }
+    } */
 
-    #newItemBox section{
+    #newItemBox section {
         height: 64vh !important;
         max-height: 64vh !important;
     }
 }
-@media screen and (min-width: 0px) and (max-width: 1200px){
+
+@media screen and (min-width: 0px) and (max-width: 1200px) {
     #edit-view .single-container {
         padding: 0;
     }

@@ -1,0 +1,10 @@
+:root {
+    --text-color: #fff;
+    --bg-color-main: #610CFF;
+    /* --bg-color-main : #985EFF; */
+    /* --item : rgba(210,210,210,0.5); */
+    --item: #dddddd;
+    --text-alter: #000;
+    --bg-color-alter: #fff;
+    --danger_color: #aa0a0a;
+}

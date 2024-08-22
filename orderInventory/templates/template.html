@@ -1,11 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/color.css' %}">
+    <link rel="stylesheet" href="{% static 'css/baseTemplateStyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,7 +47,7 @@
                                 <path
                                     d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zM4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm13 0c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4z">
                                 </path>
- <!--                               <path
+                                <!--                               <path
                                     d="M21.999 8a.997.997 0 0 0-.143-.515L19.147 2.97A2.01 2.01 0 0 0 17.433 2H6.565c-.698 0-1.355.372-1.714.971L2.142 7.485A.997.997 0 0 0 1.999 8c0 1.005.386 1.914 1 2.618V20a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-5h4v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-9.382c.614-.704 1-1.613 1-2.618zm-2.016.251A2.002 2.002 0 0 1 17.999 10c-1.103 0-2-.897-2-2 0-.068-.025-.128-.039-.192l.02-.004L15.219 4h2.214l2.55 4.251zm-9.977-.186L10.818 4h2.361l.813 4.065C13.957 9.138 13.079 10 11.999 10s-1.958-.862-1.993-1.935zM6.565 4h2.214l-.76 3.804.02.004c-.015.064-.04.124-.04.192 0 1.103-.897 2-2 2a2.002 2.002 0 0 1-1.984-1.749L6.565 4zm3.434 12h-4v-3h4v3z">
                                 </path> -->
                             </svg>
@@ -88,14 +91,19 @@
                 <li id="order">
                     <a href="{% url 'inventory:orderList' %}">
                         <div class="list-icon">
-                           <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <path
                                     d="M7.004 3.5 2 6.689l5.004 3.186 5.002-3.186zm10.005 0-5.003 3.189 5.003 3.186 5.003-3.186zM2 13.062l5.004 3.187 5.002-3.187-5.002-3.187zm15.009-3.187-5.003 3.187 5.003 3.187 5.003-3.187zM7.004 17.311l5.002 3.189 5.003-3.189-5.003-3.186z">
                                 </path>
 
                             </svg> -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
-                                <path d="M4 20h2V10a1 1 0 0 1 1-1h12V7a1 1 0 0 0-1-1h-3.051c-.252-2.244-2.139-4-4.449-4S6.303 3.756 6.051 6H3a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2zm6.5-16c1.207 0 2.218.86 2.45 2h-4.9c.232-1.14 1.243-2 2.45-2z"></path><path d="M21 11H9a1 1 0 0 0-1 1v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a1 1 0 0 0-1-1zm-6 7c-2.757 0-5-2.243-5-5h2c0 1.654 1.346 3 3 3s3-1.346 3-3h2c0 2.757-2.243 5-5 5z"></path>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path
+                                    d="M4 20h2V10a1 1 0 0 1 1-1h12V7a1 1 0 0 0-1-1h-3.051c-.252-2.244-2.139-4-4.449-4S6.303 3.756 6.051 6H3a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2zm6.5-16c1.207 0 2.218.86 2.45 2h-4.9c.232-1.14 1.243-2 2.45-2z">
+                                </path>
+                                <path
+                                    d="M21 11H9a1 1 0 0 0-1 1v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a1 1 0 0 0-1-1zm-6 7c-2.757 0-5-2.243-5-5h2c0 1.654 1.346 3 3 3s3-1.346 3-3h2c0 2.757-2.243 5-5 5z">
+                                </path>
                             </svg>
                         </div>
                         <div class="list-text">
@@ -108,14 +116,19 @@
                 <li id="clientTalks">
                     <a href="{% url 'inventory:clientTalksList' %}">
                         <div class="list-icon">
-                           <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <path
                                     d="M7.004 3.5 2 6.689l5.004 3.186 5.002-3.186zm10.005 0-5.003 3.189 5.003 3.186 5.003-3.186zM2 13.062l5.004 3.187 5.002-3.187-5.002-3.187zm15.009-3.187-5.003 3.187 5.003 3.187 5.003-3.187zM7.004 17.311l5.002 3.189 5.003-3.189-5.003-3.186z">
                                 </path>
 
                             </svg> -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M13 14h3.5c.827 0 1.5-.673 1.5-1.5v-9c0-.827-.673-1.5-1.5-1.5h-13C2.673 2 2 2.673 2 3.5V18l5.333-4H13zm-9-.1.154-.016L4 14v-.1z"></path><path d="M20.5 8H20v6.001c0 1.1-.893 1.993-1.99 1.999H8v.5c0 .827.673 1.5 1.5 1.5h7.167L22 22V9.5c0-.827-.673-1.5-1.5-1.5z"></path>
+                                <path
+                                    d="M13 14h3.5c.827 0 1.5-.673 1.5-1.5v-9c0-.827-.673-1.5-1.5-1.5h-13C2.673 2 2 2.673 2 3.5V18l5.333-4H13zm-9-.1.154-.016L4 14v-.1z">
+                                </path>
+                                <path
+                                    d="M20.5 8H20v6.001c0 1.1-.893 1.993-1.99 1.999H8v.5c0 .827.673 1.5 1.5 1.5h7.167L22 22V9.5c0-.827-.673-1.5-1.5-1.5z">
+                                </path>
                             </svg>
                         </div>
                         <div class="list-text">
@@ -145,17 +158,21 @@
         </div>
     </menu>
     <main>
-        <h1>{% block heading %} {% endblock %}<span id="date">12/12/2021</span></h1>
-        {% if toolbar != None %}
-        <div class="toolbox" id="toolbox">
-                <div class="search-bar">
-                    <div class="form-element-box">
-                        <div class="form-control">
-                            <input type="text" class="from-element search-input" placeholder="Search Element">
+        <h1 class="tab-heading">
+            <span class="heading-text">{% block heading %} {% endblock %}</span>
+            <span id="date">12/12/2021</span>
+        </h1>
+        <div class="content-wrapper">
+            {% if toolbar != None %}
+            <div class="toolbox-wrapper" id="toolbox">
+                <div class="toolbox">
+                    <div class="search-bar">
+                        <div class="form-element-box">
+                            <div class="form-control">
+                                <input type="text" class="from-element search-input" placeholder="Search Element">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
                     <button class="button-remove button-style-1">
                         Search
                     </button>
@@ -163,13 +180,14 @@
                         New
                     </button>
                 </div>
+            </div>
+            {% endif %}
+            <span style="color: #f00">{{ message }}</span>
+
+            {% block Main %}
+
+            {% endblock %}
         </div>
-        {% endif %}
-        <span style="color: #f00">{{ message }}</span>
-
-        {% block Main %}
-
-        {% endblock %}
     </main>
     {% if putPlus %}
     <a href="{% url 'inventory:orderNewCreate' %}" class="button-remove newItem" id="new">
@@ -194,75 +212,75 @@
 
     console.log(localStorage.getItem("theme"));
 
-    if(localStorage.getItem("theme") === null){
+    if (localStorage.getItem("theme") === null) {
         console.log("Theme Set");
-        localStorage.setItem("theme","light");
+        localStorage.setItem("theme", "light");
     }
 
     const r = document.querySelector(":root");
     setTheme(r);
     document.getElementById('theme').onclick = function () {
-        if (localStorage.getItem('theme') === "light"){
-            localStorage.setItem('theme','dark');
+        if (localStorage.getItem('theme') === "light") {
+            localStorage.setItem('theme', 'dark');
         }
         else {
-            localStorage.setItem("theme","light");
+            localStorage.setItem("theme", "light");
         }
         setTheme(r);
     };
 
 
 
-    function setTheme(r){
+    function setTheme(r) {
 
-    if (localStorage.getItem('theme') === "dark") {
-        r.style.setProperty("--text-color", "#a85EeF");
-        r.style.setProperty("--bg-color-main", "#292929");
-        r.style.setProperty("--bg-color-alter", "#121212");
-        r.style.setProperty("--text-alter", "#d0d0d0");
-        r.style.setProperty("--item", "#444444");
-    }
-    else {
-        r.style.setProperty("--text-color", "#fff");
-        r.style.setProperty("--bg-color-main", "#610CFF");
-        r.style.setProperty("--bg-color-alter", "#ffff");
-        r.style.setProperty("--text-alter", "#000");
-        r.style.setProperty("--item", "#dddddd");
-    }
-    // console.log(r.style.setProperty("--text-color", "#000"));
-}
-
-try{
-
-    document.querySelectorAll(".search-input").forEach(input=>{
-        input.onkeyup = function (){
-            let p,txtValue;
-            let filter = input.value.toUpperCase();
-            let div = document.querySelectorAll(".search-elements .suggetion-list-item");
-            console.log("Div :- ");
-            console.log(div);
-            // Loop through all list items, and hide those who don't match the search query
-            for (let i = 0; i < div.length; i++) {
-                p = div[i].getElementsByTagName("p")[0];
-                txtValue = p.textContent || p.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    div[i].style.display = "";
-                } else {
-                    div[i].style.display = "none";
-                }
-            }
-            document.querySelectorAll(".search-input").forEach(input=>{
-                input.value = filter;
-            })
+        if (localStorage.getItem('theme') === "dark") {
+            r.style.setProperty("--text-color", "#a85EeF");
+            r.style.setProperty("--bg-color-main", "#292929");
+            r.style.setProperty("--bg-color-alter", "#121212");
+            r.style.setProperty("--text-alter", "#d0d0d0");
+            r.style.setProperty("--item", "#444444");
         }
-    })
-}
-catch (e){
+        else {
+            r.style.setProperty("--text-color", "#fff");
+            r.style.setProperty("--bg-color-main", "#610CFF");
+            r.style.setProperty("--bg-color-alter", "#ffff");
+            r.style.setProperty("--text-alter", "#000");
+            r.style.setProperty("--item", "#dddddd");
+        }
+        // console.log(r.style.setProperty("--text-color", "#000"));
+    }
+
+    try {
+
+        document.querySelectorAll(".search-input").forEach(input => {
+            input.onkeyup = function () {
+                let p, txtValue;
+                let filter = input.value.toUpperCase();
+                let div = document.querySelectorAll(".search-elements .suggetion-list-item");
+                console.log("Div :- ");
+                console.log(div);
+                // Loop through all list items, and hide those who don't match the search query
+                for (let i = 0; i < div.length; i++) {
+                    p = div[i].getElementsByTagName("p")[0];
+                    txtValue = p.textContent || p.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        div[i].style.display = "";
+                    } else {
+                        div[i].style.display = "none";
+                    }
+                }
+                document.querySelectorAll(".search-input").forEach(input => {
+                    input.value = filter;
+                })
+            }
+        })
+    }
+    catch (e) {
         console.log("no Search Bar present")
-}
+    }
 
     let active = "{{ active }}";
-    if (active != ""){
+    if (active != "") {
         console.log(active);
         document.getElementById(active).classList.add("active");
     }
