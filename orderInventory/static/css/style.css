@@ -275,6 +275,10 @@ main .section2 {
 
 #multi-section {
     display: none;
+
+    .toolbox {
+        min-width: unset;
+    }
 }
 
 #section1 .search-bar {
@@ -507,6 +511,8 @@ main .section2 {
 
 .ingredient-list {
     font-size: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 .bin svg {
@@ -543,9 +549,9 @@ main .section2 {
     padding: 12px 25px;
 }
 
-#orderDetail-section1 {
+/* #orderDetail-section1 {
     max-height: 700px;
-}
+} */
 
 #orderDetail-section1 h3 {
     margin: 0px 30px 0px;
